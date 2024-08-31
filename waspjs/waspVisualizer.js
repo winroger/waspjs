@@ -35,7 +35,7 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
     controls.enableDamping = true;
     controls.DampingFactor = 0.1;
     controls.enableZoom = true;
-    controls.enablePan = false;
+    controls.enablePan = true;
     controls.minDistance = 20;
     controls.maxDistance = 800;
 
