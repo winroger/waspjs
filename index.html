@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Waspjs</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="threejs-container"></div>
+
+  <div class="container">
+    <form class="card form">
+      <p class="title">Wasp.js</p>
+      <div class="field">
+        <label class="file-label">
+          <input class="file-input" type="file" id="partFile" name="partFile" multiple>
+          Upload Parts Json
+        </label>
+      </div>
+      <div class="field">
+        <label class="file-label">
+          <input class="file-input" type="file" id="aggregationFile" name="aggregationFile">
+          Upload Aggregation Json
+        </label>
+      </div>
+      <div class="status">
+        <label for="statusValue">Aggregation Counter:</label>
+        <span id="statusValue">0</span>
+      </div>
+    </form>
+  </div>
+
+  <!-- External scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  
+  <!-- Wasp scripts -->
+  <script src="waspjs/waspConnection.js"></script>
+  <script src="waspjs/waspPart.js"></script>
+  <script src="waspjs/waspRules.js"></script>
+  <script src="waspjs/waspPlane.js"></script>
+  <script src="waspjs/utilities.js"></script>
+  <script src="waspjs/waspAggregation.js"></script>
+  <script src="waspjs/waspVisualizer.js"></script>
+
+  <!-- Local script -->
+  <script src="main.js"></script>
+</body>
+</html>
