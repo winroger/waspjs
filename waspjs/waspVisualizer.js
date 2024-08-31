@@ -100,6 +100,7 @@ function visualizeParts(scene, parts, wirefr) {
     }
     else {
       part.geo.material.wireframe = false;
+      updateStatusValue(index)
     }
 
     const partGroup = new THREE.Group();
@@ -124,9 +125,6 @@ function visualizeParts(scene, parts, wirefr) {
       let zVector = new THREE.Vector3().crossVectors(conn.pln.xaxis, conn.pln.yaxis).normalize();
       let arrowHelperZ = new THREE.ArrowHelper(zVector, conn.pln.origin, 3, hexBlue);
     }*/
-
-      
-    updateStatusValue(index)
     index++;
 
     // Use the config speed value for the timeout
