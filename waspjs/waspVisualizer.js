@@ -1,10 +1,17 @@
 // Define a color map for parts
 const colorMap = {
-  "0": "0xFF0000", // Red
-  "1": "0x00FF00", // Green
-  "2": "0x0000FF", // Blue
-  // Add more parts and colors as needed
-};
+  "0": "0xFF5733",  // Vibrant Orange
+  "1": "0x33FF57",  // Lime Green
+  "2": "0x3357FF",  // Bright Blue
+  "3": "0xFF33A1",  // Hot Pink
+  "4": "0x33FFF1",  // Aqua Mint
+  "5": "0xF1FF33",  // Neon Yellow
+  "6": "0xFF5733",  // Deep Coral
+  "7": "0x5733FF",  // Electric Purple
+  "8": "0x33FFA8",  // Mint Green
+  "9": "0xFF33D1"   // Magenta
+}
+
 
 const statusValueElement = document.getElementById('statusValue');
 
