@@ -105,12 +105,13 @@ class Aggregation {
             console.log("First Part: ", first_part)
             const identityMatrix = new THREE.Matrix4().identity();
             if (first_part !== null) {
-                //let first_part_trans = first_part.copy()
-                console.log("identityMatrix: ", identityMatrix)
-                let first_part_trans = first_part.transform(identityMatrix);
-                console.log("first_part_trans: ", first_part_trans)
+                let first_part_trans = first_part.copy()
+                //console.log("identityMatrix: ", identityMatrix)
+                //let first_part_trans = first_part.transform(identityMatrix);
+                //console.log("first_part_trans: ", first_part_trans)
                 first_part_trans.connections.forEach(conn => {
-                    console.log("conn: ", conn)
+                    //console.log("conn: ", conn)
+                    //addConnectionArrowsToScene(conn);
                     conn.generateRulesTable(this.rules);
                 });
   
@@ -119,7 +120,7 @@ class Aggregation {
                 added += 1;
             }
         } else {
-
+            //console.log("PLACING PART NR. ", this.aggregated_parts.length)
             let next_rule = null;
             let part_01_id = -1;
             let conn_01_id = -1;
@@ -143,33 +144,68 @@ class Aggregation {
                     }
                 }
             }
-            console.log("next_rule: ", next_rule)
+            //console.log("next_rule: ", next_rule)
   
             if (next_rule !== null) {
               
                 let next_part = this.parts[next_rule.partB];
+
+
+                // NEW PART
                 let startingPlane = next_part.connections[next_rule.connectionB].flip_pln
+
+                //addSphereToScene2(next_part.connections[next_rule.connectionB].flip_pln.origin, 0xFF69B4) // Pink
+                //addConnectionArrowsToScene(next_part.connections[next_rule.connectionB].flip_pln)
+
+                //console.log("the plane one the new part as it is initialized: ", startingPlane)
+
+
+
+                // EXISTING PART
                 let targetPlane = this.aggregated_parts[part_01_id].connections[conn_01_id].pln
 
-                
+                //addSphereToScene2(this.aggregated_parts[part_01_id].connections[conn_01_id].pln.origin, 0x00FFFF) // Cyan
+                //let newArrow = addConnectionArrowsToScene(this.aggregated_parts[part_01_id].connections[conn_01_id].pln)
+                //threeJsContext.scene.add(newArrow);
+
+                //console.log("the plane one the existing part where it sould go: ", startingPlane)
+
+                // CALC TRANSFORM
                 let orientTransform = newPlaneToPlane(startingPlane, targetPlane);
-                console.log("orientTransform: ", orientTransform)
+                //console.log("orientTransform: ", orientTransform.elements)
 
-                //let next_part_trans = next_part.copy()
+
+                // ADD HELPER ARROW TO VISUALIZE MOVEMENT DIRECTION
+                /*const lengthST = startingPlane.origin.distanceTo(targetPlane.origin);
+                const direction = new THREE.Vector3().subVectors(targetPlane.origin, startingPlane.origin).normalize();
+                const arrowHelper = new THREE.ArrowHelper(
+                    direction,
+                    startingPlane.origin,
+                    lengthST,
+                    0xffff00 // Yellow
+                );
+                threeJsContext.scene.add(arrowHelper);*/
+
+                // PERSFORM TRANFORM ON PART
                 let next_part_trans = next_part.transform(orientTransform);
-                next_part_trans.resetPart(this.rules);
-                next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.conn2);
-                next_part_trans.id = this.aggregated_parts.length;
 
-                // TEST
-                let finalPlane = next_part_trans.connections[next_rule.connectionB].flip_pln
-                console.log("FINAL PLANE: ", finalPlane)
-                const FinalGeo = new THREE.SphereGeometry(0.5, 32, 16);
-                const FinalMat = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
-                const FinalSphere = new THREE.Mesh(FinalGeo, FinalMat);
-                FinalSphere.position.set(finalPlane.origin.x, finalPlane.origin.y, finalPlane.origin.z);
-                threeJsContext.scene.add(FinalSphere);
-  
+                //console.log("where the plane actually ends up at: ", finalPlane)
+                
+
+                //addSphereToScene2(next_part_trans.connections[next_rule.connectionB].flip_pln.origin, 0x00FF00) // Green
+                //addConnectionArrowsToScene(next_part_trans.connections[next_rule.connectionB].flip_pln)
+
+
+                // REST OF STUFF
+                //console.log("nextRule: ", next_rule)
+                next_part_trans.resetPart(this.rules);
+                //console.log("New Part Active Connections BEFORE: ", next_part_trans.active_connections)
+                next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.connectionB);
+                //console.log("New Part Active Connections AFTER: ", next_part_trans.active_connections)
+                next_part_trans.id = this.aggregated_parts.length;
+                //console.log(`Removed Connection ${next_rule.connectionB} from new part ${next_part_trans.id}`)
+
+                
                 // parent-child tracking
                 this.aggregated_parts[part_01_id].children.push(next_part_trans.id);
                 next_part_trans.parent = this.aggregated_parts[part_01_id].id;
@@ -180,10 +216,14 @@ class Aggregation {
                 this.aggregated_parts.push(next_part_trans);
   
                 // remove connection from parent part's active connections
+                //console.log("Parent Part Active Connections BEFORE: ", this.aggregated_parts[part_01_id].active_connections)
                 this.aggregated_parts[part_01_id].active_connections = this.aggregated_parts[part_01_id].active_connections.filter(conn => conn !== conn_01_id);
+                //console.log("Parent Part Active Connections AFTER: ", this.aggregated_parts[part_01_id].active_connections)
+
                 added += 1;
+                //console.log(`Removed Connection ${this.aggregated_parts[part_01_id].connections[conn_01_id]} from parent part ${part_01_id}'s active connections`)
                 //console.log("-------4-------")
-                
+            
             } else {
 
                 return `Could not place ${num - added} parts`;
@@ -201,4 +241,24 @@ function randomChoice(arr) {
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function addSphereToScene2(position, color) {
+    const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+    const material = new THREE.MeshBasicMaterial({ color: color });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.set(position.x, position.y, position.z);
+    threeJsContext.scene.add(sphere);
+}
+
+function addConnectionArrowsToScene(plane) {
+    //console.log("plane to view: ", plane)
+    const origin = plane.origin;
+    const xArrow = new THREE.ArrowHelper(plane.xaxis.normalize(), origin, 2, 0xff0000); // Red for X-axis
+    const yArrow = new THREE.ArrowHelper(plane.yaxis.normalize(), origin, 2, 0x0000ff); // Blue for Y-axis
+    const zArrow = new THREE.ArrowHelper(plane.zaxis.normalize(), origin, 2, 0x00ff00); // Green for Z-axis
+
+    threeJsContext.scene.add(xArrow);
+    threeJsContext.scene.add(yArrow);
+    threeJsContext.scene.add(zArrow);
 }

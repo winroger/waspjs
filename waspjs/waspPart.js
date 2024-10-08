@@ -148,7 +148,7 @@ class Part {
 
     // return a transformed copy of the part
     transform(trans, transform_sub_parts = false, maintain_parenting = false) {
-        console.log("-------1-------")
+        //console.log("-------1-------")
         let geo_trans = this.geo.clone()
         geo_trans.applyMatrix4(trans);
 
@@ -156,7 +156,7 @@ class Part {
 
         let connections_trans = []
         for (let conn of this.connections) {
-            console.log("-------2-------")
+            //console.log("-------2-------")
             let conn_trans = conn.transform(trans)
             connections_trans.push(conn_trans)
             //conn.transform(trans)
@@ -167,14 +167,8 @@ class Part {
             attributes_trans = this.attributes.map(attr => attr.transform(trans));
         }
 
-        
-        console.log("this: ", this)
-        console.log("connections_trans: ", connections_trans)
-        console.log("-------3-------")
-
         let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, attributes_trans, this.dim, this.id, this.field)
         
-        console.log("-------4-------")
         part_trans.transformation.multiply(trans) // = Transform.Multiply(trans, this.transformation);
 
         if (maintain_parenting) {

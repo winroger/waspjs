@@ -135,26 +135,11 @@ function transformFromData(data) {
     return matrix;
 }
 
-
+/*
 function customPlaneToPlane(sourcePlane, targetPlane) {
     // Create rotation matrix
     const sourceZ = new THREE.Vector3().crossVectors(sourcePlane.xaxis, sourcePlane.yaxis).normalize();
     const targetZ = new THREE.Vector3().crossVectors(targetPlane.xaxis, targetPlane.yaxis).normalize();
-
-
-    console.log("STARTING PLANE: ", sourcePlane)
-    const StartGeo = new THREE.SphereGeometry(0.5, 32, 16);
-    const StartMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const StartSphere = new THREE.Mesh(StartGeo, StartMat);
-    StartSphere.position.set(sourcePlane.origin.x, sourcePlane.origin.y, sourcePlane.origin.z);
-    threeJsContext.scene.add(StartSphere);
-
-    console.log("TARGET PLANE: ", targetPlane)
-    const TargetGeo = new THREE.SphereGeometry(0.5, 32, 16);
-    const TargetMat = new THREE.MeshBasicMaterial({ color: 0x00FFFF });
-    const TargetSphere = new THREE.Mesh(TargetGeo, TargetMat);
-    TargetSphere.position.set(targetPlane.origin.x, targetPlane.origin.y, targetPlane.origin.z);
-    threeJsContext.scene.add(TargetSphere);
     
     const sourceMatrix = new THREE.Matrix4().makeBasis(sourcePlane.xaxis, sourcePlane.yaxis, sourceZ);
     const targetMatrix = new THREE.Matrix4().makeBasis(targetPlane.xaxis, targetPlane.yaxis, targetZ);
@@ -176,23 +161,10 @@ function customPlaneToPlane(sourcePlane, targetPlane) {
     return transformationMatrix;
 }
 
-
+*/
 function newPlaneToPlane(sourcePlane, targetPlane) {
-
-    console.log("STARTING PLANE: ", sourcePlane)
-    const StartGeo = new THREE.SphereGeometry(0.5, 32, 16);
-    const StartMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const StartSphere = new THREE.Mesh(StartGeo, StartMat);
-    StartSphere.position.set(sourcePlane.origin.x, sourcePlane.origin.y, sourcePlane.origin.z);
-    threeJsContext.scene.add(StartSphere);
-
-    console.log("TARGET PLANE: ", targetPlane)
-    const TargetGeo = new THREE.SphereGeometry(0.5, 32, 16);
-    const TargetMat = new THREE.MeshBasicMaterial({ color: 0x00FFFF });
-    const TargetSphere = new THREE.Mesh(TargetGeo, TargetMat);
-    TargetSphere.position.set(targetPlane.origin.x, targetPlane.origin.y, targetPlane.origin.z);
-    threeJsContext.scene.add(TargetSphere);
-
+    //console.log("STARTING PLANE: ", sourcePlane);
+    //console.log("TARGET PLANE: ", targetPlane);
 
     // Create transformation matrix from source plane to target plane
     const sourceMatrix = new THREE.Matrix4();
@@ -212,7 +184,7 @@ function newPlaneToPlane(sourcePlane, targetPlane) {
     targetMatrix.setPosition(targetPlane.origin.clone());
 
     const transformMatrix = new THREE.Matrix4();
-    transformMatrix.copy(sourceMatrix).invert().multiply(targetMatrix);
+    transformMatrix.copy(targetMatrix).multiply(sourceMatrix.invert());
 
     return transformMatrix;
 }

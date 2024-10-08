@@ -1,20 +1,6 @@
-// Define a color map for parts
-const colorMap = {
-  "0": "0xFF5733",  // Vibrant Orange
-  "1": "0x33FF57",  // Lime Green
-  "2": "0x3357FF",  // Bright Blue
-  "3": "0xFF33A1",  // Hot Pink
-  "4": "0x33FFF1",  // Aqua Mint
-  "5": "0xF1FF33",  // Neon Yellow
-  "6": "0xFF5733",  // Deep Coral
-  "7": "0x5733FF",  // Electric Purple
-  "8": "0x33FFA8",  // Mint Green
-  "9": "0xFF33D1"   // Magenta
-}
-
 
 const statusValueElement = document.getElementById('statusValue');
-
+let scene, camera, renderer, controls;
   
 
 
@@ -28,9 +14,9 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
   const width = container.clientWidth;
   const height = container.clientHeight;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  let scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  let renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
   container.appendChild(renderer.domElement);
 
@@ -46,9 +32,9 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
     controls.minDistance = 20;
     controls.maxDistance = 800;
 
-  camera.position.y = 200;
-  camera.position.x = 200;
-  camera.position.z = 150;
+  camera.position.y = 50;
+  camera.position.x = 50;
+  camera.position.z = 25;
   controls.update();
 
   // LIGHTS
@@ -65,9 +51,9 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
 
   // HELPERS
   const axesHelper = new THREE.AxesHelper(2);
-  scene.add(axesHelper);
+  //scene.add(axesHelper);
   var gridXZ = new THREE.GridHelper(50, 10);
-  scene.add(gridXZ);
+  //scene.add(gridXZ);
 
   function animate() {
     requestAnimationFrame(animate);
@@ -90,6 +76,7 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
 
 // Function to visualize parts with adjustable timeout speed
 function visualizeParts(scene, parts, wirefr) {
+  const partGroup = new THREE.Group();
   let index = 0;
 
   function addPart() {
@@ -98,10 +85,8 @@ function visualizeParts(scene, parts, wirefr) {
     }
 
     const part = parts[index];
+    console.log("part: ", part);
 
-
-    const hexColor = colorMap[part.id] || "#FFFFFF"; // Default to white if color is not found
-    part.geo.material.color.setHex(hexColor);
     if (wirefr) {
       part.geo.material.wireframe = true;
     }
@@ -109,29 +94,13 @@ function visualizeParts(scene, parts, wirefr) {
       part.geo.material.wireframe = false;
       updateStatusValue(index)
     }
-
-    const partGroup = new THREE.Group();
-    const mesh = part.geo;
+    const mesh = part.geo.clone();
     mesh.name = `${part.name}_${part.id}`;
 
     // Apply rotation around the global X-axis (in radians)
     partGroup.rotation.x = -Math.PI / 2; // This rotates by 90 degrees; adjust as needed
 
     partGroup.add(mesh);
-    scene.add(partGroup);
-
-    /*// PLANE VISUALIZER
-    for (const conn of part.connections) {
-      const hexRed = 0xff0000;
-      const hexGreen = 0x00ff00;
-      const hexBlue = 0x0000ff;
-
-      let arrowHelperX = new THREE.ArrowHelper(conn.pln.xaxis.normalize(), conn.pln.origin, 3, hexRed);
-      let arrowHelperY = new THREE.ArrowHelper(conn.pln.yaxis.normalize(), conn.pln.origin, 3, hexGreen);
-
-      let zVector = new THREE.Vector3().crossVectors(conn.pln.xaxis, conn.pln.yaxis).normalize();
-      let arrowHelperZ = new THREE.ArrowHelper(zVector, conn.pln.origin, 3, hexBlue);
-    }*/
     index++;
 
     // Use the config speed value for the timeout
@@ -139,10 +108,24 @@ function visualizeParts(scene, parts, wirefr) {
   }
 
   addPart();
+  scene.add(partGroup);
 }
 
 
 // Example function to update the status value
 function updateStatusValue(newValue) {
     statusValueElement.textContent = newValue;
+}
+
+
+function resetScene(scene) {
+  while (scene.children.length) {
+      const object = scene.children[0];
+      scene.remove(object);
+      if (object.geometry) object.geometry.dispose();
+      if (object.material) {
+          if (object.material.map) object.material.map.dispose();
+          object.material.dispose();
+      }
+  }
 }

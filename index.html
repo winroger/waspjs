@@ -9,25 +9,37 @@
   <div id="threejs-container"></div>
 
   <div class="container">
-    <form class="card form">
-      <p class="title">Wasp.js</p>
+    <div class="card">
+      <p class="title">Wasp.js Dev Playground</p>
+      <p class="subtitle">Upload Parts JSON</p>
       <div class="field">
         <label class="file-label">
           <input class="file-input" type="file" id="partFile" name="partFile" multiple>
           Upload Parts Json
         </label>
       </div>
-      <div class="field">
+      <p class="subtitle">Trigger new Aggregation</p>
+      <div class="field status">
+        <label for="aggregationSlider">Target Parts: <span id="aggregationCounter">1</span></label>
+        <input type="range" id="aggregationSlider" name="aggregationSlider" min="1" max="10000" value="3" oninput="updateAggregationCounter(this.value)">
+      </div>
+      <button class="button" id="triggerAggregation">Trigger Aggregation</button>
+
+      <!-- <button type="button" class="button" onclick="loadPartFileFromAssets()">Load Part File from Assets</button> -->
+
+      <p class="subtitle">Upload Aggregation JSON</p>
+      <div class="field" style="display: block;">
         <label class="file-label">
           <input class="file-input" type="file" id="aggregationFile" name="aggregationFile">
           Upload Aggregation Json
         </label>
       </div>
       <div class="status">
-        <label for="statusValue">Aggregation Counter:</label>
+        <label for="statusValue">Aggregated Parts:</label>
         <span id="statusValue">0</span>
       </div>
-    </form>
+
+    </div>
   </div>
 
   <!-- External scripts -->
