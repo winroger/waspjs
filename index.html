@@ -21,7 +21,7 @@
       <p class="subtitle">Trigger new Aggregation</p>
       <div class="field status">
         <label for="aggregationSlider">Target Parts: <span id="aggregationCounter">1</span></label>
-        <input type="range" id="aggregationSlider" name="aggregationSlider" min="1" max="100" value="3" oninput="updateAggregationCounter(this.value)">
+        <input type="range" id="aggregationSlider" name="aggregationSlider" min="1" max="10000" value="3" oninput="updateAggregationCounter(this.value)">
       </div>
       <button class="button" id="triggerAggregation">Trigger Aggregation</button>
 
@@ -46,6 +46,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.2/build/index.module.min.js"></script>
   
   <!-- Wasp scripts -->
   <script src="waspjs/waspConnection.js"></script>

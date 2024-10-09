@@ -20,7 +20,7 @@ class Part {
             count++;
         }
 
-        this.transformation = new THREE.Matrix4().identity() //new THREE.Matrix4(); // ORIGINAL: Transform.Identity;
+        this.transformation = new THREE.Matrix4().identity() 
         this.center = null // ORIGINAL: AreaMassProperties.Compute(this.geo).Centroid;
         this.collider = collider // ORIGINAL: collider;
 

@@ -37,7 +37,7 @@ async function loadPartFileFromAssets() {
             newPart.geo.material.color.setHex(colorMap[count]);
             count++;
             newParts.push(newPart);
-            partNameMap[newPart.name] = newPart; // Map part by name
+            partNameMap[newPart.name] = newPart;
             for (const conn of newPart.connections) {
                 console.log(count);
             }
