@@ -53,13 +53,11 @@ const sets =
     { 
         name: "Hexagon", 
         baseurl: "./assets/example_hexa/", 
-        baseurl2: "https://github.com/winroger/webwaspvisualizer/tree/main/assets/example01/",
         fileNames: ["HEXA.json"] 
     },
     { 
         name: "Brio Rails", 
         baseurl: "./assets/example_brio/", 
-        baseurl2:  "https://github.com/winroger/webwaspvisualizer/tree/main/assets/exampleXX/",
         fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
     },
 ];
