@@ -1,4 +1,4 @@
-class Rule {
+export class Rule {
     constructor(partA, connectionA, partB, connectionB) {
       this.partA = partA;
       this.connectionA = connectionA;
@@ -6,9 +6,28 @@ class Rule {
       this.connectionB = connectionB;
       this.active = true;
     }
+
+    fromData(data) { 
+      return {
+        partA: data.part1,
+        connectionA: data.conn1,
+        partB: data.part2,
+        connectionB: data.conn2,
+        active: data.active
+      }
+    }
   }
+
+  export function genRulesFromData(data) {
+    const rules = [];
+    data.forEach(rule => {
+      rules.push(new Rule().fromData(rule));
+    });
+    return rules;
+  }
+
   
-  function generateRules(parts, selfPart = true, selfConnection = true, useTypes = false, grammar = []) {
+  export function generateRules(parts, selfPart = true, selfConnection = true, useTypes = false, grammar = []) {
     const rules = [];
   
     if (grammar.length === 0) {

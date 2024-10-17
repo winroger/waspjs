@@ -1,4 +1,7 @@
-class Connection {
+import { Plane, planeFromData, planeToData } from './waspPlane.js';
+
+
+export class Connection {
     constructor(_plane, _type, _part, _id) {
         this.pln = _plane.clone();
         const tempPlane = this.pln.clone();

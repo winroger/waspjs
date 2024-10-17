@@ -1,4 +1,6 @@
-function readJSONFiles(files) {
+import * as THREE from 'three';
+
+export function readJSONFiles(files) {
     const datasets = [];
     const promises = [];
 
@@ -24,9 +26,8 @@ function readJSONFiles(files) {
     return Promise.all(promises).then(() => datasets);
 }
 
-
 // Utility function to convert a mesh to data
-function meshToData(mesh) {
+export function meshToData(mesh) {
     const data = {};
     const vertices = [];
     mesh.geometry.vertices.forEach(v => {
@@ -48,7 +49,7 @@ function meshToData(mesh) {
 }
 
 // Utility function to create a mesh from data
-function meshFromData(data) {
+export function meshFromData(data) {
     const geometry = new THREE.BufferGeometry();
 
     // Flattened arrays for vertices and indices
@@ -89,7 +90,7 @@ function meshFromData(data) {
 }
 
 // Utility function to convert a transformation matrix to data
-function transformToData(trans) {
+export function transformToData(trans) {
     return {
         M00: trans.elements[0],
         M01: trans.elements[1],
@@ -111,7 +112,7 @@ function transformToData(trans) {
 }
 
 // Utility function to create a transformation matrix from data
-function transformFromData(data) {
+export function transformFromData(data) {
     //console.log(data)
     const trans = [
         parseFloat(data.M00), parseFloat(data.M01), parseFloat(data.M02), parseFloat(data.M03),
@@ -135,38 +136,7 @@ function transformFromData(data) {
     return matrix;
 }
 
-/*
-function customPlaneToPlane(sourcePlane, targetPlane) {
-    // Create rotation matrix
-    const sourceZ = new THREE.Vector3().crossVectors(sourcePlane.xaxis, sourcePlane.yaxis).normalize();
-    const targetZ = new THREE.Vector3().crossVectors(targetPlane.xaxis, targetPlane.yaxis).normalize();
-    
-    const sourceMatrix = new THREE.Matrix4().makeBasis(sourcePlane.xaxis, sourcePlane.yaxis, sourceZ);
-    const targetMatrix = new THREE.Matrix4().makeBasis(targetPlane.xaxis, targetPlane.yaxis, targetZ);
-    
-    const rotationMatrix = new THREE.Matrix4().copy(sourceMatrix).invert().multiply(targetMatrix);
-
-    // Create translation matrix
-    const translationMatrix = new THREE.Matrix4().makeTranslation(
-      targetPlane.origin.x,
-      targetPlane.origin.y,
-      targetPlane.origin.z
-    );
-    
-    // Combine rotation and translation matrices
-    const transformationMatrix = new THREE.Matrix4()
-      .multiply(rotationMatrix)
-      .multiply(translationMatrix); 
-
-    return transformationMatrix;
-}
-
-*/
-function newPlaneToPlane(sourcePlane, targetPlane) {
-    //console.log("STARTING PLANE: ", sourcePlane);
-    //console.log("TARGET PLANE: ", targetPlane);
-
-    // Create transformation matrix from source plane to target plane
+export function newPlaneToPlane(sourcePlane, targetPlane) {
     const sourceMatrix = new THREE.Matrix4();
     sourceMatrix.makeBasis(
         sourcePlane.xaxis.clone().normalize(),
@@ -188,5 +158,3 @@ function newPlaneToPlane(sourcePlane, targetPlane) {
 
     return transformMatrix;
 }
-
-

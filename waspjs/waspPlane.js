@@ -1,4 +1,6 @@
-class Plane {
+import * as THREE from 'three';
+
+export class Plane {
     constructor(origin, xaxis, zaxis) {
         this.origin = origin.clone();
         this.xaxis = xaxis.clone().normalize();
@@ -31,7 +33,7 @@ class Plane {
 
 
 // Utility function to convert a plane to data
-function planeToData(plane) {
+export function planeToData(plane) {
     return {
         origin: [plane.origin.x, plane.origin.y, plane.origin.z],
         xaxis: [plane.xaxis.x, plane.xaxis.y, plane.xaxis.z],
@@ -40,7 +42,7 @@ function planeToData(plane) {
 }
 
 // Utility function to create a plane from data
-function planeFromData(data) {
+export function planeFromData(data) {
     const origin = new THREE.Vector3(data.origin[0], data.origin[1], data.origin[2]);
     const xaxis = new THREE.Vector3(data.xaxis[0], data.xaxis[1], data.xaxis[2]);
     const zaxis = new THREE.Vector3(data.yaxis[0], data.yaxis[1], data.yaxis[2]);

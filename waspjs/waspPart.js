@@ -1,5 +1,9 @@
+import { meshFromData } from "./utilities";
+import { Connection } from "./waspConnection";  
+import * as THREE from 'three';
+
 // Base Part
-class Part {
+export class Part {
     // constructor
     constructor(name, geometry, connections, collider = null, attributes, dim = 1, id = null , field = null) {
         this.name = name;
@@ -20,8 +24,11 @@ class Part {
             count++;
         }
 
-        this.transformation = new THREE.Matrix4().identity() 
-        this.center = null // ORIGINAL: AreaMassProperties.Compute(this.geo).Centroid;
+        this.transformation = new THREE.Matrix4().identity()
+
+        this.center = new THREE.Vector3();
+        
+        //console.log("center: ", this.center)
         this.collider = collider // ORIGINAL: collider;
 
         // part size
@@ -58,8 +65,7 @@ class Part {
     // create class from data dictionary
     static fromData(data) {
         let p_name = data['name'];
-        let p_geometry = meshFromData(data['geometry']) // data['geometry']; // ORIGINAL: mesh_from_data(data['geometry']);
-        //console.log("data['connections']: ", data['connections'])
+        let p_geometry = meshFromData(data['geometry'])
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
 
         //console.log("p_connections: ", p_connections)
