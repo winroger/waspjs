@@ -20,7 +20,7 @@ let activeParts;
 let fixedAggregation = false;
 
 // Define a color map for parts
-/*
+
 const colorMap = {
     "0": 0xFF5733,  // Vibrant Orange
     "1": 0x33FF57,  // Lime Green
@@ -32,11 +32,8 @@ const colorMap = {
     "7": 0x5733FF,  // Electric Purple
     "8": 0x33FFA8,  // Mint Green
     "9": 0xFF33D1   // Magenta
-};*/
+};
 
-const colorMap = {
-    "0": 0xEDE8D0,
-}
 
 // Cache DOM elements
 const partFileInput = document.getElementById('partFile');
