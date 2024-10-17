@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BRIO Configurator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      position: relative;
+      background: linear-gradient(135deg, #070707, #061515);
+    }
+    header{
+      position: absolute;
+      top:0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-CScNsaEx.js"></script>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <header class="w-full py-4 text-white text-center">
+    <h1 class="text-2xl font-bold">Wasp.js Playground</h1>
+  </header>
+
+  <section class="flex-grow flex items-center justify-center" id="threejs-container-parent">
+    <div id="threejs-container" class="w-full h-full" style="position: relative;"></div>
+  </section>
+
+  <footer class="w-full py-4 shadow-md">
+    <div class="container mx-auto flex flex-col items-center space-y-4">
+      <div class="w-full max-w-md">
+        <label for="partFileSelect" class="block text-white text-sm font-bold mb-2">Select Parts JSON:</label>
+        <select id="partFileSelect" name="partFileSelect" class="block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <!-- Options will be populated by main.js -->
+        </select>
+      </div>
+      <div class="w-full max-w-md">
+        <label for="aggregationSlider" class="block mb-2 text-sm font-medium text-white">Change Number: <span id="aggregationCounter"></span></label>
+        <input id="aggregationSlider" type="range" min="1" max="100" value="1" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700">
+      
+    </div>
+    </div>
+  </footer>
+
+</body>
+</html>
