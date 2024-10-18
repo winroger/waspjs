@@ -1,4 +1,8 @@
-class Aggregation {
+import * as THREE from 'three';
+import { newPlaneToPlane } from './utilities';
+import { checkMeshesIntersection } from './utilCollisionDetect';
+
+export class Aggregation {
   constructor(_name, _parts, _rules, _rnd_seed = null, ) {
       // basic parameters
       this.name = _name;
@@ -91,11 +95,11 @@ class Aggregation {
   }
 
   aggregate_rnd(num) {
-    let added = 0;
+    let added  = 0;
     let loops = 0;
     while (added < num) {
         loops += 1;
-        if (loops > num * 100) {
+        if (loops > num * 1000) {
             return `Could not place ${num - added} parts`;
         }
   
@@ -103,30 +107,26 @@ class Aggregation {
         if (this.aggregated_parts.length === 0) {
             let first_part = this.parts[randomChoice(Object.keys(this.parts))];
             console.log("First Part: ", first_part)
-            const identityMatrix = new THREE.Matrix4().identity();
             if (first_part !== null) {
-                //let first_part_trans = first_part.copy()
-                console.log("identityMatrix: ", identityMatrix)
-                let first_part_trans = first_part.transform(identityMatrix);
-                console.log("first_part_trans: ", first_part_trans)
+                let first_part_trans = first_part.copy()
                 first_part_trans.connections.forEach(conn => {
-                    console.log("conn: ", conn)
                     conn.generateRulesTable(this.rules);
                 });
   
                 first_part_trans.id = 0;
-                this.aggregated_parts.push(first_part_trans);  
+                this.aggregated_parts.push(first_part_trans);
                 added += 1;
             }
         } else {
-
+            //console.log("PLACING PART NR. ", this.aggregated_parts.length)
             let next_rule = null;
             let part_01_id = -1;
             let conn_01_id = -1;
             let next_rule_id = -1;
             let new_rule_attempts = 0;
   
-            while (new_rule_attempts < 100) { // ORIGINAL: 10000
+            while (new_rule_attempts < 10000 ) { // ORIGINAL: 10000
+                //console.log("new_rule_attempts: ", new_rule_attempts)   
 
                 new_rule_attempts += 1;
                 next_rule = null;
@@ -143,47 +143,44 @@ class Aggregation {
                     }
                 }
             }
-            console.log("next_rule: ", next_rule)
+            //console.log("next_rule: ", next_rule)
   
             if (next_rule !== null) {
               
                 let next_part = this.parts[next_rule.partB];
+
+
+                // NEW PART
                 let startingPlane = next_part.connections[next_rule.connectionB].flip_pln
+
+                // EXISTING PART
                 let targetPlane = this.aggregated_parts[part_01_id].connections[conn_01_id].pln
 
-                
+                // CALC TRANSFORM
                 let orientTransform = newPlaneToPlane(startingPlane, targetPlane);
-                console.log("orientTransform: ", orientTransform)
+                //console.log("orientTransform: ", orientTransform.elements)
 
-                //let next_part_trans = next_part.copy()
+                // PERSFORM TRANFORM ON PART
                 let next_part_trans = next_part.transform(orientTransform);
+
                 next_part_trans.resetPart(this.rules);
-                next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.conn2);
+                next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.connectionB);
                 next_part_trans.id = this.aggregated_parts.length;
 
-                // TEST
-                let finalPlane = next_part_trans.connections[next_rule.connectionB].flip_pln
-                console.log("FINAL PLANE: ", finalPlane)
-                const FinalGeo = new THREE.SphereGeometry(0.5, 32, 16);
-                const FinalMat = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
-                const FinalSphere = new THREE.Mesh(FinalGeo, FinalMat);
-                FinalSphere.position.set(finalPlane.origin.x, finalPlane.origin.y, finalPlane.origin.z);
-                threeJsContext.scene.add(FinalSphere);
-  
                 // parent-child tracking
                 this.aggregated_parts[part_01_id].children.push(next_part_trans.id);
                 next_part_trans.parent = this.aggregated_parts[part_01_id].id;
-                next_part_trans.conn_on_parent = next_rule.conn1;
-                next_part_trans.conn_to_parent = next_rule.conn2;
+                next_part_trans.conn_on_parent = next_rule.connectionA;
+                next_part_trans.conn_to_parent = next_rule.connectionB;
   
                 // add part to aggregated_parts list
                 this.aggregated_parts.push(next_part_trans);
   
                 // remove connection from parent part's active connections
                 this.aggregated_parts[part_01_id].active_connections = this.aggregated_parts[part_01_id].active_connections.filter(conn => conn !== conn_01_id);
+
                 added += 1;
-                //console.log("-------4-------")
-                
+            
             } else {
 
                 return `Could not place ${num - added} parts`;
@@ -191,6 +188,190 @@ class Aggregation {
         }
     }
   }
+
+aggregate_rnd_ctrl(num) {
+    let added = 0;
+    let loops = 0;
+    while (added < num) {
+        loops += 1;
+        if (loops > num * 100) {
+            return `Could not place ${num - added} parts`;
+        }
+
+        if (this.aggregated_parts.length === 0) {
+            let first_part = this.parts[randomChoice(Object.keys(this.parts))];
+            const identityMatrix = new THREE.Matrix4().identity();
+            if (first_part !== null) {
+                let first_part_trans = first_part.copy()
+                first_part_trans.connections.forEach(conn => {
+                    conn.generateRulesTable(this.rules);
+                });
+
+                first_part_trans.id = 0;
+                this.aggregated_parts.push(first_part_trans);  
+                added += 1;
+            }
+        } else {
+            if (this.addPartToAggregation()) {
+                added += 1;
+            } else {
+                return `Could not place ${num - added} parts`;
+            }
+        }
+    }
+}
+
+addPartToAggregation() {
+    let next_rule = null;
+    let part_01_id = -1;
+    let conn_01_id = -1;
+    let next_rule_id = -1;
+    let new_rule_attempts = 0;
+
+    while (new_rule_attempts < 1000) { // ORIGINAL: 10000
+        new_rule_attempts += 1;
+        next_rule = null;
+
+        part_01_id = randomInt(0, this.aggregated_parts.length - 1);
+        let part_01 = this.aggregated_parts[part_01_id];
+        if (part_01.active_connections.length > 0) {
+            conn_01_id = randomChoice(part_01.active_connections);
+            let conn_01 = part_01.connections[conn_01_id];
+            if (conn_01.active_rules.length > 0) {
+                next_rule_id = randomChoice(conn_01.active_rules);
+                next_rule = conn_01.rules_table[next_rule_id];
+            }
+        }
+
+        if (next_rule !== null) {
+            //console.log("next_rule: ", next_rule);
+            let next_part = this.parts[next_rule.partB];
+
+            if (!next_part) {
+                console.error(`Part B with id ${next_rule.partB} not found in parts.`);
+                return false;
+            }
+
+            // NEW PART
+            let startingPlane = next_part.connections[next_rule.connectionB].flip_pln;
+            if (!startingPlane) {
+                console.error(`Starting plane not found for connection B with id ${next_rule.connectionB}.`);
+                return false;
+            }
+
+            // EXISTING PART
+            let targetPlane = this.aggregated_parts[part_01_id].connections[conn_01_id].pln;
+            if (!targetPlane) {
+                console.error(`Target plane not found for connection 01 with id ${conn_01_id}.`);
+                return false;
+            }
+
+            // CALC TRANSFORM
+            let orientTransform = newPlaneToPlane(startingPlane, targetPlane);
+            if (!orientTransform) {
+                console.error(`Failed to calculate orientation transform.`);
+                return false;
+            }
+
+            // PERFORM TRANSFORM ON PART
+            let next_part_trans = next_part.transform(orientTransform);
+            if (!next_part_trans) {
+                console.error(`Failed to transform part.`);
+                return false;
+            }
+
+            let collisionDetected = false;
+
+            // Create a scaled-down version of next_part_trans
+            const next_part_trans_scale = next_part_trans.copy().geo;
+            next_part_trans_scale.scale.set(0.99, 0.99, 0.99);
+
+            for (let partToCheck of this.aggregated_parts) {
+                let index = 1;
+                const part1mesh = partToCheck.geo;
+                const part2mesh = next_part_trans_scale;
+                part1mesh.updateMatrixWorld();
+                part2mesh.updateMatrixWorld();
+                const result = checkMeshesIntersection(part1mesh, part2mesh);
+                if (result) {
+                    collisionDetected = true;
+                    break;
+                } else {
+                    index++;
+                }
+            }
+
+            if (collisionDetected) {
+                continue; // Restart the loop if a collision is detected
+            }
+
+            // REST OF STUFF
+            next_part_trans.resetPart(this.rules);
+            next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.connectionB);
+            next_part_trans.id = this.aggregated_parts.length;
+
+            // parent-child tracking
+            this.aggregated_parts[part_01_id].children.push(next_part_trans.id);
+            next_part_trans.parent = this.aggregated_parts[part_01_id].id;
+            //console.log("new part has parent with id: ", this.aggregated_parts[part_01_id].id)
+            //console.log("next Rule: ", next_rule)
+            next_part_trans.conn_on_parent = next_rule.connectionA;
+            next_part_trans.conn_to_parent = next_rule.connectionB;
+
+            // add part to aggregated_parts list
+            this.aggregated_parts.push(next_part_trans);
+            //console.log("Added part to aggregation: ", next_part_trans);
+
+            // remove connection from parent part's active connections
+            this.aggregated_parts[part_01_id].active_connections = this.aggregated_parts[part_01_id].active_connections.filter(conn => conn !== conn_01_id);
+
+            return true; // Successfully added part, exit the loop
+        }
+    }
+
+    console.error(`No valid rule found after ${new_rule_attempts} attempts.`);
+    return false;
+}
+
+removePartFromAggregation(part_id) {
+    //console.log("Removing Part with id: ", part_id);
+    const partIndex = this.aggregated_parts.findIndex(part => part.id === part_id);
+    if (partIndex !== -1) {
+        const partToRemove = this.aggregated_parts[partIndex];
+        //console.log("Part to remove: ", partToRemove);
+
+        // Remove part from parent's children
+        if (partToRemove.parent !== null) {
+            const parentPart = this.aggregated_parts.find(part => part.id === partToRemove.parent);
+            //console.log("Found parent part: ", parentPart);
+            if (parentPart) {
+                parentPart.children = parentPart.children.filter(childId => childId !== partToRemove.id);
+                // Restore parent's active connections
+                parentPart.active_connections.push(partToRemove.conn_on_parent);
+                //console.log("Restored the active connection:")
+            }
+        }
+
+        // Remove part from aggregated_parts list
+        this.aggregated_parts.splice(partIndex, 1);
+
+        // Remove part's connections from active connections
+        partToRemove.active_connections.forEach(conn_id => {
+            const conn = partToRemove.connections[conn_id];
+            const connectedPart = this.aggregated_parts.find(part => part.id === conn.connected_part_id);
+            //console.log("Found connected part: ", connectedPart);
+            if (connectedPart) {
+                //console.log(`Removed active connection ${connectedPart.active_connections} connectedPart:`, connectedPart);
+                connectedPart.active_connections = connectedPart.active_connections.filter(active_conn_id => active_conn_id !== conn.connected_conn_id);
+            }
+        });
+
+        return true;
+    } else {
+        console.log("Error: Part not found");
+        return false;
+    }
+}
 }
 
 

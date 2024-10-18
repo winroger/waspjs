@@ -2,49 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Waspjs</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>BRIO Configurator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body {
+      position: relative;
+      background: linear-gradient(135deg, #070707, #061515);
+    }
+    header{
+      position: absolute;
+      top:0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
-<body>
-  <div id="threejs-container"></div>
+<body class="flex flex-col min-h-screen">
 
-  <div class="container">
-    <form class="card form">
-      <p class="title">Wasp.js</p>
-      <div class="field">
-        <label class="file-label">
-          <input class="file-input" type="file" id="partFile" name="partFile" multiple>
-          Upload Parts Json
-        </label>
-      </div>
-      <div class="field">
-        <label class="file-label">
-          <input class="file-input" type="file" id="aggregationFile" name="aggregationFile">
-          Upload Aggregation Json
-        </label>
-      </div>
-      <div class="status">
-        <label for="statusValue">Aggregation Counter:</label>
-        <span id="statusValue">0</span>
-      </div>
-    </form>
-  </div>
+  <header class="w-full py-4 text-white text-center">
+    <h1 class="text-2xl font-bold">Wasp.js Playground</h1>
+  </header>
 
-  <!-- External scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
-  
-  <!-- Wasp scripts -->
-  <script src="waspjs/waspConnection.js"></script>
-  <script src="waspjs/waspPart.js"></script>
-  <script src="waspjs/waspRules.js"></script>
-  <script src="waspjs/waspPlane.js"></script>
-  <script src="waspjs/utilities.js"></script>
-  <script src="waspjs/waspAggregation.js"></script>
-  <script src="waspjs/waspVisualizer.js"></script>
+  <section class="flex-grow flex items-center justify-center" id="threejs-container-parent">
+    <div id="threejs-container" class="w-full h-full" style="position: relative;"></div>
+  </section>
 
-  <!-- Local script -->
-  <script src="main.js"></script>
+  <footer class="w-full py-4 shadow-md">
+    <div class="container mx-auto flex flex-col items-center space-y-4">
+      <div class="w-full max-w-md">
+        <label for="partFileSelect" class="block text-white text-sm font-bold mb-2">Select Parts JSON:</label>
+        <select id="partFileSelect" name="partFileSelect" class="block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+          <!-- Options will be populated by main.js -->
+        </select>
+      </div>
+      <div class="w-full max-w-md">
+        <label for="aggregationSlider" class="block mb-2 text-sm font-medium text-white">Change Number: <span id="aggregationCounter"></span></label>
+        <input id="aggregationSlider" type="range" min="1" max="100" value="1" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700">
+      
+    </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

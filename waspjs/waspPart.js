@@ -1,5 +1,9 @@
+import { meshFromData } from "./utilities";
+import { Connection } from "./waspConnection";  
+import * as THREE from 'three';
+
 // Base Part
-class Part {
+export class Part {
     // constructor
     constructor(name, geometry, connections, collider = null, attributes, dim = 1, id = null , field = null) {
         this.name = name;
@@ -20,8 +24,11 @@ class Part {
             count++;
         }
 
-        this.transformation = new THREE.Matrix4().identity() //new THREE.Matrix4(); // ORIGINAL: Transform.Identity;
-        this.center = null // ORIGINAL: AreaMassProperties.Compute(this.geo).Centroid;
+        this.transformation = new THREE.Matrix4().identity()
+
+        this.center = new THREE.Vector3();
+        
+        //console.log("center: ", this.center)
         this.collider = collider // ORIGINAL: collider;
 
         // part size
@@ -58,8 +65,7 @@ class Part {
     // create class from data dictionary
     static fromData(data) {
         let p_name = data['name'];
-        let p_geometry = meshFromData(data['geometry']) // data['geometry']; // ORIGINAL: mesh_from_data(data['geometry']);
-        //console.log("data['connections']: ", data['connections'])
+        let p_geometry = meshFromData(data['geometry'])
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
 
         //console.log("p_connections: ", p_connections)
@@ -148,7 +154,7 @@ class Part {
 
     // return a transformed copy of the part
     transform(trans, transform_sub_parts = false, maintain_parenting = false) {
-        console.log("-------1-------")
+        //console.log("-------1-------")
         let geo_trans = this.geo.clone()
         geo_trans.applyMatrix4(trans);
 
@@ -156,7 +162,7 @@ class Part {
 
         let connections_trans = []
         for (let conn of this.connections) {
-            console.log("-------2-------")
+            //console.log("-------2-------")
             let conn_trans = conn.transform(trans)
             connections_trans.push(conn_trans)
             //conn.transform(trans)
@@ -167,14 +173,8 @@ class Part {
             attributes_trans = this.attributes.map(attr => attr.transform(trans));
         }
 
-        
-        console.log("this: ", this)
-        console.log("connections_trans: ", connections_trans)
-        console.log("-------3-------")
-
         let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, attributes_trans, this.dim, this.id, this.field)
         
-        console.log("-------4-------")
         part_trans.transformation.multiply(trans) // = Transform.Multiply(trans, this.transformation);
 
         if (maintain_parenting) {

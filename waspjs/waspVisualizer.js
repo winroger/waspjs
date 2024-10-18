@@ -1,55 +1,94 @@
-// Define a color map for parts
-const colorMap = {
-  "0": "0xFF5733",  // Vibrant Orange
-  "1": "0x33FF57",  // Lime Green
-  "2": "0x3357FF",  // Bright Blue
-  "3": "0xFF33A1",  // Hot Pink
-  "4": "0x33FFF1",  // Aqua Mint
-  "5": "0xF1FF33",  // Neon Yellow
-  "6": "0xFF5733",  // Deep Coral
-  "7": "0x5733FF",  // Electric Purple
-  "8": "0x33FFA8",  // Mint Green
-  "9": "0xFF33D1"   // Magenta
-}
+import * as THREE from 'three';
+import { Part } from './waspPart';
+//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import CameraControls from 'camera-controls';
 
+CameraControls.install( { THREE: THREE } );
 
 const statusValueElement = document.getElementById('statusValue');
-
-  
-
+let scene, camera, renderer, controls;
 
 // Function to initialize Three.js visualization with GUI for speed control
-function initThreeJsVisualization(containerId = '#threejs-container') {
+export function initThreeJsVisualization(containerId = '#threejs-container') {
   const container = document.querySelector(containerId);
+  const parentContainer = document.querySelector('#threejs-container-parent');
   if (!container) {
     console.error('Container element not found.');
     return;
   }
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+  const width = parentContainer.clientWidth;
+  const height = parentContainer.clientHeight;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  let scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 5000);
+  camera.up.set( 0, 0, 1 );
+  camera.position.set(50, 50, 25);
+  let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setClearColor( 0x000000, 0 ); // the default
   renderer.setSize(width, height);
   container.appendChild(renderer.domElement);
 
-      // CONTROLS
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
-    controls.enableDamping = true;
-    controls.DampingFactor = 0.1;
-    controls.enableZoom = true;
-    controls.enablePan = true;
-    controls.minDistance = 20;
-    controls.maxDistance = 800;
+  /*
+    // CONTROLS
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.enableDamping = true;
+  controls.DampingFactor = 0.1;
+  controls.enableZoom = true;
+  controls.enablePan = true;
+  controls.minDistance = 20;
+  controls.maxDistance = 1000;
 
-  camera.position.y = 200;
-  camera.position.x = 200;
-  camera.position.z = 150;
+  camera.position.y = 50;
+  camera.position.x = 50;
+  camera.position.z = 25;
   controls.update();
+  */
+
+  // CameraControls
+  const clock = new THREE.Clock();
+
+  const cameraControls = new CameraControls(camera, renderer.domElement);
+  cameraControls.minDistance = 20;
+  cameraControls.maxDistance = 350;
+
+  
+  cameraControls.update();
+
+  function animate() {
+    const delta = clock.getDelta();
+    const hasControlsUpdated = cameraControls.update(delta);
+
+    requestAnimationFrame(animate);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+    ( function anim () {
+
+      const delta = clock.getDelta();
+      const elapsed = clock.getElapsedTime();
+      const needsUpdate = cameraControls.update( delta );
+    
+      // if ( elapsed > 30 ) { return; }
+    
+      requestAnimationFrame( anim );
+    
+      if ( needsUpdate ) {
+    
+        renderer.render( scene, camera );
+        console.log( 'rendered' );
+    
+      }
+    
+    } )();
+
+    // make variable available to browser console
+globalThis.THREE = THREE;
+globalThis.cameraControls = cameraControls;
 
   // LIGHTS
   const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
@@ -64,18 +103,16 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
   scene.add(ambientLight);
 
   // HELPERS
-  const axesHelper = new THREE.AxesHelper(2);
-  scene.add(axesHelper);
-  var gridXZ = new THREE.GridHelper(50, 10);
-  scene.add(gridXZ);
-
+  //const axesHelper = new THREE.AxesHelper(2);
+  //scene.add(axesHelper);
+  //var gridXZ = new THREE.GridHelper(50, 10);
+  //scene.add(gridXZ);
+/*
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
-  }
-
-  animate();
+  }*/
 
   window.addEventListener('resize', () => {
     const newWidth = container.clientWidth;
@@ -89,7 +126,8 @@ function initThreeJsVisualization(containerId = '#threejs-container') {
 }
 
 // Function to visualize parts with adjustable timeout speed
-function visualizeParts(scene, parts, wirefr) {
+export function visualizeParts(scene, parts, wirefr) {
+  const partGroup = new THREE.Group();
   let index = 0;
 
   function addPart() {
@@ -98,40 +136,23 @@ function visualizeParts(scene, parts, wirefr) {
     }
 
     const part = parts[index];
+    //console.log("part: ", part);
 
-
-    const hexColor = colorMap[part.id] || "#FFFFFF"; // Default to white if color is not found
-    part.geo.material.color.setHex(hexColor);
     if (wirefr) {
       part.geo.material.wireframe = true;
     }
     else {
       part.geo.material.wireframe = false;
-      updateStatusValue(index)
     }
-
-    const partGroup = new THREE.Group();
-    const mesh = part.geo;
+    updateStatusValue(index)
+    const mesh = part.geo.clone();
     mesh.name = `${part.name}_${part.id}`;
+    //console.log("Added Part with id: ", part.id)
 
     // Apply rotation around the global X-axis (in radians)
-    partGroup.rotation.x = -Math.PI / 2; // This rotates by 90 degrees; adjust as needed
+    //partGroup.rotation.x = -Math.PI / 2; // This rotates by 90 degrees; adjust as needed
 
     partGroup.add(mesh);
-    scene.add(partGroup);
-
-    /*// PLANE VISUALIZER
-    for (const conn of part.connections) {
-      const hexRed = 0xff0000;
-      const hexGreen = 0x00ff00;
-      const hexBlue = 0x0000ff;
-
-      let arrowHelperX = new THREE.ArrowHelper(conn.pln.xaxis.normalize(), conn.pln.origin, 3, hexRed);
-      let arrowHelperY = new THREE.ArrowHelper(conn.pln.yaxis.normalize(), conn.pln.origin, 3, hexGreen);
-
-      let zVector = new THREE.Vector3().crossVectors(conn.pln.xaxis, conn.pln.yaxis).normalize();
-      let arrowHelperZ = new THREE.ArrowHelper(zVector, conn.pln.origin, 3, hexBlue);
-    }*/
     index++;
 
     // Use the config speed value for the timeout
@@ -139,10 +160,48 @@ function visualizeParts(scene, parts, wirefr) {
   }
 
   addPart();
+  scene.add(partGroup);
 }
 
+export function addEntity(scene, part, wirefr) {
+  //console.log("Attempting to add object:", part);
+  const mesh = part.geo.clone();
+  if (wirefr) {
+    mesh.material.wireframe = true;
+  } else {
+    mesh.material.wireframe = false;
+    //updateStatusValue(index);
+  }
+  mesh.name = `${part.name}_${part.id}`;
+  scene.add(mesh);
+  //console.log("Object added:", mesh);
+}
+
+export function removeEntity(scene, object) {
+  //console.log("Attempting to remove object:", object);
+  var selectedObject = scene.getObjectByName(`${object.name}_${object.id}`);
+  if (selectedObject) {
+    scene.remove(selectedObject);
+    //console.log("Object removed:", selectedObject);
+  } else {
+    console.log("Object not found:", `${object.name}_${object.id}`);
+  }
+}
 
 // Example function to update the status value
 function updateStatusValue(newValue) {
     statusValueElement.textContent = newValue;
+}
+
+
+export function resetScene(scene) {
+  while (scene.children.length) {
+      const object = scene.children[0];
+      scene.remove(object);
+      if (object.geometry) object.geometry.dispose();
+      if (object.material) {
+          if (object.material.map) object.material.map.dispose();
+          object.material.dispose();
+      }
+  }
 }
