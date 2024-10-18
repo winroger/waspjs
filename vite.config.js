@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-  base: '/waspjs/', // Replace with your repository name
+export default ({
+  base: '/waspjs/',
   build: {
     outDir: 'dist',
   },
