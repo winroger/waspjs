@@ -14,7 +14,7 @@ let rules = [];
 let aggregation = null;
 let aggregatedParts = [];
 const partNameMap = {};
-let aggregationCounter = 1;
+let aggregationCounter = 10;
 let activeParts;
 
 let fixedAggregation = false;

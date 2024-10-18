@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>BRIO Configurator</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="soft-ui-dashboard-tailwind.css" />
   <style>
     body {
       position: relative;
@@ -18,11 +19,11 @@
 
     footer {
       position: absolute;
-      bottom: 0;
+      bottom: 10vh;
       width: 100%;
     }
   </style>
-  <script type="module" crossorigin src="/waspjs/assets/index-DsffGZkv.js"></script>
+  <script type="module" crossorigin src="/waspjs/assets/index-DXwZl_RS.js"></script>
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -39,7 +40,10 @@
       <!-- Options will be populated by main.js -->
       <div class="w-full max-w-md">
         <label for="aggregationSlider" class="block mb-2 text-sm font-medium text-white">Change Number: <span id="aggregationCounter"></span></label>
-        <input id="aggregationSlider" type="range" min="1" max="100" value="1" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700">
+        <input id="aggregationSlider" type="range" min="1" max="100" value="10" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700">
+
+        <label for="large-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Large range</label>
+        <input id="large-range" type="range" value="50" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg dark:bg-gray-700">
       </div>
     </div>
   </footer>

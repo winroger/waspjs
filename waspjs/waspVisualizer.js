@@ -22,7 +22,7 @@ export function initThreeJsVisualization(containerId = '#threejs-container') {
   let scene = new THREE.Scene();
   let camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 5000);
   camera.up.set( 0, 0, 1 );
-  camera.position.set(50, 50, 25);
+  camera.position.set(100, 100, 50);
   let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setClearColor( 0x000000, 0 ); // the default
   renderer.setSize(width, height);
@@ -205,3 +205,4 @@ export function resetScene(scene) {
       }
   }
 }
+
