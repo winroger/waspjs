@@ -50,18 +50,18 @@ const dropdown = document.getElementById('partFileSelect');
 
 const sets = 
 [
-    { 
+    /*{ 
         name: "Hexagon", 
         baseurl: "./examples/example_hexa/", 
         fileNames: ["HEXA.json"] 
-    },
+    },*/
     { 
         name: "Brio Rails", 
         baseurl: "./examples/example_brio/", 
         fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
     },
 ];
-
+/*
 function populateDropdown() {
 
     sets.forEach(set => {
@@ -73,9 +73,14 @@ function populateDropdown() {
 }
 
 populateDropdown();
+*/
 
+/*
 dropdown.addEventListener('change', async event => {
-    const setName = event.target.value;
+*/
+async function loadParts() {
+    //const setName = event.target.value;
+    const setName=  "Brio Rails";
     const selectedSet = sets.find(set => set.name === setName);
     try {
         for (const fileName of selectedSet.fileNames) {
@@ -93,7 +98,8 @@ dropdown.addEventListener('change', async event => {
         console.error("Error fetching file: ", error);
     }
     triggerAggregation();
-});
+}
+//});
 
 
 
@@ -104,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //threeJsContext.scene.background = new THREE.Color(0x06402B); // Set to black, change to any color you prefer
     threeJsContext.scene.userData = { camera: threeJsContext.camera, controls: threeJsContext.controls };
     updateAggregationCounter(aggregationCounter);
+    loadParts()
 });
 
 /*// ON PART FILE UPLOAD
