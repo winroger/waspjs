@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying 123
+  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './dist'
+          path: './dist/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
