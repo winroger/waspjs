@@ -52,12 +52,12 @@ const sets =
 [
     { 
         name: "Hexagon", 
-        baseurl: "./public/examples/example_hexa/", 
+        baseurl: "./examples/example_hexa/", 
         fileNames: ["HEXA.json"] 
     },
     { 
         name: "Brio Rails", 
-        baseurl: "./public/examples/example_brio/", 
+        baseurl: "./examples/example_brio/", 
         fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
     },
 ];
