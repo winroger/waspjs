@@ -80,7 +80,7 @@ export function initThreeJsVisualization(containerId = '#threejs-container') {
       if ( needsUpdate ) {
     
         renderer.render( scene, camera );
-        console.log( 'rendered' );
+        //console.log( 'rendered' );
     
       }
     
