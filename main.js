@@ -22,17 +22,17 @@ let fixedAggregation = false;
 // Define a color map for parts
 
 const colorMap = {
-    "0": 0xFF5733,  // Vibrant Orange
-    "1": 0x33FF57,  // Lime Green
-    "2": 0x3357FF,  // Bright Blue
-    "3": 0xFF33A1,  // Hot Pink
-    "4": 0x33FFF1,  // Aqua Mint
-    "5": 0xF1FF33,  // Neon Yellow
-    "6": 0xFF5733,  // Deep Coral
-    "7": 0x5733FF,  // Electric Purple
-    "8": 0x33FFA8,  // Mint Green
-    "9": 0xFF33D1   // Magenta
+    "0": 0xFF33D1,   // Magenta (existing)
+    "1": 0xFFFFFF,  // Pure White
+    "2": 0x5DFFB4,  // Mint Green
+    "3": 0xFF5733,  // Coral Orange
+    "4": 0x0082FF,  // Bright Blue
+    "5": 0xFFD700,  // Golden Yellow
+    "6": 0xD9FF00,  // Lime Green
+    "7": 0x5733FF,  // Electric Purple (existing)
+    "8": 0x33FFA8,  // Mint Green (existing)
 };
+
 
 
 // Cache DOM elements
@@ -184,7 +184,7 @@ aggregationSlider.addEventListener('input', event => {
 });
 
 function modifyParts(scene, newCount) {
-    console.log("current aggregation parts: ", aggregation.getParts())
+    //console.log("current aggregation parts: ", aggregation.getParts())
     let isCount = aggregation.getParts().length;
     const difference = newCount - isCount;
 
