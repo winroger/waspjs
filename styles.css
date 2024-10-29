@@ -4,3 +4,22 @@ body {
     height: 100vh;
     overflow: hidden;
   }
+
+#aggregationSlider {
+    position: absolute; 
+    width: 80%; 
+    bottom: 140px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    height: 20px; 
+    accent-color: #D9FF00;
+}
+
+
+.label {
+    position: absolute; 
+    bottom: 165px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    font-size: 1em;
+}

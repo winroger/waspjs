@@ -22,16 +22,13 @@ let fixedAggregation = false;
 // Define a color map for parts
 
 const colorMap = {
-    "0": 0xFF33D1,   // Magenta (existing)
-    "1": 0xFFFFFF,  // Pure White
-    "2": 0x5DFFB4,  // Mint Green
-    "3": 0xFF5733,  // Coral Orange
-    "4": 0x0082FF,  // Bright Blue
-    "5": 0xFFD700,  // Golden Yellow
-    "6": 0xD9FF00,  // Lime Green
-    "7": 0x5733FF,  // Electric Purple (existing)
-    "8": 0x33FFA8,  // Mint Green (existing)
+    "0": 0xD9FF00,  // Lime Green
+    "1": 0xC4E666,  // Soft Lime
+    "2": 0xAFCC99,  // Muted Greenish Gray
+    "3": 0x718500,  // Light Pinkish
+    "4": 0xFFFFFF,   // Light Gray
 };
+
 
 
 
