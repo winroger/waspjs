@@ -120,6 +120,7 @@ globalThis.cameraControls = cameraControls;
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(newWidth, newHeight);
+    renderer.setPixelRatio(window.devicePixelRatio); // Ensure pixel ratio is updated on resize
   });
 
   return { scene, camera, renderer, controls };
