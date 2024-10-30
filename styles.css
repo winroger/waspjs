@@ -23,3 +23,7 @@ body {
     transform: translateX(-50%); 
     font-size: 1em;
 }
+
+.navbar {
+    background-color: hsl(0 100% 100% / 0.0);
+  }
