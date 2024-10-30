@@ -283,6 +283,7 @@ addPartToAggregation() {
             let collisionDetected = false;
 
             // Create a scaled-down version of next_part_trans
+            const next_part_trans_collider_geo = next_part_trans.copy().collider.geometry[0];
             const next_part_trans_scale = next_part_trans.copy().geo;
             next_part_trans_scale.scale.set(0.99, 0.99, 0.99);
 
@@ -297,7 +298,15 @@ addPartToAggregation() {
                 else {
                     part1mesh = partToCheck.geo;
                 }
-                const part2mesh = next_part_trans_scale;
+
+                let part2mesh = null
+                if (next_part_trans_collider_geo != undefined) {
+                    part2mesh = next_part_trans_collider_geo;
+                }
+                else {
+                    part2mesh = next_part_trans_scale;
+                }
+                
                 part1mesh.updateMatrixWorld();
                 part2mesh.updateMatrixWorld();
                 const result = checkMeshesIntersection(part1mesh, part2mesh);
