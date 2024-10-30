@@ -33,28 +33,23 @@ const colorMap = {
 
 
 // Cache DOM elements
-const partFileInput = document.getElementById('partFile');
-const ruleFileInput = document.getElementById('ruleFile');
-const triggerAggregationButton = document.getElementById('triggerAggregation');
-const aggregationFileInput = document.getElementById('aggregationFile');
-
 const aggregationSlider = document.getElementById('aggregationSlider');
 const aggregationCounterDisplay = document.getElementById('aggregationCounter');
-
-const statusValue = document.getElementById('statusValue');
-
-const dropdown = document.getElementById('partFileSelect');
-
 const sets = 
 [
     /*{ 
         name: "Hexagon", 
         baseurl: "./examples/example_hexa/", 
         fileNames: ["HEXA.json"] 
-    },*/
+    },
     { 
         name: "Brio Rails", 
         baseurl: "./examples/example_brio/", 
+        fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
+    },*/
+    { 
+        name: "Brio Rails", 
+        baseurl: "./examples/example_brio_colliders/", 
         fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
     },
 ];
@@ -84,6 +79,7 @@ async function loadParts() {
             const response = await fetch(`${selectedSet.baseurl}${fileName}`);
             const data = await response.json();
             const newPart = Part.fromData(data);
+            console.log("newPart: ", newPart); 
             newPart.assignId(newParts.length);
             newPart.geo.material.color.setHex(colorMap[newParts.length % 10] || colorMap[0]);
             newParts.push(newPart);

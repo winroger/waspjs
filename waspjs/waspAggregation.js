@@ -288,7 +288,15 @@ addPartToAggregation() {
 
             for (let partToCheck of this.aggregated_parts) {
                 let index = 1;
-                const part1mesh = partToCheck.geo;
+                //console.log(partToCheck.geo)
+                //console.log(partToCheck.collider.geometry)
+                let part1mesh = null
+                if (partToCheck.collider.geometry[0] != undefined) {
+                    part1mesh = partToCheck.collider.geometry[0];
+                }
+                else {
+                    part1mesh = partToCheck.geo;
+                }
                 const part2mesh = next_part_trans_scale;
                 part1mesh.updateMatrixWorld();
                 part2mesh.updateMatrixWorld();

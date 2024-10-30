@@ -27,7 +27,7 @@ export class Rule {
   }
 
   
-  export function generateRules(parts, selfPart = true, selfConnection = true, useTypes = false, grammar = []) {
+  export function generateRules(parts, selfPart = true, selfConnection = false, useTypes = false, grammar = []) {
     const rules = [];
   
     if (grammar.length === 0) {

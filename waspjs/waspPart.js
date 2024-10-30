@@ -1,5 +1,6 @@
 import { meshFromData } from "./utilities";
-import { Connection } from "./waspConnection";  
+import { Connection } from "./waspConnection"; 
+import { Collider } from "./waspCollider"; 
 import * as THREE from 'three';
 
 // Base Part
@@ -69,7 +70,7 @@ export class Part {
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
 
         //console.log("p_connections: ", p_connections)
-        //let p_collider = Collider.fromData(data['collider']);
+        let p_collider = Collider.fromData(data['collider']);
         //let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
         //let p_dim = parseFloat(data['dim']);
 
@@ -81,7 +82,7 @@ export class Part {
         }
         //let p_field = data['field'];
 
-        let part = new Part(p_name, p_geometry, p_connections, /*p_collider, p_attributes, p_dim,*/ p_id, /*p_field*/);
+        let part = new Part(p_name, p_geometry, p_connections, p_collider, /* p_attributes, p_dim,*/ p_id, /*p_field*/);
         part.transformation = new THREE.Matrix4().identity() //transformFromData(data['transform']);
         part.parent = data['parent'];
         part.conn_on_parent = data['conn_on_parent'];
@@ -158,7 +159,7 @@ export class Part {
         let geo_trans = this.geo.clone()
         geo_trans.applyMatrix4(trans);
 
-        let collider_trans = null; // ORIGINAL: this.collider.transform(trans);
+        let collider_trans = this.collider.transform(trans); // ORIGINAL: ;
 
         let connections_trans = []
         for (let conn of this.connections) {
@@ -190,7 +191,7 @@ export class Part {
     copy(maintain_parenting = false) {
         let geo_copy = this.geo.clone();
 
-        let collider_copy = null // ORIGINAL: this.collider.copy();
+        let collider_copy = this.collider.copy(); // ORIGINAL: this.collider.copy();
 
         let connections_copy = this.connections.map(conn => conn.copy());
 
