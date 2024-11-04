@@ -26,7 +26,6 @@ export class Connection {
             type: this.type,
             part: this.part,
             id: this.id
-            // rules_table and active_rules NOT IMPLEMENTED
         };
     }
 

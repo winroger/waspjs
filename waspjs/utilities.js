@@ -1,31 +1,5 @@
 import * as THREE from 'three';
 
-export function readJSONFiles(files) {
-    const datasets = [];
-    const promises = [];
-
-    for (const file of files) {
-        const promise = new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = event => {
-                try {
-                    const jsonData = JSON.parse(event.target.result);
-                    datasets.push(jsonData);
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                }
-            };
-            reader.onerror = () => reject(reader.error);
-            reader.readAsText(file);
-        });
-
-        promises.push(promise);
-    }
-
-    return Promise.all(promises).then(() => datasets);
-}
-
 // Utility function to convert a mesh to data
 export function meshToData(mesh) {
     const data = {};
@@ -52,39 +26,30 @@ export function meshToData(mesh) {
 export function meshFromData(data) {
     const geometry = new THREE.BufferGeometry();
 
-    // Flattened arrays for vertices and indices
     const vertices = [];
     const indices = [];
 
-    // Populate vertices array
     data.vertices.forEach(v => {
         vertices.push(v[0], v[1], v[2]);
     });
 
-    // Populate indices array
     data.faces.forEach(f => {
         if (f.length === 3) {
-            // Triangle face
             indices.push(f[0], f[1], f[2]);
         } else if (f.length === 4) {
-            // Quad face, split into two triangles
             indices.push(f[0], f[1], f[2], f[0], f[2], f[3]);
         }
     });
 
-    // Set the vertices and indices on the geometry
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
     geometry.setIndex(indices);
 
-    // Compute normals
     geometry.computeVertexNormals();
 
-    // Create the mesh with a basic material
-    //const material = new THREE.MeshNormalMaterial();
     const material = new THREE.MeshStandardMaterial({
-        color: 0xFFFFFF, // White color
-        roughness: 0.5, // Controls how rough the surface appears
-        metalness: 0.5, // Controls how metallic the surface appears
+        color: 0xFFFFFF,
+        roughness: 0.5,
+        metalness: 0.5,
     });
     return new THREE.Mesh(geometry, material);
 }
@@ -113,7 +78,6 @@ export function transformToData(trans) {
 
 // Utility function to create a transformation matrix from data
 export function transformFromData(data) {
-    //console.log(data)
     const trans = [
         parseFloat(data.M00), parseFloat(data.M01), parseFloat(data.M02), parseFloat(data.M03),
         parseFloat(data.M10), parseFloat(data.M11), parseFloat(data.M12), parseFloat(data.M13),
@@ -130,9 +94,6 @@ export function transformFromData(data) {
         trans[12], trans[13], trans[14], trans[15]
     );
 
-    //matrix.multiplyMatrices(swapMatrix, matrix);
-
-    // Return the resulting matrix
     return matrix;
 }
 

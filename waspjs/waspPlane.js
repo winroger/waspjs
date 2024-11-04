@@ -15,13 +15,9 @@ export class Plane {
     applyMatrix4onPlane(matrix) {
         let newPlane = this.clone();
     
-        // Apply the transformation matrix to the origin
         newPlane.origin.applyMatrix4(matrix);
-    
-        // Extract the rotation part of the matrix
         const rotationMatrix = new THREE.Matrix4().extractRotation(matrix);
     
-        // Apply the rotation matrix to the axes
         newPlane.xaxis.applyMatrix4(rotationMatrix).normalize();
         newPlane.yaxis.applyMatrix4(rotationMatrix).normalize();
         newPlane.zaxis.applyMatrix4(rotationMatrix).normalize();
@@ -48,6 +44,5 @@ export function planeFromData(data) {
     const zaxis = new THREE.Vector3(data.yaxis[0], data.yaxis[1], data.yaxis[2]);
     
     const newPlane = new Plane(origin, xaxis, zaxis);
-    //console.log("new Plane: ", newPlane)
     return newPlane
 }

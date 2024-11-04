@@ -9,10 +9,14 @@ export class Collider {
         this.checkAll = checkAll;
         this.connections = connections;
 
-        /*this.facesCount = 0;
-        for (let geo of this.geometry) {
-            this.facesCount += geo.faces.length;
-        }*/
+        this.facesCount = 0;
+        if (this.geometry && Array.isArray(this.geometry)) {
+            for (let geo of this.geometry) {
+            if (geo && geo.faces) {
+                this.facesCount += geo.faces.length;
+            }
+            }
+        }
 
         this.validConnections = validConnections;
 
@@ -20,10 +24,6 @@ export class Collider {
         if (this.connections.length === this.geometry.length && this.multiple) {
             this.setConnections = true;
         }
-    }
-
-    toString() {
-        return "WaspCollider";
     }
 
     static fromData(data) {

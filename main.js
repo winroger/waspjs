@@ -3,24 +3,53 @@ import { initThreeJsVisualization, addEntity, removeEntity } from './waspjs/wasp
 import { Part } from './waspjs/waspPart.js';
 import { Aggregation } from './waspjs/waspAggregation.js';
 import { Rule, generateRules } from './waspjs/waspRules.js';
-import { readJSONFiles } from './waspjs/utilities.js';
-import * as THREE from 'three';
-
-
 
 let threeJsContext;
-let newParts = [];
-let rules = [];
-let aggregation = null;
-let aggregatedParts = [];
-const partNameMap = {};
+let scene;
+
+let aggregation;
 let aggregationCounter = 10;
-let activeParts;
 
 let fixedAggregation = false;
 
-// Define a color map for parts
+// Cache DOM elements
+const aggregationSlider = document.getElementById('aggregationSlider');
+const aggregationCounterDisplay = document.getElementById('aggregationCounter');
 
+// Define available sets
+const availableSets = 
+[
+    { 
+        Name: "Hexagon", 
+        Path: "./examples/example_hexa/", 
+        partFiles: ["HEXA.json"],
+        ruleFile: null,
+        aggregationFiles: []
+    },
+    { 
+        Name: "Brio Rails Simple", 
+        Path: "./examples/example_brio/", 
+        partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
+        ruleFile: null,
+        aggregationFiles: []
+    },
+    { 
+        Name: "Brio Rails Colliders", 
+        Path: "./examples/example_brio_colliders/", 
+        partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
+        ruleFile: null,
+        aggregationFiles: []
+    },
+    { 
+        Name: "Example Rules", 
+        Path: "./examples/example_rules/", 
+        partFiles: ["BOX.json", "HEXA.json", "TRI.json"],
+        ruleFile: "rules.json",
+        aggregationFiles: []
+    },
+];
+
+// Define a color map for parts
 const colorMap = {
     "0": 0xD9FF00,  // Lime Green
     "1": 0xC4E666,  // Soft Lime
@@ -30,214 +59,101 @@ const colorMap = {
 };
 
 
-
-
-// Cache DOM elements
-const aggregationSlider = document.getElementById('aggregationSlider');
-const aggregationCounterDisplay = document.getElementById('aggregationCounter');
-const sets = 
-[
-    /*{ 
-        name: "Hexagon", 
-        baseurl: "./examples/example_hexa/", 
-        fileNames: ["HEXA.json"] 
-    },
-    { 
-        name: "Brio Rails", 
-        baseurl: "./examples/example_brio/", 
-        fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
-    },*/
-    { 
-        name: "Brio Rails", 
-        baseurl: "./examples/example_brio_colliders/", 
-        fileNames: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"] 
-    },
-];
-/*
-function populateDropdown() {
-
-    sets.forEach(set => {
-        const option = document.createElement('option');
-        option.value = set.name;
-        option.textContent = set.name;
-        dropdown.appendChild(option);
-    });
-}
-
-populateDropdown();
-*/
-
-/*
-dropdown.addEventListener('change', async event => {
-*/
-async function loadParts() {
-    //const setName = event.target.value;
-    const setName=  "Brio Rails";
-    const selectedSet = sets.find(set => set.name === setName);
-    try {
-        for (const fileName of selectedSet.fileNames) {
-            const response = await fetch(`${selectedSet.baseurl}${fileName}`);
-            const data = await response.json();
-            const newPart = Part.fromData(data);
-            console.log("newPart: ", newPart); 
-            newPart.assignId(newParts.length);
-            newPart.geo.material.color.setHex(colorMap[newParts.length % 10] || colorMap[0]);
-            newParts.push(newPart);
-            partNameMap[newPart.name] = newPart;
-        }
-        rules = generateRules(newParts);
-        console.log("newParts: ", newParts);
-    } catch (error) {
-        console.error("Error fetching file: ", error);
-    }
-    triggerAggregation();
-}
-//});
-
-
-
 // THREE JS INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
     const containerId = '#threejs-container';
     threeJsContext = initThreeJsVisualization(containerId); 
-    //threeJsContext.scene.background = new THREE.Color(0x06402B); // Set to black, change to any color you prefer
-    threeJsContext.scene.userData = { camera: threeJsContext.camera, controls: threeJsContext.controls };
+    scene = threeJsContext.scene;
+    scene.userData = { camera: threeJsContext.camera, controls: threeJsContext.controls };
     updateAggregationCounter(aggregationCounter);
-    loadParts()
+    const selectedSetName=  "Example Rules";
+    const selectedSet = availableSets.find(set => set.Name === selectedSetName);
+    if (!selectedSet) {
+        throw new Error(`Set with name ${selectedSetName} not found`);
+    }
+    initializeSet(selectedSet);
 });
 
-/*// ON PART FILE UPLOAD
-partFileInput.addEventListener('change', async event => {
-    const partFiles = event.target.files;
+
+async function initializeSet(set) {
+    let parts = [];
+    let rules = [];
     try {
-        const partData = await readJSONFiles(partFiles);
-        partData.forEach((data, index) => {
+        // initialize Parts
+        for (const fileName of set.partFiles) {
+            const response = await fetch(`${set.Path}${fileName}`);
+            const data = await response.json();
             const newPart = Part.fromData(data);
-            newPart.assignId(index);
-            newPart.geo.material.color.setHex(colorMap[index % 10]);
-            newParts.push(newPart);
-            partNameMap[newPart.name] = newPart;
-            //addEntity(threeJsContext.scene, newPart, true);
-        });
-        rules = generateRules(newParts);
-        console.log("newParts: ", newParts);
+            newPart.assignId(parts.length);
+            newPart.geo.material.color.setHex(colorMap[parts.length % 10] || colorMap[0]);
+            parts.push(newPart);
+        }
+        // initialize Rules
+        if (set.rules) {
+            console.log("Generating Rules from file: ", set.rules);
+            const response = await fetch(`${set.Path}${set.rules}`);
+            const data = await response.json();
+            rules = data.map(rule => new Rule().fromData(rule));
+        } else {
+            console.log("Generating Rules from file: ", set.ruleFile);
+            rules = generateRules(parts, true, false);
+        }
     } catch (error) {
-        console.error("Error reading files: ", error);
+        console.error("Error fetching file: ", error);
     }
-});
 
-// ON RULE FILE UPLOAD
-ruleFileInput.addEventListener('change', async event => {
-    const rulesFile = event.target.files;
-    try {
-        rules = await readJSONFiles(rulesFile);
-        rules = rules[0].map(rule => new Rule().fromData(rule));
-        console.log("rules: ", rules);
-    } catch (error) {
-        console.error("Error reading files: ", error);
-    }
-    triggerAggregation()
-});
+    aggregation = new Aggregation("myNewAggregation", parts, rules);
+    triggerAggregation(aggregation, aggregationCounter);
+}
 
-*/
-// ON AGGREGATION TRIGGER
-/*triggerAggregationButton.addEventListener('click', () => {*/
-function triggerAggregation() {
-    aggregation = new Aggregation("myNewAggregation", newParts, rules);
+// initialize the aggregation with the current preset count
+function triggerAggregation(aggregation, targetCount) {
+
     if (fixedAggregation) {
-        console.log("Triggered fixed aggregation");
         aggregation.aggregate_rnd(50);
     }
     else {
-        console.log("Triggered controlled aggregation");
-        aggregation.aggregate_rnd_ctrl(aggregationCounter)
+        aggregation.aggregate_rnd_ctrl(targetCount)
     }
-    aggregatedParts = aggregation.getParts();
-    for (let i = 0; i < aggregationCounter; i++) {
-        addEntity(threeJsContext.scene, aggregatedParts[i], false);
+    for (let i = 0; i < targetCount; i++) {
+        addEntity(scene, aggregation.getParts()[i]);
     }
-    updateAggregationCounter(aggregationCounter);
-    activeParts = aggregationCounter;
-    //statusValue.innerHTML = aggregatedParts.length;
+    updateAggregationCounter(targetCount);
 }
-/*});*/
 
-// ON AGGREGATION SLIDER INPUT
+// ON AGGREGATION SLIDER CHANGE
 aggregationSlider.addEventListener('input', event => {
     const newCount = parseInt(event.target.value, 10);
     updateAggregationCounter(newCount);
-    const scene = threeJsContext.scene;
-    if (!aggregation) {
-        console.warn("Aggregation not yet triggered");
-        return;
-    } else {
-        aggregatedParts = aggregation.getParts();
-    }
     modifyParts(scene, newCount);
 });
 
+// Modify the current aggregation based on the new count
 function modifyParts(scene, newCount) {
-    //console.log("current aggregation parts: ", aggregation.getParts())
     let isCount = aggregation.getParts().length;
     const difference = newCount - isCount;
 
     if (difference > 0) {
         for (let i = 0; i < difference; i++) {
-            //console.log("difference before add: ", difference);
             let added = aggregation.addPartToAggregation();
             if (!added) {
-                //console.error("Failed to add part to aggregation");
                 return;
             }
             const newPart = aggregation.getParts()[aggregation.getParts().length - 1];
-            //console.log("newPart: ", newPart);
-            addEntity(scene, newPart, false);
+            addEntity(scene, newPart);
             isCount = aggregation.getParts().length;
         }
     } else if (difference < 0) {
         for (let i = difference; i < 0; i++) {
-            //console.log("difference before remove: ", difference);
-            let partToRemove = aggregatedParts[isCount - 1];
+            let partToRemove = aggregation.getParts()[isCount - 1];
             removeEntity(scene, partToRemove);
             aggregation.removePartFromAggregation(aggregation.getParts().length - 1);
             isCount = aggregation.getParts().length;
-            //console.log("New number of parts: ", aggregation.getParts().length)
 
         }
     }
-
     isCount = aggregation.getParts().length;
-    //console.log("isCount", isCount);
-    //console.log("newCount", newCount); 
 }
-
-// ON AGGREGATION FILE UPLOAD
-/*
-aggregationFileInput.addEventListener('change', async event => {
-    const aggregationFiles = event.target.files;
-    try {
-        const aggregationData = await readJSONFiles(aggregationFiles);
-        aggregationData.forEach(data => {
-            Object.keys(data.parts).forEach(partKey => {
-                const part = data.parts[partKey];
-                const transData = transformFromData(part.transform);
-                const correspondingPart = partNameMap[part.name];
-                if (correspondingPart) {
-                    const newPart = correspondingPart.copy();
-                    newPart.transGeoOnly(transData);
-                    aggregatedParts.push(newPart);
-                } else {
-                    console.warn(`Part with name ${part.name} not found in newParts`);
-                }
-            });
-        });
-    } catch (error) {
-        console.error("Error reading aggregationFile: ", error);
-    }
-    visualizeParts(threeJsContext.scene, aggregatedParts, false);
-});
-
-*/
 
 export function updateAggregationCounter(count) {
     aggregationCounter = count;

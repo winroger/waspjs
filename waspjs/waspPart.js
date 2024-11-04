@@ -5,7 +5,6 @@ import * as THREE from 'three';
 
 // Base Part
 export class Part {
-    // constructor
     constructor(name, geometry, connections, collider = null, attributes, dim = 1, id = null , field = null) {
         this.name = name;
         this.id = id;
@@ -17,8 +16,6 @@ export class Part {
 
         let count = 0;
         for (let conn of connections) {
-            //conn.part = this.name;
-            //console.log("conn: ", conn)
             conn.id = count;
             this.active_connections.push(count);
             this.connections.push(conn)
@@ -29,8 +26,7 @@ export class Part {
 
         this.center = new THREE.Vector3();
         
-        //console.log("center: ", this.center)
-        this.collider = collider // ORIGINAL: collider;
+        this.collider = collider;
 
         // part size
         if (dim !== null) {
@@ -53,14 +49,9 @@ export class Part {
         this.conn_to_parent = null;
         this.children = [];
 
-        this.attributes = [] // ORIGINAL: attributes.length > 0 ? attributes : [];
+        this.attributes = [] // not implemented, ORIGINAL: attributes.length > 0 ? attributes : [];
 
         this.is_constrained = false;
-    }
-
-    // override toString method (display name of the class)
-    toString() {
-        return `WaspPart [name: ${this.name}, id: ${this.id}]`;
     }
 
     // create class from data dictionary
@@ -68,11 +59,9 @@ export class Part {
         let p_name = data['name'];
         let p_geometry = meshFromData(data['geometry'])
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
-
-        //console.log("p_connections: ", p_connections)
         let p_collider = Collider.fromData(data['collider']);
-        //let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
-        //let p_dim = parseFloat(data['dim']);
+        let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
+        let p_dim = parseFloat(data['dim']);
 
         let p_id = null;
         try {
@@ -80,9 +69,9 @@ export class Part {
         } catch {
             p_id = data['id'];
         }
-        //let p_field = data['field'];
+        let p_field = data['field'];
 
-        let part = new Part(p_name, p_geometry, p_connections, p_collider, /* p_attributes, p_dim,*/ p_id, /*p_field*/);
+        let part = new Part(p_name, p_geometry, p_connections, p_collider,  p_attributes, p_dim, p_id, p_field);
         part.transformation = new THREE.Matrix4().identity() //transformFromData(data['transform']);
         part.parent = data['parent'];
         part.conn_on_parent = data['conn_on_parent'];
@@ -147,26 +136,17 @@ export class Part {
         };
     }
 
-    transGeoOnly(trans) {
-        let geo_trans = this.geo.clone();
-        geo_trans.applyMatrix4(trans);
-        this.geo = geo_trans;
-    }
-
     // return a transformed copy of the part
     transform(trans, transform_sub_parts = false, maintain_parenting = false) {
-        //console.log("-------1-------")
         let geo_trans = this.geo.clone()
         geo_trans.applyMatrix4(trans);
 
-        let collider_trans = this.collider.transform(trans); // ORIGINAL: ;
+        let collider_trans = this.collider.transform(trans);
 
         let connections_trans = []
         for (let conn of this.connections) {
-            //console.log("-------2-------")
             let conn_trans = conn.transform(trans)
             connections_trans.push(conn_trans)
-            //conn.transform(trans)
         }
 
         let attributes_trans = [];
@@ -176,7 +156,7 @@ export class Part {
 
         let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, attributes_trans, this.dim, this.id, this.field)
         
-        part_trans.transformation.multiply(trans) // = Transform.Multiply(trans, this.transformation);
+        part_trans.transformation.multiply(trans)
 
         if (maintain_parenting) {
             part_trans.parent = this.parent;
@@ -191,7 +171,7 @@ export class Part {
     copy(maintain_parenting = false) {
         let geo_copy = this.geo.clone();
 
-        let collider_copy = this.collider.copy(); // ORIGINAL: this.collider.copy();
+        let collider_copy = this.collider.copy();
 
         let connections_copy = this.connections.map(conn => conn.copy());
 
