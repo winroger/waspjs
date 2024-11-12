@@ -5,5 +5,6 @@ export default defineConfig({
   publicDir: '../public',
   build: {
     outDir: '../dist'
-  }
+  },
+  base: '/waspjs/',
 });
