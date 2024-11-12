@@ -4,9 +4,9 @@ import CameraControls from 'camera-controls';
 CameraControls.install({ THREE: THREE });
 
 // Function to initialize Three.js visualization with GUI for speed control
-export function initThreeJsVisualization(containerId = '#threejs-container') {
+export function initThreeJsVisualization(containerId = '#threejs-container') {  // NEEDS TO BE FIXED!
   const container = document.querySelector(containerId);
-  const parentContainer = document.querySelector('#threejs-container-parent');
+  const parentContainer = document.querySelector('#threejs-container-parent'); // NEEDS TO BE FIXED!
 
   if (!container) {
     console.error('Container element not found.');
