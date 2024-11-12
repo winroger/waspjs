@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { newPlaneToPlane } from './utilities';
-import { checkMeshesIntersection } from './utilCollisionDetect';
+import { checkMeshesIntersection } from './utilities';
 
 export class Aggregation {
   constructor(_name, _parts, _rules, _rnd_seed = null, ) {

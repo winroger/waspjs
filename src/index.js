@@ -1,12 +1,11 @@
 import { Part } from './waspPart';
-import { Rule, generateRules } from './waspRules';
+import { Rule } from './waspRules';
 import { Aggregation } from './waspAggregation';
 import { addEntity, removeEntity, initThreeJsVisualization } from './waspVisualizer';
+import { generateRules } from './utilities';
 
 export {
   Part,
-  Connection,
-  Collider,
   Rule,
   generateRules,
   Aggregation,

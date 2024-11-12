@@ -1,7 +1,8 @@
 import { initThreeJsVisualization, addEntity, removeEntity } from '../src/waspVisualizer.js';
 import { Part } from '../src/waspPart.js';
 import { Aggregation } from '../src/waspAggregation.js';
-import { Rule, generateRules } from '../src/waspRules.js';
+import { Rule } from '../src/waspRules.js';
+import { generateRules } from '../src/utilities.js';
 
 let threeJsContext;
 let scene;
