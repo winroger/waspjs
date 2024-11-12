@@ -21,35 +21,35 @@ const availableSets =
 [
     { 
         Name: "Hexagon", 
-        Path: "../examples/example_hexa/", 
+        Path: "./examples/example_hexa/", 
         partFiles: ["HEXA.json"],
         ruleFile: null,
         aggregationFiles: []
     },
     { 
         Name: "Brio Rails Simple", 
-        Path: "../public/examples/example_brio/", 
+        Path: "./examples/example_brio/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
         aggregationFiles: []
     },
     { 
         Name: "Brio Rails Colliders", 
-        Path: "../public/examples/example_brio_colliders/", 
+        Path: "./examples/example_brio_colliders/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
         aggregationFiles: []
     },
     { 
         Name: "Brio Rails Colliders Chamfered", 
-        Path: "../public/examples/example_brio_chamfer/", 
+        Path: "./examples/example_brio_chamfer/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
         aggregationFiles: []
     },
     { 
         Name: "Example Rules", 
-        Path: "../public/examples/example_rules/", 
+        Path: "./examples/example_rules/", 
         partFiles: ["BOX.json", "HEXA.json", "TRI.json"],
         ruleFile: "rules.json",
         aggregationFiles: []
