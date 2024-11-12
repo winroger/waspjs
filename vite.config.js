@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 
-export default ({
-  base: '/waspjs/',
+export default defineConfig({
+  root: 'test',
+  publicDir: '../public',
   build: {
-    outDir: 'dist',
-  },
+    outDir: '../dist'
+  }
 });

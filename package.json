@@ -1,21 +1,38 @@
 {
-  "name": "webwaspvisualizer",
+  "name": "webwaspjs",
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server ."
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winroger/waspjs.git"
+  },
+  "keywords": [
+    "wasp",
+    "discrete",
+    "configurator",
+    "modular"
+  ],
+  "author": "Roger Winkler",
+  "license": "MIT",
+  "description": "A replica of the Rhino3D / Grasshopper plugin WASP by Andrea Rossi in Javascript.",
   "dependencies": {
     "camera-controls": "^2.9.0",
     "three": "^0.169.0",
     "three-mesh-bvh": "^0.8.2"
   },
   "devDependencies": {
-    "vite": "^5.4.8"
-  }
+    "vite": "^5.4.11"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "bugs": {
+    "url": "https://github.com/winroger/waspjs/issues"
+  },
+  "homepage": "https://github.com/winroger/waspjs#readme"
 }
