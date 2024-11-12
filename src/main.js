@@ -1,11 +1,16 @@
 import { Part } from './waspPart';
-import { Connection } from './waspConnection';
-import { Collider } from './waspCollider';
-import { meshFromData } from './utilities';
+import { Rule, generateRules } from './waspRules';
+import { Aggregation } from './waspAggregation';
+import { addEntity, removeEntity, initThreeJsVisualization } from './waspVisualizer';
 
 export {
   Part,
   Connection,
   Collider,
-  meshFromData,
+  Rule,
+  generateRules,
+  Aggregation,
+  removeEntity,
+  addEntity,
+  initThreeJsVisualization,
 };

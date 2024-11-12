@@ -2,7 +2,6 @@ import { initThreeJsVisualization, addEntity, removeEntity } from '../src/waspVi
 import { Part } from '../src/waspPart.js';
 import { Aggregation } from '../src/waspAggregation.js';
 import { Rule, generateRules } from '../src/waspRules.js';
-import * as THREE from 'three';
 
 let threeJsContext;
 let scene;

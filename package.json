@@ -1,7 +1,7 @@
 {
   "name": "webwaspjs",
   "version": "0.1.0",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

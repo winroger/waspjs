@@ -93,17 +93,3 @@ export function removeEntity(scene, object) {
     console.log("Object not found:", `${object.name}_${object.id}`);
   }
 }
-
-export function resetScene(scene) {
-  while (scene.children.length) {
-    const object = scene.children[0];
-    scene.remove(object);
-    if (object.geometry) object.geometry.dispose();
-    if (object.material) {
-      if (object.material.map) object.material.map.dispose();
-      object.material.dispose();
-    }
-  }
-}
-
-
