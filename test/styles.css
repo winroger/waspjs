@@ -1,7 +1,7 @@
 body {
   position: relative;
   background: #1F1F1F;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   margin: 0; /* Ensure no margin to avoid scroll */
 }
@@ -44,7 +44,7 @@ body {
 #aggregationSlider::-moz-range-thumb {
   width: 30px; /* Increased size for better mobile usability */
   height: 30px; /* Increased size for better mobile usability */
-  background: #D9FF00; /* Knob color */
+  background: hsl(69, 100%, 50%); /* Knob color */
   border-radius: 50%;
   cursor: pointer;
   position: relative;
@@ -62,4 +62,12 @@ body {
 .navbar {
   position: absolute;
   background-color: hsl(0 100% 100% / 0.0); /* Transparent background */
+}
+
+.navbar-item:hover {
+
+  background-color: hsla(0, 0%, 100%, 0.05); /* Transparent background */
+
+  color: inherit;
+
 }

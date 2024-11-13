@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!selectedSet) {
         throw new Error(`Set with name ${SELECTED_SET_NAME} not found`);
     }
-    initializeAggregation(selectedSet, targetCount);    
+    initializeAggregation(selectedSet, targetCount);
 });
 
 async function initializeParts(set) {
@@ -64,11 +64,17 @@ async function initializeRules(set, parts) {
 }
 
 async function initializeAggregation(set, count) {
+    console.log("--------1--------")
     const parts = await initializeParts(set);
+    console.log("--------2--------")
     const rules = await initializeRules(set, parts);
+    console.log("--------3--------")
     aggregation = new Aggregation("myNewAggregation", parts, rules);
+    console.log("--------4--------")
     aggregation.aggregate_rnd(count)
+    console.log("--------5--------")
     for (let i = 0; i < count; i++) {
+        console.log(`--------5.${i}--------`)
         waspVisualization.addEntity(aggregation.getParts()[i]);
     }
 }
