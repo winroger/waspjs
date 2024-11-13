@@ -60,5 +60,6 @@ body {
 }
 
 .navbar {
+  position: absolute;
   background-color: hsl(0 100% 100% / 0.0); /* Transparent background */
 }
