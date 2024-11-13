@@ -27,6 +27,30 @@ export class Aggregation {
     return this.aggregated_parts
   }
 
+  async modifyParts(newCount, waspVisualization) {
+    let isCount = this.getParts().length;
+    const difference = newCount - isCount;
+
+    if (difference > 0) {
+        for (let i = 0; i < difference; i++) {
+            let added = this.addPartToAggregation();
+            if (!added) {
+                return;
+            }
+            const newPart = this.getParts()[this.getParts().length - 1];
+            waspVisualization.addEntity(newPart);
+            isCount++;
+        }
+    } else if (difference < 0) {
+        for (let i = difference; i < 0; i++) {
+            isCount--;
+            let partToRemove = this.getParts()[isCount];
+            waspVisualization.removeEntity(partToRemove);
+            this.removePartFromAggregation(isCount);
+        }
+    }
+  }
+
 aggregate_rnd(num) {
     let added = 0;
     let loops = 0;

@@ -71,41 +71,15 @@ async function initializeWaspJs(set, count) {
     const parts = await initializeParts(set);
     const rules = await initializeRules(set, parts);
     aggregation = await initializeAggregation(parts, rules, count);
-    modifyParts(count);
+    aggregation.modifyParts(count, waspVisualization);
 }
 
 // ON AGGREGATION SLIDER CHANGE
 aggregationSlider.addEventListener('input', event => {
     const newCount = parseInt(event.target.value, 10);
     aggregationCounterDisplay.innerHTML = newCount;
-    modifyParts(newCount);
+    aggregation.modifyParts(newCount, waspVisualization);
 });
-
-// Modify the current aggregation based on the new count
-// QUESTION: How to make this the best way? Integrate the visualizer in the aggregation?
-async function modifyParts(newCount) {
-    let isCount = aggregation.getParts().length;
-    const difference = newCount - isCount;
-
-    if (difference > 0) {
-        for (let i = 0; i < difference; i++) {
-            let added = aggregation.addPartToAggregation();
-            if (!added) {
-                return;
-            }
-            const newPart = aggregation.getParts()[aggregation.getParts().length - 1];
-            waspVisualization.addEntity(newPart);
-            isCount++;
-        }
-    } else if (difference < 0) {
-        for (let i = difference; i < 0; i++) {
-            isCount--;
-            let partToRemove = aggregation.getParts()[isCount];
-            waspVisualization.removeEntity(partToRemove);
-            aggregation.removePartFromAggregation(isCount);
-        }
-    }
-}
 
 async function readJsonData(path, fileName) {
     try {
