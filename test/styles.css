@@ -3,6 +3,7 @@ body {
   background: #1F1F1F;
   height: 100vh;
   overflow: hidden;
+  margin: 0; /* Ensure no margin to avoid scroll */
 }
 
 #aggregationSlider {
@@ -11,8 +12,9 @@ body {
   bottom: 140px; 
   left: 50%; 
   transform: translateX(-50%); 
-  height: 1px; 
+  height: 4px; 
   accent-color: #D9FF00;
+  background: rgb(80, 80, 80);
   -webkit-appearance: none;
   appearance: none;
 }
@@ -21,23 +23,32 @@ body {
 #aggregationSlider::-moz-range-track {
   width: 100%;
   height: 1px;
-  background: #D9FF00; /* Knob color */
-  border-radius: 1px;
+  background: #D9FF00; /* Track color */
   position: relative;
+  background: rgb(80, 80, 80);
   top: 10px; /* Adjust this value to align the track with the thumb */
 }
 
-#aggregationSlider::-webkit-slider-thumb,
-#aggregationSlider::-moz-range-thumb {
+#aggregationSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 30px; /* Increased size for better mobile usability */
+  height: 30px; /* Increased size for better mobile usability */
   background: #D9FF00; /* Knob color */
   border-radius: 50%;
   cursor: pointer;
   position: relative;
-  top: -10px; /* Adjust this value to align the thumb with the track */
+  top: -0px; /* Adjust this value to align the thumb with the track */
+}
+
+#aggregationSlider::-moz-range-thumb {
+  width: 30px; /* Increased size for better mobile usability */
+  height: 30px; /* Increased size for better mobile usability */
+  background: #D9FF00; /* Knob color */
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  top: -0px; /* Adjust this value to align the thumb with the track */
 }
 
 .label {
@@ -49,5 +60,5 @@ body {
 }
 
 .navbar {
-  background-color: hsl(0 100% 100% / 0.0);
+  background-color: hsl(0 100% 100% / 0.0); /* Transparent background */
 }
