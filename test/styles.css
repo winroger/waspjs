@@ -9,7 +9,7 @@ body {
 #aggregationSlider {
   position: absolute; 
   width: 80%; 
-  bottom: 140px; 
+  bottom: 50px; 
   left: 50%; 
   transform: translateX(-50%); 
   height: 4px; 
@@ -53,7 +53,7 @@ body {
 
 .label {
   position: absolute; 
-  bottom: 165px; 
+  bottom: 65px; 
   left: 50%; 
   transform: translateX(-50%); 
   font-size: 1em;

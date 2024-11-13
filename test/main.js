@@ -63,20 +63,11 @@ async function initializeRules(set, parts) {
     return rules;
 }
 
-async function initializeAggregation(set, count) {
-    console.log("--------1--------")
+async function initializeAggregation(set, initialCount) {
     const parts = await initializeParts(set);
-    console.log("--------2--------")
     const rules = await initializeRules(set, parts);
-    console.log("--------3--------")
     aggregation = new Aggregation("myNewAggregation", parts, rules);
-    console.log("--------4--------")
-    aggregation.aggregate_rnd(count)
-    console.log("--------5--------")
-    for (let i = 0; i < count; i++) {
-        console.log(`--------5.${i}--------`)
-        waspVisualization.addEntity(aggregation.getParts()[i]);
-    }
+    modifyParts(initialCount);
 }
 
 // ON AGGREGATION SLIDER CHANGE
@@ -108,8 +99,6 @@ function modifyParts(newCount) {
             let partToRemove = aggregation.getParts()[isCount];
             waspVisualization.removeEntity(partToRemove);
             aggregation.removePartFromAggregation(isCount);
-            
-
         }
     }
 }
