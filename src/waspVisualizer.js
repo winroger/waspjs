@@ -3,93 +3,92 @@ import CameraControls from 'camera-controls';
 
 CameraControls.install({ THREE: THREE });
 
-// Function to initialize Three.js visualization with GUI for speed control
-export function initThreeJsVisualization(containerId = '#threejs-container') {  // NEEDS TO BE FIXED!
-  const container = document.querySelector(containerId);
-  const parentContainer = document.querySelector('#threejs-container-parent'); // NEEDS TO BE FIXED!
+export class waspVisualizer {
+  constructor(containerId = '#threejs-container', parentContainerId = '#threejs-container-parent') {
+    this.container = document.querySelector(containerId);
+    this.parentContainer = document.querySelector(parentContainerId);
 
-  if (!container) {
-    console.error('Container element not found.');
-    return;
+    if (!this.container) {
+      console.error('Container element not found.');
+      return;
+    }
+
+    this.width = this.parentContainer.clientWidth;
+    this.height = this.parentContainer.clientHeight;
+
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 5000);
+    this.camera.up.set(0, 0, 1);
+    this.camera.position.set(100, 100, 50);
+
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.renderer.setClearColor(0x000000, 0); // transparent Background
+    this.renderer.setSize(this.width, this.height);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.container.appendChild(this.renderer.domElement);
+
+    this.clock = new THREE.Clock();
+
+    this.cameraControls = new CameraControls(this.camera, this.renderer.domElement);
+    this.cameraControls.minDistance = 20;
+    this.cameraControls.maxDistance = 350;
+    this.cameraControls.update();
+
+    this.scene.userData = { camera: this.camera, controls: this.cameraControls };
+
+    this.initLights();
+    this.animate();
+
+    // Make variables available to browser console
+    globalThis.THREE = THREE;
+    globalThis.cameraControls = this.cameraControls;
+
+    window.addEventListener('resize', this.onWindowResize.bind(this));
   }
 
-  const width = parentContainer.clientWidth;
-  const height = parentContainer.clientHeight;
+  initLights() {
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    directionalLight.position.set(30, 30, -30);
+    this.scene.add(directionalLight);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 5000);
-  camera.up.set(0, 0, 1);
-  camera.position.set(100, 100, 50);
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight2.position.set(30, 30, 30);
+    this.scene.add(directionalLight2);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setClearColor(0x000000, 0); // transparent Background
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  container.appendChild(renderer.domElement);
-
-  const clock = new THREE.Clock();
-
-  const cameraControls = new CameraControls(camera, renderer.domElement);
-  cameraControls.minDistance = 20;
-  cameraControls.maxDistance = 350;
-  cameraControls.update();
-
-  function animate() {
-    const delta = clock.getDelta();
-    const hasControlsUpdated = cameraControls.update(delta);
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    this.scene.add(ambientLight);
   }
 
-  animate();
+  animate() {
+    const delta = this.clock.getDelta();
+    const hasControlsUpdated = this.cameraControls.update(delta);
+    requestAnimationFrame(this.animate.bind(this));
+    this.renderer.render(this.scene, this.camera);
+  }
 
-  // Make variables available to browser console
-  globalThis.THREE = THREE;
-  globalThis.cameraControls = cameraControls;
+  onWindowResize() {
+    const newWidth = this.parentContainer.clientWidth;
+    const newHeight = this.parentContainer.clientHeight;
+    this.camera.aspect = newWidth / newHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(newWidth, newHeight);
+    this.renderer.setPixelRatio(window.devicePixelRatio); // Ensure pixel ratio is updated on resize
+    this.container.style.width = `${newWidth}px`;
+    this.container.style.height = `${newHeight}px`;
+  }
 
-  // LIGHTS
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-  directionalLight.position.set(30, 30, -30);
-  scene.add(directionalLight);
+  addEntity(part) {
+    const mesh = part.geo.clone();
+    mesh.name = `${part.name}_${part.id}`;
+    this.scene.add(mesh);
+  }
 
-  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight2.position.set(30, 30, 30);
-  scene.add(directionalLight2);
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-  scene.add(ambientLight);
-
-  // HELPERS (commented out)
-  // const axesHelper = new THREE.AxesHelper(2);
-  // scene.add(axesHelper);
-  // const gridXZ = new THREE.GridHelper(50, 10);
-  // scene.add(gridXZ);
-
-  window.addEventListener('resize', () => {
-    const newWidth = parentContainer.clientWidth;
-    const newHeight = parentContainer.clientHeight;
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
-    renderer.setPixelRatio(window.devicePixelRatio); // Ensure pixel ratio is updated on resize
-    container.style.width = `${newWidth}px`;
-    container.style.height = `${newHeight}px`;
-  });
-
-  return { scene, camera, renderer, cameraControls };
-}
-
-export function addEntity(scene, part) {
-  const mesh = part.geo.clone();
-  mesh.name = `${part.name}_${part.id}`;
-  scene.add(mesh);
-}
-
-export function removeEntity(scene, object) {
-  var selectedObject = scene.getObjectByName(`${object.name}_${object.id}`);
-  if (selectedObject) {
-    scene.remove(selectedObject);
-  } else {
-    console.log("Object not found:", `${object.name}_${object.id}`);
+  removeEntity(object) {
+    var selectedObject = this.scene.getObjectByName(`${object.name}_${object.id}`);
+    if (selectedObject) {
+      this.scene.remove(selectedObject);
+    } else {
+      console.log("Object not found:", `${object.name}_${object.id}`);
+    }
   }
 }

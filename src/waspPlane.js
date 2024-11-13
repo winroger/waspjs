@@ -24,25 +24,20 @@ export class Plane {
     
         return newPlane;
     }
-}
 
+    toData() {
+        return {
+            origin: [this.origin.x, this.origin.y, this.origin.z],
+            xaxis: [this.xaxis.x, this.xaxis.y, this.xaxis.z],
+            yaxis: [this.yaxis.x, this.yaxis.y, this.yaxis.z]
+        };
+    }
 
-
-// Utility function to convert a plane to data
-export function planeToData(plane) {
-    return {
-        origin: [plane.origin.x, plane.origin.y, plane.origin.z],
-        xaxis: [plane.xaxis.x, plane.xaxis.y, plane.xaxis.z],
-        yaxis: [plane.yaxis.x, plane.yaxis.y, plane.yaxis.z]
-    };
-}
-
-// Utility function to create a plane from data
-export function planeFromData(data) {
-    const origin = new THREE.Vector3(data.origin[0], data.origin[1], data.origin[2]);
-    const xaxis = new THREE.Vector3(data.xaxis[0], data.xaxis[1], data.xaxis[2]);
-    const zaxis = new THREE.Vector3(data.yaxis[0], data.yaxis[1], data.yaxis[2]);
-    
-    const newPlane = new Plane(origin, xaxis, zaxis);
-    return newPlane
+    static fromData(data) {
+        const origin = new THREE.Vector3(data.origin[0], data.origin[1], data.origin[2]);
+        const xaxis = new THREE.Vector3(data.xaxis[0], data.xaxis[1], data.xaxis[2]);
+        const zaxis = new THREE.Vector3(data.yaxis[0], data.yaxis[1], data.yaxis[2]);
+        
+        return new Plane(origin, xaxis, zaxis);
+    }
 }

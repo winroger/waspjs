@@ -1,4 +1,4 @@
-import { Plane, planeFromData, planeToData } from './waspPlane.js';
+import { Plane } from './waspPlane.js';
 
 
 export class Connection {
@@ -16,13 +16,13 @@ export class Connection {
     }
 
     static fromData(data) {
-        let c_pln = planeFromData(data['plane']);
+        let c_pln =  Plane.fromData(data['plane']);
         return new Connection(c_pln, data['type'], data['part'], parseInt(data['id']));
     }
 
     toData() {
         return {
-            plane: planeToData(this.pln),
+            plane: this.pln.toData(),
             type: this.type,
             part: this.part,
             id: this.id

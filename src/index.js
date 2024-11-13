@@ -1,7 +1,7 @@
 import { Part } from './waspPart';
 import { Rule } from './waspRules';
 import { Aggregation } from './waspAggregation';
-import { addEntity, removeEntity, initThreeJsVisualization } from './waspVisualizer';
+import { waspVisualizer } from './waspVisualizer';
 import { generateRules } from './utilities';
 
 export {
@@ -9,7 +9,5 @@ export {
   Rule,
   generateRules,
   Aggregation,
-  removeEntity,
-  addEntity,
-  initThreeJsVisualization,
+  waspVisualizer,
 };

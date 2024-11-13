@@ -1,150 +1,88 @@
-import { initThreeJsVisualization, addEntity, removeEntity } from '../src/waspVisualizer.js';
+import { waspVisualizer } from '../src/waspVisualizer.js';
 import { Part } from '../src/waspPart.js';
 import { Aggregation } from '../src/waspAggregation.js';
 import { Rule } from '../src/waspRules.js';
 import { generateRules } from '../src/utilities.js';
-
-let threeJsContext;
-let scene;
+import { availableSets, colorMap } from './config.js';
 
 let aggregation;
-let aggregationCounter = 10;
+let waspVisualization;
 
-let fixedAggregation = false;
+const SELECTED_SET_NAME=  "Example Rules";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
 const aggregationCounterDisplay = document.getElementById('aggregationCounter');
 
-// Define available sets
-const availableSets = 
-[
-    { 
-        Name: "Hexagon", 
-        Path: "./examples/example_hexa/", 
-        partFiles: ["HEXA.json"],
-        ruleFile: null,
-        aggregationFiles: []
-    },
-    { 
-        Name: "Brio Rails Simple", 
-        Path: "./examples/example_brio/", 
-        partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
-        ruleFile: null,
-        aggregationFiles: []
-    },
-    { 
-        Name: "Brio Rails Colliders", 
-        Path: "./examples/example_brio_colliders/", 
-        partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
-        ruleFile: null,
-        aggregationFiles: []
-    },
-    { 
-        Name: "Brio Rails Colliders Chamfered", 
-        Path: "./examples/example_brio_chamfer/", 
-        partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
-        ruleFile: null,
-        aggregationFiles: []
-    },
-    { 
-        Name: "Example Rules", 
-        Path: "./examples/example_rules/", 
-        partFiles: ["BOX.json", "HEXA.json", "TRI.json"],
-        ruleFile: "rules.json",
-        aggregationFiles: []
-    },
-];
-
-const colorMap = {
-    "0": 0xD9FF00,  // Lime Green
-    "1": 0xFF007F,  // Neon Pink
-    "2": 0x00FFFF,  // Neon Blue
-    "3": 0xFF00FF,  // Neon Magenta
-    "4": 0x00FF00,  // Neon Green
-};
-
-/*
-const colorMap = {
-    "0": 0xDBBC91,  // Lime Green
-};
-*/
-
 // THREE JS INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
+    let targetCount = aggregationSlider.value;
+    aggregationCounterDisplay.innerHTML = targetCount;
     const containerId = '#threejs-container';
-    threeJsContext = initThreeJsVisualization(containerId); 
-    scene = threeJsContext.scene;
-    scene.userData = { camera: threeJsContext.camera, controls: threeJsContext.controls };
-    updateAggregationCounter(aggregationCounter);
-    const selectedSetName=  "Hexagon";
-    const selectedSet = availableSets.find(set => set.Name === selectedSetName);
+    waspVisualization = new waspVisualizer(containerId);
+
+    
+    const selectedSet = availableSets.find(set => set.Name === SELECTED_SET_NAME);
     if (!selectedSet) {
-        throw new Error(`Set with name ${selectedSetName} not found`);
+        throw new Error(`Set with name ${SELECTED_SET_NAME} not found`);
     }
-    initializeSet(selectedSet);
+    initializeAggregation(selectedSet, targetCount);    
 });
 
-// Call the test function to add the cube
-//addTestCube();
-
-
-async function initializeSet(set) {
+async function initializeParts(set) {
     let parts = [];
-    let rules = [];
     try {
-        // initialize Parts
         for (const fileName of set.partFiles) {
-            const response = await fetch(`${set.Path}${fileName}`);
-            const data = await response.json();
+            const data = await readJsonData(set.Path, fileName);
             const newPart = Part.fromData(data);
             newPart.assignId(parts.length);
-            newPart.geo.material.color.setHex(colorMap[parts.length % 10] || colorMap[0]);      
+            newPart.geo.material.color.setHex(colorMap[parts.length % 10] || colorMap[0]);
             parts.push(newPart);
             console.log("Generating Part from file: ", fileName);
         }
-        // initialize Rules
+    } catch (error) {
+        console.error("Error initializing parts: ", error);
+    }
+    return parts;
+}
+
+async function initializeRules(set, parts) {
+    let rules = [];
+    try {
         if (set.ruleFile !== null) {
             console.log("Generating Rules from file: ", set.ruleFile);
-            const response = await fetch(`${set.Path}${set.ruleFile}`);
-            const data = await response.json();
+            const data = await readJsonData(set.Path, set.ruleFile);
             rules = data.map(rule => new Rule().fromData(rule));
         } else {
             console.log("Generating Rules with Rule Generator");
             rules = generateRules(parts, true, false);
         }
     } catch (error) {
-        console.error("Error fetching file: ", error);
+        console.error("Error initializing rules: ", error);
     }
-
-    aggregation = new Aggregation("myNewAggregation", parts, rules);
-    triggerAggregation(aggregation, aggregationCounter);
+    return rules;
 }
 
-// initialize the aggregation with the current preset count
-function triggerAggregation(aggregation, targetCount) {
-
-    if (fixedAggregation) {
-        aggregation.aggregate_rnd(50);
+async function initializeAggregation(set, count) {
+    const parts = await initializeParts(set);
+    const rules = await initializeRules(set, parts);
+    aggregation = new Aggregation("myNewAggregation", parts, rules);
+    aggregation.aggregate_rnd(count)
+    for (let i = 0; i < count; i++) {
+        waspVisualization.addEntity(aggregation.getParts()[i]);
     }
-    else {
-        aggregation.aggregate_rnd_ctrl(targetCount)
-    }
-    for (let i = 0; i < targetCount; i++) {
-        addEntity(scene, aggregation.getParts()[i]);
-    }
-    updateAggregationCounter(targetCount);
 }
 
 // ON AGGREGATION SLIDER CHANGE
 aggregationSlider.addEventListener('input', event => {
     const newCount = parseInt(event.target.value, 10);
-    updateAggregationCounter(newCount);
-    modifyParts(scene, newCount);
+    aggregationCounterDisplay.innerHTML = newCount;
+    modifyParts(newCount);
 });
 
 // Modify the current aggregation based on the new count
-function modifyParts(scene, newCount) {
+// QUESTION: How to make this the best way? Integrate the visualizer in the aggregation?
+function modifyParts(newCount) {
     let isCount = aggregation.getParts().length;
     const difference = newCount - isCount;
 
@@ -155,22 +93,27 @@ function modifyParts(scene, newCount) {
                 return;
             }
             const newPart = aggregation.getParts()[aggregation.getParts().length - 1];
-            addEntity(scene, newPart);
-            isCount = aggregation.getParts().length;
+            waspVisualization.addEntity(newPart);
+            isCount++;
         }
     } else if (difference < 0) {
         for (let i = difference; i < 0; i++) {
-            let partToRemove = aggregation.getParts()[isCount - 1];
-            removeEntity(scene, partToRemove);
-            aggregation.removePartFromAggregation(aggregation.getParts().length - 1);
-            isCount = aggregation.getParts().length;
+            isCount--;
+            let partToRemove = aggregation.getParts()[isCount];
+            waspVisualization.removeEntity(partToRemove);
+            aggregation.removePartFromAggregation(isCount);
+            
 
         }
     }
-    isCount = aggregation.getParts().length;
 }
 
-export function updateAggregationCounter(count) {
-    aggregationCounter = count;
-    aggregationCounterDisplay.innerHTML = count;
+async function readJsonData(path, fileName) {
+    try {
+        const response = await fetch(`${path}${fileName}`);
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching JSON file ${fileName}: `, error);
+        throw error;
+    }
 }

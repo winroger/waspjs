@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import { Rule } from './waspRules';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 
-THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
+// Utility function to check if two geometries intersect for collision detection
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
 export function checkMeshesIntersection(mesh1, mesh2) {
     if (!mesh1.geometry.boundsTree) {
       mesh1.geometry.boundsTree = new MeshBVH(mesh1.geometry);
@@ -101,7 +102,6 @@ export function transformFromData(data) {
         parseFloat(data.M30), parseFloat(data.M31), parseFloat(data.M32), parseFloat(data.M33)
     ];
     
-    // Create a THREE.Matrix4 and set its elements from the trans array
     const matrix = new THREE.Matrix4();
     matrix.set(
         trans[0], trans[1], trans[2], trans[3],
@@ -113,6 +113,7 @@ export function transformFromData(data) {
     return matrix;
 }
 
+// Utility function to caculate the transformation matrix from a plane to another plane, similar to Rhino's orientation
 export function newPlaneToPlane(sourcePlane, targetPlane) {
     const sourceMatrix = new THREE.Matrix4();
     sourceMatrix.makeBasis(
@@ -137,7 +138,7 @@ export function newPlaneToPlane(sourcePlane, targetPlane) {
 }
 
 
-  
+// Utility function to generate rules for a set of parts, if no rules are provided
 export function generateRules(parts, selfPart = true, selfConnection = false, useTypes = false, grammar = []) {
     const rules = [];
   
