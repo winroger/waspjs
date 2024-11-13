@@ -19,7 +19,7 @@ export class waspVisualizer {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 5000);
     this.camera.up.set(0, 0, 1);
-    this.camera.position.set(100, 100, 50);
+    this.camera.position.set(250, 150, 100);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setClearColor(0x000000, 0); // transparent Background
@@ -37,6 +37,7 @@ export class waspVisualizer {
     this.scene.userData = { camera: this.camera, controls: this.cameraControls };
 
     this.initLights();
+    //this.addAxesHelper(); // Add the axis helper
     this.animate();
 
     // Make variables available to browser console
@@ -59,9 +60,24 @@ export class waspVisualizer {
     this.scene.add(ambientLight);
   }
 
+  addAxesHelper() {
+    const gridHelper = new THREE.GridHelper(100, 9);
+    gridHelper.rotation.x = Math.PI / 2; // Rotate by 90 degrees on the x-axis
+    const axesHelper = new THREE.AxesHelper(10); // Adjust the size as needed
+    axesHelper.rotation.x = Math.PI / 2; 
+    this.scene.add(gridHelper);
+    this.scene.add(axesHelper);
+  }
+
   animate() {
     const delta = this.clock.getDelta();
     const hasControlsUpdated = this.cameraControls.update(delta);
+
+    // Add rotation if there are no user interactions
+    /*if (!hasControlsUpdated) {
+      this.scene.rotation.z += 0.001; // Adjust the rotation speed as needed
+    }*/
+
     requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
   }

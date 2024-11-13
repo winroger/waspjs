@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!selectedSet) {
         throw new Error(`Set with name ${SELECTED_SET_NAME} not found`);
     }
-    initializeAggregation(selectedSet, targetCount);
+    initializeWaspJs(selectedSet, targetCount);
 });
 
 async function initializeParts(set) {
@@ -63,11 +63,15 @@ async function initializeRules(set, parts) {
     return rules;
 }
 
-async function initializeAggregation(set, initialCount) {
+async function initializeAggregation(parts, rules) {
+    return new Aggregation("myNewAggregation", parts, rules);
+}   
+
+async function initializeWaspJs(set, count) {
     const parts = await initializeParts(set);
     const rules = await initializeRules(set, parts);
-    aggregation = new Aggregation("myNewAggregation", parts, rules);
-    modifyParts(initialCount);
+    aggregation = await initializeAggregation(parts, rules, count);
+    modifyParts(count);
 }
 
 // ON AGGREGATION SLIDER CHANGE
@@ -79,7 +83,7 @@ aggregationSlider.addEventListener('input', event => {
 
 // Modify the current aggregation based on the new count
 // QUESTION: How to make this the best way? Integrate the visualizer in the aggregation?
-function modifyParts(newCount) {
+async function modifyParts(newCount) {
     let isCount = aggregation.getParts().length;
     const difference = newCount - isCount;
 

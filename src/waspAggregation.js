@@ -51,7 +51,6 @@ aggregate_rnd(num) {
 }
 
 addFirstPartToAggregation() {
-    console.log("counter before first part add: ", this.aggregated_parts.length);
     let first_part = this.parts[randomChoice(Object.keys(this.parts))];
     const identityMatrix = new THREE.Matrix4().identity();
     if (first_part !== null) {
@@ -194,7 +193,6 @@ addPartToAggregation() {
         console.error(`No valid rule found after ${new_rule_attempts} attempts.`);
         return false;
     }
-    console.log("counter after add: ", this.aggregated_parts.length);
 }
 
 removePartFromAggregation(part_id) {
@@ -222,10 +220,9 @@ removePartFromAggregation(part_id) {
                 connectedPart.active_connections = connectedPart.active_connections.filter(active_conn_id => active_conn_id !== conn.connected_conn_id);
             }
         });
-        console.log("counter after remove: ", this.aggregated_parts.length);
         return true;
     } else {
-        console.log("Error: Part not found");
+        console.error("Error: Part not found");
         return false;
     }
     

@@ -39,9 +39,9 @@ export const availableSets = [
 
 
 export const colorMap = {
-    "0": 0xD9FF00,  // Lime Green
-    "1": 0xFF007F,  // Neon Pink
-    "2": 0x00FFFF,  // Neon Blue
+    "0": 0x5E5D57,  // Lime Green
+    "1": 0xEFD1A5,  // Neon Pink
+    "2": 0x5885E9,  // Neon Blue
     "3": 0xFF00FF,  // Neon Magenta
     "4": 0x00FF00,  // Neon Green
 };
