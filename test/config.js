@@ -5,35 +5,35 @@ export const availableSets = [
         Path: "./examples/example_hexa/", 
         partFiles: ["HEXA.json"],
         ruleFile: null,
-        aggregationFiles: []
+        aggregationFile: null,
     },
     { 
         Name: "Brio Rails Simple", 
         Path: "./examples/example_brio/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
-        aggregationFiles: []
+        aggregationFile: null,
     },
     { 
         Name: "Brio Rails Colliders", 
         Path: "./examples/example_brio_colliders/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
-        aggregationFiles: []
+        aggregationFile: null,
     },
     { 
         Name: "Brio Rails Colliders Chamfered", 
         Path: "./examples/example_brio_chamfer/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],
         ruleFile: null,
-        aggregationFiles: []
+        aggregationFile: "aggregation.json",
     },
     { 
         Name: "Example Rules", 
         Path: "./examples/example_rules/", 
         partFiles: ["BOX.json", "HEXA.json", "TRI.json"],
         ruleFile: "rules.json",
-        aggregationFiles: []
+        aggregationFile: null,
     },
 ];
 

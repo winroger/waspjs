@@ -1,14 +1,11 @@
-import { waspVisualizer } from '../src/waspVisualizer.js';
-import { Part } from '../src/waspPart.js';
+import { Visualizer } from '../src/waspVisualizer.js';
 import { Aggregation } from '../src/waspAggregation.js';
-import { Rule } from '../src/waspRules.js';
-import { generateRules } from '../src/utilities.js';
-import { availableSets, colorMap } from './config.js';
+import { availableSets } from './config.js';
 
 let aggregation;
 let waspVisualization;
 
-const SELECTED_SET_NAME=  "Example Rules";
+const SELECTED_SET_NAME=  "Brio Rails Colliders Chamfered";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
@@ -19,9 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetCount = aggregationSlider.value;
     aggregationCounterDisplay.innerHTML = targetCount;
     const containerId = '#threejs-container';
-    waspVisualization = new waspVisualizer(containerId);
+    waspVisualization = new Visualizer(containerId);
 
-    
     const selectedSet = availableSets.find(set => set.Name === SELECTED_SET_NAME);
     if (!selectedSet) {
         throw new Error(`Set with name ${SELECTED_SET_NAME} not found`);
@@ -29,64 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeWaspJs(selectedSet, targetCount);
 });
 
-async function initializeParts(set) {
-    let parts = [];
-    try {
-        for (const fileName of set.partFiles) {
-            const data = await readJsonData(set.Path, fileName);
-            const newPart = Part.fromData(data);
-            newPart.assignId(parts.length);
-            newPart.geo.material.color.setHex(colorMap[parts.length % 10] || colorMap[0]);
-            parts.push(newPart);
-            console.log("Generating Part from file: ", fileName);
-        }
-    } catch (error) {
-        console.error("Error initializing parts: ", error);
-    }
-    return parts;
-}
-
-async function initializeRules(set, parts) {
-    let rules = [];
-    try {
-        if (set.ruleFile !== null) {
-            console.log("Generating Rules from file: ", set.ruleFile);
-            const data = await readJsonData(set.Path, set.ruleFile);
-            rules = data.map(rule => new Rule().fromData(rule));
-        } else {
-            console.log("Generating Rules with Rule Generator");
-            rules = generateRules(parts, true, false);
-        }
-    } catch (error) {
-        console.error("Error initializing rules: ", error);
-    }
-    return rules;
-}
-
-async function initializeAggregation(parts, rules) {
-    return new Aggregation("myNewAggregation", parts, rules);
-}   
-
+/////////// INITIALIZE FROM AGGREGATION FILE ///////////
 async function initializeWaspJs(set, count) {
-    const parts = await initializeParts(set);
-    const rules = await initializeRules(set, parts);
-    aggregation = await initializeAggregation(parts, rules, count);
-    aggregation.modifyParts(count, waspVisualization);
-}
-
-// ON AGGREGATION SLIDER CHANGE
-aggregationSlider.addEventListener('input', event => {
-    const newCount = parseInt(event.target.value, 10);
-    aggregationCounterDisplay.innerHTML = newCount;
-    aggregation.modifyParts(newCount, waspVisualization);
-});
-
-async function readJsonData(path, fileName) {
-    try {
-        const response = await fetch(`${path}${fileName}`);
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching JSON file ${fileName}: `, error);
-        throw error;
+    if (set.aggregationFile) {
+        try {
+            console.log("Loading aggregation from file: ", set.aggregationFile);
+            const response = await fetch(`${set.Path}${set.aggregationFile}`);
+            const data = await response.json();
+            aggregation = Aggregation.fromData(data);
+            aggregation.modifyParts(count, waspVisualization);
+        } catch (error) {
+            console.error("Error loading aggregation: ", error);
+        }
+    } else {
+        console.log("No aggregation file found.");
     }
 }
+
+/////////// LOCAL UTILITY FUNCTIONS ///////////
+
+aggregationSlider.addEventListener('input', event => {
+    let targetCount = event.target.value;
+    aggregationCounterDisplay.innerHTML = targetCount;
+    if (aggregation) {
+        aggregation.modifyParts(targetCount, waspVisualization);
+    }
+});

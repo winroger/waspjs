@@ -1,6 +1,16 @@
 import * as THREE from 'three';
 import { newPlaneToPlane } from './utilities';
 import { checkMeshesIntersection } from './utilities';
+import { Part } from './waspPart';
+import { Rule } from './waspRules';
+
+const colorMap = {
+    "0": 0xF5F5DC,  // Beige
+    "1": 0xDEB887,  // Burlywood
+    "2": 0xD2B48C,  // Tan
+    "3": 0xF5DEB3,  // Wheat
+    "4": 0xFFE4C4,  // Bisque
+};
 
 export class Aggregation {
   constructor(_name, _parts, _rules, _rnd_seed = null, ) {
@@ -21,6 +31,64 @@ export class Aggregation {
 
       // random seed
       this.rnd_seed = _rnd_seed === null ? Date.now() : _rnd_seed;
+  }
+
+  static fromData(data) {
+    const d_name = data['name'];
+
+    const d_parts = data['parts'].map(part_data => {
+      let newPart;
+      if (part_data['class_type'] === 'Part') {
+        newPart = Part.fromData(part_data);
+      } else if (part_data['class_type'] === 'AdvancedPart') {
+        newPart = AdvancedPart.fromData(part_data);
+      } else {
+        return null;
+      }
+      newPart.geo.material.color.setHex(colorMap[data['parts'].indexOf(part_data) % 10] || colorMap[0]);
+      return newPart;
+    }).filter(part => part !== null);
+
+    const d_rules = data['rules'].map(rule => new Rule().fromData(rule));
+    const d_mode = parseInt(data['mode']);
+    const d_coll_check = data['coll_check'];
+    const d_field = data['field'] ? data['field'].map(field_data => Field.fromData(field_data)) : [];
+
+    const d_global_constraints = data['global_constraints'].map(const_data => {
+      if (const_data['type'] === 'plane') {
+        return Plane_Constraint.fromData(const_data);
+      } else if (const_data['type'] === 'mesh_collider') {
+        return Mesh_Constraint.fromData(const_data);
+      }
+      return null;
+    }).filter(constraint => constraint !== null);
+
+    const d_rnd_seed = data['rnd_seed'];
+    const d_catalog = data['catalog'] ? PartCatalog.fromData(data['catalog']) : null;
+
+    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_mode, [], d_coll_check, d_field, d_global_constraints, d_rnd_seed, d_catalog);
+
+    const d_aggregated_parts = data['aggregated_parts_sequence'].map(p_id => {
+      const aggr_part_data = data['aggregated_parts'][String(p_id)];
+      if (aggr_part_data['class_type'] === 'Part') {
+        return Part.fromData(aggr_part_data);
+      } else if (aggr_part_data['class_type'] === 'AdvancedPart') {
+        return AdvancedPart.fromData(aggr_part_data);
+      }
+      return null;
+    }).filter(part => part !== null);
+
+    // THIS CAN BE FIXED IN ORDER TO LOAD AGGREGATIONS FROM THE FILE AS INITAL STATE, NEEDS TO ADD
+    // THE PARTS TO THE SCENE
+    aggregation.aggregated_parts = [] // ORIGINAL: d_aggregated_parts; 
+    //aggregation.graph = Graph.fromData(data['graph']);
+
+    //aggregation.reset_rules(aggregation.rules);
+    /*if (aggregation.field) {
+      aggregation.recompute_aggregation_queue();
+    }*/
+
+    return aggregation;
   }
 
   getParts() {

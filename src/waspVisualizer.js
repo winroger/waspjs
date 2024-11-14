@@ -3,7 +3,7 @@ import CameraControls from 'camera-controls';
 
 CameraControls.install({ THREE: THREE });
 
-export class waspVisualizer {
+export class Visualizer {
   constructor(containerId = '#threejs-container', parentContainerId = '#threejs-container-parent') {
     this.container = document.querySelector(containerId);
     this.parentContainer = document.querySelector(parentContainerId);
