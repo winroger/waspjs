@@ -15,6 +15,13 @@ export const availableSets = [
         aggregationFile: "aggregation.json",
     },
     { 
+        Name: "Stick", 
+        Path: "./examples/example_stick/", 
+        partFiles: [""],
+        ruleFile: null,
+        aggregationFile: "aggregation.json",
+    },
+    { 
         Name: "Brio Rails Simple", 
         Path: "./examples/example_brio/", 
         partFiles: ["YSHAPE.json", "STICK.json", "CORNER2.json", "CORNER1.json", "BRIDGE.json"],

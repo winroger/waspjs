@@ -5,7 +5,7 @@ import { availableSets } from './config.js';
 let aggregation;
 let waspVisualization;
 
-const SELECTED_SET_NAME=  "Corner";
+const SELECTED_SET_NAME=  "Stick";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
