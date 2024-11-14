@@ -35,37 +35,6 @@ You can install WaspJS via npm:
 npm install webwaspjs
 ```
 
-## Running the Demo Locally
-
-To run the demo locally, follow these steps:
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/winroger/waspjs.git
-    cd waspjs
-    ```
-
-2. **Install the dependencies:**
-
-    ```bash
-    npm install
-    ```
-
-3. **Run the demo using Vite:**
-
-    ```bash
-    npm run dev
-    ```
-
-4. **Open your browser and navigate to the Local URL shown, e.g.**
-
-    ```
-    http://localhost:5173/waspjs/
-    ```
-
-You should now see the demo running locally on your machine. 
-
 # Documentation
 
 ## Current Classes
