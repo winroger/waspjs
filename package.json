@@ -1,6 +1,6 @@
 {
   "name": "webwaspjs",
-  "version": "0.1.1",
+  "version": "0.1.02",
   "main": "src/index.js",
   "scripts": {
     "dev": "vite",
