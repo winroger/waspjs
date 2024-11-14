@@ -23,7 +23,8 @@
   "dependencies": {
     "camera-controls": "^2.9.0",
     "three": "^0.169.0",
-    "three-mesh-bvh": "^0.8.2"
+    "three-mesh-bvh": "^0.8.2",
+    "webwaspjs": "^0.1.2"
   },
   "devDependencies": {
     "vite": "^5.4.11"

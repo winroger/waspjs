@@ -1,11 +1,11 @@
-import { Visualizer } from '../../src/waspVisualizer.js';
-import { Aggregation } from '../../src/waspAggregation.js';
+import { Visualizer } from 'webwaspjs';
+import { Aggregation } from 'webwaspjs';
 import { availableSets } from './config.js';
 
 let aggregation;
 let waspVisualization;
 
-const SELECTED_SET_NAME=  "Brio Rails Colliders Chamfered";
+const SELECTED_SET_NAME=  "Corner";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');

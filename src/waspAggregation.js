@@ -52,7 +52,7 @@ export class Aggregation {
     const d_rules = data['rules'].map(rule => new Rule().fromData(rule));
     const d_mode = parseInt(data['mode']);
     const d_coll_check = data['coll_check'];
-    const d_field = data['field'] ? data['field'].map(field_data => Field.fromData(field_data)) : [];
+    //const d_field = data['field'] ? data['field'].map(field_data => Field.fromData(field_data)) : [];
 
     const d_global_constraints = data['global_constraints'].map(const_data => {
       if (const_data['type'] === 'plane') {
@@ -66,7 +66,7 @@ export class Aggregation {
     const d_rnd_seed = data['rnd_seed'];
     const d_catalog = data['catalog'] ? PartCatalog.fromData(data['catalog']) : null;
 
-    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_mode, [], d_coll_check, d_field, d_global_constraints, d_rnd_seed, d_catalog);
+    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_mode, [], d_coll_check, /*d_field,*/ d_global_constraints, d_rnd_seed, d_catalog);
 
     const d_aggregated_parts = data['aggregated_parts_sequence'].map(p_id => {
       const aggr_part_data = data['aggregated_parts'][String(p_id)];
