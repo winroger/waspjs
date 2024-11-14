@@ -11,9 +11,6 @@
     <a href="https://www.npmjs.com/package/webwaspjs">
         <img src="https://img.shields.io/npm/dm/webwaspjs.svg" alt="npm downloads">
     </a>
-    <a href="https://github.com/winroger/waspjs">
-        <img src="https://img.shields.io/github/stars/winroger/waspjs.svg" alt="GitHub stars">
-    </a>
     <a href="https://github.com/winroger/waspjs/LICENSE">
         <img src="https://img.shields.io/github/license/winroger/waspjs.svg" alt="license">
     </a>
@@ -24,9 +21,19 @@ WaspJS is a JavaScript library (LICENSE HERE) designed to perform discrete aggre
 
 This implementation is authored by Roger Winkler and builds upon the original concept of the python-based Grasshopper plug-in WASP by Andrea Rossi. For more information on WASP, visit the [original WASP repository](https://github.com/ar0551/Wasp).
 
-# Demo
+# [Demo](https://winroger.github.io/waspjs/)
 
 To get an idea of the library, you can play around with the [demo](https://winroger.github.io/waspjs/). The code for the demo can be found in the `test` folder. Example datasets can be found in the `public/examples` folder.
+
+# Usage
+
+## Installation
+
+You can install WaspJS via npm:
+
+```bash
+npm install webwaspjs
+```
 
 ## Running the Demo Locally
 
@@ -58,20 +65,6 @@ To run the demo locally, follow these steps:
     ```
 
 You should now see the demo running locally on your machine. 
-
-# Usage
-
-## Installation
-
-You can install WaspJS via npm:
-
-```bash
-npm install webwaspjs
-```
-
-## Example implementation
-
-*coming soon, for now take a look at the demo provided above*
 
 # Documentation
 
