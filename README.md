@@ -1,24 +1,63 @@
-<div style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #D9FF00; margin: 0 auto; display: flex; align-items: center; justify-content: center; background: black; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-    <img src="./public/static/icon.svg" alt="WaspJS Logo" width="50" height="50">
+<div style="width: 100%; height: auto; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+    <img src="./public/static/banner.svg" alt="WaspJS Banner" style="width: 100%; height: auto;">
 </div>
 <br>
 
-<h1 align="center">
-  WaspJS - Discrete Design for the Web
-</h1>
 
 <p align="center">
-WaspJS is a JavaScript library (MIT) designed to perform discrete aggregations.
+    <a href="https://www.npmjs.com/package/webwaspjs">
+        <img src="https://img.shields.io/npm/v/webwaspjs.svg" alt="npm version">
+    </a>
+    <a href="https://www.npmjs.com/package/webwaspjs">
+        <img src="https://img.shields.io/npm/dm/webwaspjs.svg" alt="npm downloads">
+    </a>
+    <a href="https://github.com/winroger/waspjs">
+        <img src="https://img.shields.io/github/stars/winroger/waspjs.svg" alt="GitHub stars">
+    </a>
+    <a href="https://github.com/winroger/waspjs/LICENSE">
+        <img src="https://img.shields.io/github/license/winroger/waspjs.svg" alt="license">
+    </a>
 </p>
 
 ---
+WaspJS is a JavaScript library (LICENSE HERE) designed to perform discrete aggregations on the Web.
 
 This implementation is authored by Roger Winkler and builds upon the original concept of the python-based Grasshopper plug-in WASP by Andrea Rossi. For more information on WASP, visit the [original WASP repository](https://github.com/ar0551/Wasp).
 
 # Demo
+
 To get an idea of the library, you can play around with the [demo](https://winroger.github.io/waspjs/). The code for the demo can be found in the `test` folder. Example datasets can be found in the `public/examples` folder.
 
---> Explain how to run the demo locally with git clone, npm and vite.
+## Running the Demo Locally
+
+To run the demo locally, follow these steps:
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/winroger/waspjs.git
+    cd waspjs
+    ```
+
+2. **Install the dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3. **Run the demo using Vite:**
+
+    ```bash
+    npm run dev
+    ```
+
+4. **Open your browser and navigate to:**
+
+    ```
+    http://localhost:3000
+    ```
+
+You should now see the demo running locally on your machine.
 
 # Installation
 
