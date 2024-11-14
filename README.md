@@ -1,5 +1,5 @@
 <div style="width: 100%; height: auto; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-    <img src="./public/static/banner.svg" alt="WaspJS Banner" style="width: 100%; height: auto;">
+    <img src="./public/graphics/banner.svg" alt="WaspJS Banner" style="width: 100%; height: auto;">
 </div>
 <br>
 
@@ -51,21 +51,27 @@ To run the demo locally, follow these steps:
     npm run dev
     ```
 
-4. **Open your browser and navigate to:**
+4. **Open your browser and navigate to the Local URL shown, e.g.**
 
     ```
-    http://localhost:3000
+    http://localhost:5173/waspjs/
     ```
 
-You should now see the demo running locally on your machine.
+You should now see the demo running locally on your machine. 
 
-# Installation
+# Usage
+
+## Installation
 
 You can install WaspJS via npm:
 
 ```bash
 npm install webwaspjs
 ```
+
+## Example implementation
+
+*coming soon, for now take a look at the demo provided above*
 
 # Documentation
 
