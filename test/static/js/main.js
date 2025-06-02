@@ -7,7 +7,7 @@ import { availableSets } from './config.js';
 let aggregation;
 let waspVisualization;
 
-const SELECTED_SET_NAME=  "Brio Rails Colliders Chamfered";
+const SELECTED_SET_NAME=  "Hexagon";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
