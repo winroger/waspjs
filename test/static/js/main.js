@@ -1,3 +1,5 @@
+//import { Visualizer } from '../../../src/waspVisualizer.js';
+//import { Aggregation } from '../../../src/waspAggregation.js';
 import { Visualizer } from 'webwaspjs';
 import { Aggregation } from 'webwaspjs';
 import { availableSets } from './config.js';
@@ -5,7 +7,7 @@ import { availableSets } from './config.js';
 let aggregation;
 let waspVisualization;
 
-const SELECTED_SET_NAME=  "Stick";
+const SELECTED_SET_NAME=  "Brio Rails Colliders Chamfered";
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
@@ -30,6 +32,7 @@ async function initializeWaspJs(set, count) {
     if (set.aggregationFile) {
         try {
             console.log("Loading aggregation from file: ", set.aggregationFile);
+            console.log("Path: ", set.Path);
             const response = await fetch(`${set.Path}${set.aggregationFile}`);
             const data = await response.json();
             aggregation = Aggregation.fromData(data);
