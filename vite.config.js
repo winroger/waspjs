@@ -1,10 +1,2 @@
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  root: 'test',
-  publicDir: '../public',
-  build: {
-    outDir: '../dist'
-  },
-  base: '/waspjs/',
-});
+import config from './apps/demo/vite.config.js';
+export default config;

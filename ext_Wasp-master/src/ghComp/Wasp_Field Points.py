@@ -1,0 +1,147 @@
+# Wasp: Discrete Design with Grasshopper plug-in (LGPL) initiated by Andrea Rossi
+# 
+# This file is part of Wasp.
+# 
+# Copyright (c) 2017-2023, Andrea Rossi <a.rossi.andrea@gmail.com>
+# Wasp is free software; you can redistribute it and/or modify 
+# it under the terms of the GNU Lesser General Public License as published 
+# by the Free Software Foundation; either version 3 of the License, 
+# or (at your option) any later version. 
+# 
+# Wasp is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+# GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public License
+# along with Wasp; If not, see <http://www.gnu.org/licenses/>.
+# 
+# @license LGPL-3.0 https://www.gnu.org/licenses/lgpl-3.0.html
+#
+# Early development of Wasp has been carried out by Andrea Rossi
+# as part of research on digital materials and discrete design at:
+# DDU Digital Design Unit - Prof. Oliver Tessmann
+# Technische Universitt Darmstadt
+
+
+#########################################################################
+##                            COMPONENT INFO                           ##
+#########################################################################
+
+"""
+Generate a 3d point grid to be fed to the field component
+-
+Provided by Wasp 0.6
+    Args:
+        BOU: List of geometries defining the boundaries of the field. Geometries must be closed breps or meshes.
+        RES: Resolution (Dimension of each cell)
+        PLN: OPTIONAL // Field base plane (WorldXY by default)
+    Returns:
+        E_FIELD: Empty field. Assign values with the "Wasp_Field" component
+        PTS: Field points
+"""
+
+ghenv.Component.Name = "Wasp_Field Points"
+ghenv.Component.NickName = 'FieldPts'
+ghenv.Component.Message = 'v0.6.001'
+ghenv.Component.IconDisplayMode = ghenv.Component.IconDisplayMode.application
+ghenv.Component.Category = "Wasp"
+ghenv.Component.SubCategory = "5 | Fields"
+try: ghenv.Component.AdditionalHelpFromDocStrings = "1"
+except: pass
+
+
+import sys
+import Rhino.Geometry as rg
+import Grasshopper as gh
+import math
+
+
+## add Wasp install directory to system path
+wasp_loaded = False
+ghcompfolder = gh.Folders.DefaultAssemblyFolder
+if ghcompfolder not in sys.path:
+    sys.path.append(ghcompfolder)
+try:
+    from wasp import __version__
+    wasp_loaded = True
+except:
+    msg = "Cannot import Wasp. Is the wasp folder available in " + ghcompfolder + "?"
+    ghenv.Component.AddRuntimeMessage(gh.Kernel.GH_RuntimeMessageLevel.Error, msg)
+
+## if Wasp is installed correctly, load the classes required by the component
+if wasp_loaded:
+    from wasp.field import Field
+
+
+def main(boundaries, resolution, base_plane):
+    
+    check_data = True
+    
+    ##check inputs
+    if len(boundaries) == 0:
+        check_data = False
+        msg = "No boundary geometry provided"
+        ghenv.Component.AddRuntimeMessage(gh.Kernel.GH_RuntimeMessageLevel.Warning, msg)
+    
+    if base_plane is None:
+        base_plane = rg.Plane.WorldXY
+    
+    if resolution is None and len(boundaries) != 0:
+        global_bbox = None
+        for geo in boundaries:
+            if global_bbox is None:
+                global_bbox = rg.Box(base_plane, geo)
+            else:
+                new_box = rg.Box(base_plane, geo)
+                for corner in new_box.GetCorners():
+                    global_bbox.Union(corner)
+        
+        x_size = global_bbox.X.Max - global_bbox.X.Min
+        
+        resolution = x_size / 10
+        
+        msg = "No resolution provided. Default resolution set to %f units"%(resolution)
+        ghenv.Component.AddRuntimeMessage(gh.Kernel.GH_RuntimeMessageLevel.Warning, msg)
+        
+    if check_data:
+        global_bbox = None
+        for geo in boundaries:
+            bbox = geo.GetBoundingBox(True)
+            
+            if global_bbox is None:
+                global_bbox = bbox
+            else:
+                global_bbox.Union(bbox)
+        
+        x_size = global_bbox.Max.X - global_bbox.Min.X
+        x_count = int(math.ceil(x_size / resolution)) + 1
+        y_size = global_bbox.Max.Y - global_bbox.Min.Y
+        y_count = int(math.ceil(y_size / resolution)) + 1
+        z_size = global_bbox.Max.Z - global_bbox.Min.Z
+        z_count = int(math.ceil(z_size / resolution)) + 1
+        
+        count = [x_count, y_count, z_count]
+        
+        pts = []
+        s_pt = global_bbox.Min
+        
+        for z in range(z_count):
+            for y in range(y_count):
+                for x in range(x_count):
+                    pt = rg.Point3d(s_pt.X + x*resolution, s_pt.Y + y*resolution, s_pt.Z + z*resolution)
+                    pts.append(pt)
+        
+        #empty_field = Field(None, pts, count, resolution, boundaries = boundaries)
+        empty_field = Field.from_boundaries(boundaries, resolution, _plane = base_plane)
+        return empty_field.pts, empty_field
+        
+    else:
+        return -1
+
+
+result = main(BOU, RES, PLN)
+
+if result != -1:
+    PTS = result[0]
+    E_FIELD = result[1]
