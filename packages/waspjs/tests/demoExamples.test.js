@@ -14,27 +14,12 @@ describe('demo availableSets assets', () => {
     const { availableSets } = await import(pathToFileURL(configPath).href);
 
     availableSets.forEach(set => {
-      const normalizedPath = set.Path.startsWith('/') ? set.Path.slice(1) : set.Path;
+      const normalizedPath = set.path.startsWith('/') ? set.path.slice(1) : set.path;
       const basePath = path.join(publicRoot, normalizedPath);
 
-      if (set.aggregationFile) {
-        const aggPath = path.join(basePath, set.aggregationFile);
-        expect(existsSync(aggPath)).toBe(true);
-        expect(() => JSON.parse(readFileSync(aggPath, 'utf-8'))).not.toThrow();
-      } else {
-        const partFiles = (set.partFiles || []).filter(Boolean);
-        partFiles.forEach(file => {
-          const partPath = path.join(basePath, file);
-          expect(existsSync(partPath)).toBe(true);
-          expect(() => JSON.parse(readFileSync(partPath, 'utf-8'))).not.toThrow();
-        });
-
-        if (set.ruleFile) {
-          const rulePath = path.join(basePath, set.ruleFile);
-          expect(existsSync(rulePath)).toBe(true);
-          expect(() => JSON.parse(readFileSync(rulePath, 'utf-8'))).not.toThrow();
-        }
-      }
+      const aggPath = path.join(basePath, set.aggregation);
+      expect(existsSync(aggPath)).toBe(true);
+      expect(() => JSON.parse(readFileSync(aggPath, 'utf-8'))).not.toThrow();
     });
   });
 });

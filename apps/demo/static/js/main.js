@@ -1,20 +1,23 @@
-//import { Visualizer } from '../../../src/waspVisualizer.js';
-//import { Aggregation } from '../../../src/waspAggregation.js';
-import { Visualizer, Aggregation, buildAggregationFromPartsAndRules } from 'webwaspjs';
-import { availableSets } from './config.js';
+import { Visualizer, Aggregation } from 'webwaspjs';
+import { availableSets, demoTheme } from './config.js';
 
 let aggregation;
 let waspVisualization;
+let statusEl;
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
 const aggregationCounterDisplay = document.getElementById('aggregationCounter');
 const setSelector = document.getElementById('setSelector');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const loadingText = document.getElementById('loadingText');
 
 document.addEventListener('DOMContentLoaded', () => {
+    applyTheme();
+    statusEl = document.getElementById('statusMessage');
     populateSetSelector();
     logAvailableSetsValidity();
-    const initialSetName = availableSets[0]?.Name;
+    const initialSetName = availableSets[0]?.name;
     if (!initialSetName) {
         throw new Error('No available sets configured');
     }
@@ -38,8 +41,8 @@ function populateSetSelector() {
     setSelector.innerHTML = '';
     availableSets.forEach((set, idx) => {
         const option = document.createElement('option');
-        option.value = set.Name;
-        option.textContent = set.Name;
+        option.value = set.name;
+        option.textContent = set.name;
         if (idx === 0) {
             option.selected = true;
         }
@@ -48,7 +51,7 @@ function populateSetSelector() {
 }
 
 async function loadSet(setName) {
-    const set = availableSets.find(s => s.Name === setName);
+    const set = availableSets.find(s => s.name === setName);
     if (!set) {
         console.error(`Set with name ${setName} not found`);
         return;
@@ -59,44 +62,27 @@ async function loadSet(setName) {
     const targetCount = Number(aggregationSlider.value);
 
     try {
-        if (set.aggregationFile) {
-            const data = await loadJson(`${set.Path}${set.aggregationFile}`);
-            aggregation = Aggregation.fromData(data);
-        } else {
-            const partsData = await loadPartData(set);
-            const rulesData = set.ruleFile ? await loadJson(`${set.Path}${set.ruleFile}`) : null;
-            const result = buildAggregationFromPartsAndRules({
-                name: set.Name,
-                partsData,
-                rulesData,
-                autoGenerateRules: !set.ruleFile,
-                allowSelf: true,
-                allowSelfConnection: false,
-                useTypes: true,
-            });
-            aggregation = result.aggregation;
+        if (!set.aggregation) {
+            throw new Error(`Set ${set.name} is missing aggregation filename`);
         }
 
+        setLoading(true, `Loading ${set.name}…`);
+        const data = await loadJson(`${set.path}${set.aggregation}`);
+        aggregation = Aggregation.fromData(data);
+
         aggregation.modifyParts(targetCount, waspVisualization);
+        setStatus(`Loaded ${set.name}`, 'success');
     } catch (error) {
         console.error('Error loading set:', error);
+        setStatus(`Failed to load ${set.name}: ${error.message}`, 'error');
     }
+    setLoading(false);
 }
 
 function resetVisualizer() {
     const container = document.querySelector('#threejs-container');
     container.innerHTML = '';
     waspVisualization = new Visualizer('#threejs-container');
-}
-
-async function loadPartData(set) {
-    const parts = [];
-    for (const fileName of set.partFiles) {
-        if (!fileName) continue;
-        const data = await loadJson(`${set.Path}${fileName}`);
-        parts.push(data);
-    }
-    return parts;
 }
 
 async function loadJson(path) {
@@ -109,7 +95,26 @@ async function loadJson(path) {
 
 function logAvailableSetsValidity() {
     availableSets.forEach(set => {
-        const mode = set.aggregationFile ? 'aggregation' : (set.ruleFile ? 'parts+rules' : 'parts (auto rules)');
-        console.log(`[demo] Set: ${set.Name} | mode: ${mode} | path: ${set.Path}`);
+        console.log(`[demo] Set: ${set.name} | mode: aggregation | path: ${set.path}${set.aggregation ?? ''}`);
+    });
+}
+
+function setLoading(isLoading, message = '') {
+    if (!loadingOverlay || !loadingText) return;
+    loadingOverlay.style.opacity = isLoading ? '1' : '0';
+    loadingOverlay.style.pointerEvents = isLoading ? 'auto' : 'none';
+    loadingText.textContent = message;
+}
+
+function setStatus(message, variant = 'info') {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.dataset.variant = variant;
+}
+
+function applyTheme() {
+    const root = document.documentElement;
+    Object.entries(demoTheme).forEach(([key, value]) => {
+        root.style.setProperty(`--${key}`, value);
     });
 }
