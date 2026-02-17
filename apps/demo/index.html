@@ -19,7 +19,7 @@
  
 </head>
 <body class="page">
-  <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand centered">
       <a class="navbar-item" aria-label="WaspJS home">
         <img src="static/icons/logo.png" alt="WaspJS logo" class="brand-mark">
@@ -27,30 +27,53 @@
     </div>
   </nav>
 
-  <main class="viewport" id="threejs-container-parent">
-    <div id="threejs-container" class="canvas"></div>
-    <div id="loadingOverlay" class="loading" aria-live="polite" aria-busy="true">
-      <div class="loading__spinner"></div>
-      <p id="loadingText" class="loading__text"></p>
-    </div>
-  </main>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Available datasets">
+      <div class="sidebar__header">Datasets</div>
+      <div class="sidebar__list" id="setList"></div>
+    </aside>
 
-  <section class="controls">
-    <div class="controls__row">
-      <label class="controls__label" for="setSelector">Dataset</label>
-      <div class="controls__select select is-primary">
-        <select id="setSelector" aria-label="Available aggregation sets"></select>
+    <main class="workspace">
+      <div class="viewer" id="viewerArea">
+        <div class="viewer__topbar">
+          <div class="mode-toggle" role="group" aria-label="Viewer mode">
+            <button class="mode-toggle__btn is-active" data-mode="aggregation">Aggregation</button>
+            <button class="mode-toggle__btn" data-mode="parts">Parts</button>
+          </div>
+        </div>
+        <div id="agg-viewer" class="canvas" aria-label="Aggregation viewer"></div>
+        <div id="part-viewer" class="canvas is-hidden" aria-label="Part viewer"></div>
+        <div id="partOverlay" class="part-overlay is-hidden">
+          <button class="pill pill--ghost part-overlay__btn" id="prevPart" aria-label="Previous part">◀</button>
+          <button class="pill pill--ghost part-overlay__btn" id="nextPart" aria-label="Next part">▶</button>
+        </div>
+        <div id="partCaption" class="part-caption is-hidden">
+          <div id="partCaptionName" class="part-caption__name"></div>
+          <div id="partCaptionCounter" class="part-caption__counter"></div>
+        </div>
+        <div id="loadingOverlay" class="loading" aria-live="polite" aria-busy="true">
+          <div class="loading__spinner"></div>
+          <p id="loadingText" class="loading__text"></p>
+        </div>
       </div>
-    </div>
 
-    <div class="controls__row">
-      <label class="controls__label" for="aggregationSlider">Parts</label>
-      <input id="aggregationSlider" type="range" min="0" max="200" value="100" class="slider is-rounded is-primary" aria-valuemin="0" aria-valuemax="200" aria-valuenow="100">
-      <span id="aggregationCounter" class="controls__value" aria-live="polite"></span>
-    </div>
-
-    <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
-  </section>
+      <section class="controls">
+        <div class="controls__row" id="aggregationControls">
+          <label class="controls__label" for="aggregationSlider">Parts</label>
+          <input id="aggregationSlider" type="range" min="0" max="200" value="100" class="slider is-rounded is-primary" aria-valuemin="0" aria-valuemax="200" aria-valuenow="100">
+          <span id="aggregationCounter" class="controls__value" aria-live="polite"></span>
+        </div>
+        <div class="controls__row is-hidden" id="partColorControls">
+          <label class="controls__label" for="partColorInput">Part Color</label>
+          <div class="color-picker">
+            <input id="partColorInput" type="color" value="#ffffff" aria-label="Pick part color">
+            <span id="partColorValue" class="color-value">#FFFFFF</span>
+          </div>
+          <span id="partColorName" class="controls__value controls__value--center"></span>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script type="module" src="static/js/main.js"></script>
 </body>

@@ -1,25 +1,26 @@
-export const availableSets = [
-    {
-        name: 'Corner',
-        path: 'examples/example_corner/',
-        aggregation: 'aggregation.json',
-    },
-    {
-        name: 'Stick',
-        path: 'examples/example_stick/',
-        aggregation: 'aggregation.json',
-    },
-    {
-        name: 'Brio Rails Colliders Chamfered',
-        path: 'examples/example_brio_chamfer/',
-        aggregation: 'aggregation.json',
-    },
-];
+const exampleConfigs = import.meta.glob('../../../../public/examples/**/config.json', {
+	eager: true,
+});
 
-export const demoTheme = {
-    accent: '#d9ff00',
-    background: '#0f0f0f',
-    surface: '#151515',
-    text: '#f5f5f5',
-    muted: '#7f7f7f',
+const normalizeEntry = (entry, slug) => {
+	const data = entry?.default ?? entry ?? {};
+	return {
+		slug,
+		name: data.name || slug,
+		description: data.description || '',
+		author: data.author || '',
+		path: `examples/${slug}/`,
+		aggregation: data.aggregation || 'aggregation.json',
+		colors: data.colors || data.palette || [],
+		byPart: data.byPart || {},
+	};
 };
+
+export const availableSets = Object.entries(exampleConfigs)
+	.map(([filepath, entry]) => {
+		const match = filepath.match(/public\/examples\/([^/]+)\/config\.json$/);
+		if (!match) return null;
+		return normalizeEntry(entry, match[1]);
+	})
+	.filter(Boolean)
+	.sort((a, b) => a.name.localeCompare(b.name));
