@@ -34,6 +34,8 @@ npm run test           # vitest unit tests for the library
 npm run build          # build library + demo
 ```
 
+Node 18+ is required (CI and builds run on Node 20).
+
 Install the library directly in your own project:
 
 ```bash
