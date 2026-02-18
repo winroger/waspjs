@@ -20,7 +20,7 @@
 </head>
 <body class="page">
   <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand centered">
+    <div class="navbar-brand">
       <a class="navbar-item" aria-label="WaspJS home">
         <img src="static/icons/logo.png" alt="WaspJS logo" class="brand-mark">
       </a>  
@@ -41,6 +41,7 @@
             <button class="mode-toggle__btn" data-mode="parts">Parts</button>
           </div>
         </div>
+        <button id="infoButton" class="info-button" aria-label="Show set info">i</button>
         <div id="agg-viewer" class="canvas" aria-label="Aggregation viewer"></div>
         <div id="part-viewer" class="canvas is-hidden" aria-label="Part viewer"></div>
         <div id="partOverlay" class="part-overlay is-hidden">
@@ -54,6 +55,28 @@
         <div id="loadingOverlay" class="loading" aria-live="polite" aria-busy="true">
           <div class="loading__spinner"></div>
           <p id="loadingText" class="loading__text"></p>
+        </div>
+      </div>
+
+      <div id="infoModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="infoModalTitle" aria-describedby="infoModalDesc">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+          <button class="modal__close" id="infoModalClose" aria-label="Close info">×</button>
+          <h2 id="infoModalTitle" class="modal__title"></h2>
+          <dl class="modal__meta">
+            <div>
+              <dt>Set</dt>
+              <dd id="infoModalSet"></dd>
+            </div>
+            <div>
+              <dt>Description</dt>
+              <dd id="infoModalDesc"></dd>
+            </div>
+            <div>
+              <dt>Author</dt>
+              <dd id="infoModalAuthor"></dd>
+            </div>
+          </dl>
         </div>
       </div>
 
@@ -71,6 +94,7 @@
           </div>
           <span id="partColorName" class="controls__value controls__value--center"></span>
         </div>
+        <span id="setNameLabel" class="set-name-label"></span>
       </section>
     </main>
   </div>

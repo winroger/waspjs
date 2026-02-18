@@ -10,7 +10,34 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
+  "description": "JavaScript port of WASP for discrete aggregations (Three.js)",
+  "keywords": [
+    "wasp",
+    "aggregation",
+    "threejs",
+    "discrete",
+    "geometry"
+  ],
+  "author": "Roger Winkler",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winroger/waspjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/winroger/waspjs/issues"
+  },
+  "homepage": "https://github.com/winroger/waspjs#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup"
   },

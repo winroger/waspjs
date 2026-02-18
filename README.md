@@ -40,6 +40,8 @@ Install the library directly in your own project:
 npm install webwaspjs
 ```
 
+**TypeScript:** Currently ships JavaScript only (no bundled d.ts). Use `// @ts-check` or your own ambient types if needed.
+
 ## Core concepts
 
 - `Aggregation` grows assemblies using connection `Rule`s and collision checks.

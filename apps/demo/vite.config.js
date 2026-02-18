@@ -11,9 +11,11 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: resolve(__dirname, '../../dist')
   },
-  base: mode === 'production' ? '/waspjs/' : '/',
+  // Allow overriding base for external hosting (e.g., GH Pages) via env.
+  base: process.env.VITE_BASE_PATH || (mode === 'production' ? '/waspjs/' : '/'),
   resolve: {
     alias: {
+      // When the demo lives in-repo, point to source; in external repo, remove this alias to consume the published package.
       webwaspjs: resolve(__dirname, '../../packages/waspjs/src/index.js')
     }
   }

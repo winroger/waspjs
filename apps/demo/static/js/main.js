@@ -10,6 +10,7 @@ let partsList = [];
 let partIndex = 0;
 let currentColors = null;
 let currentMode = 'aggregation';
+let currentSet = null;
 
 // Cache DOM elements
 const aggregationSlider = document.getElementById('aggregationSlider');
@@ -27,10 +28,18 @@ const partOverlay = document.getElementById('partOverlay');
 const partCaption = document.getElementById('partCaption');
 const partCaptionName = document.getElementById('partCaptionName');
 const partCaptionCounter = document.getElementById('partCaptionCounter');
+const setNameLabel = document.getElementById('setNameLabel');
 const prevPartBtn = document.getElementById('prevPart');
 const nextPartBtn = document.getElementById('nextPart');
 const aggCanvas = document.getElementById('agg-viewer');
 const partCanvas = document.getElementById('part-viewer');
+const infoButton = document.getElementById('infoButton');
+const infoModal = document.getElementById('infoModal');
+const infoModalClose = document.getElementById('infoModalClose');
+const infoModalTitle = document.getElementById('infoModalTitle');
+const infoModalSet = document.getElementById('infoModalSet');
+const infoModalDesc = document.getElementById('infoModalDesc');
+const infoModalAuthor = document.getElementById('infoModalAuthor');
 const setPreviewStates = {};
 const setPartsCache = {};
 
@@ -45,12 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initialSetName = availableSets[0].name;
     aggregationCounterDisplay.textContent = aggregationSlider.value;
+    setNameLabel.textContent = initialSetName;
     loadSet(initialSetName);
     warmAllPreviews();
 });
 
 modeButtons.forEach(btn => {
     btn.addEventListener('click', () => setMode(btn.dataset.mode));
+});
+
+infoButton?.addEventListener('click', openInfoModal);
+infoModalClose?.addEventListener('click', closeInfoModal);
+infoModal?.addEventListener('click', evt => {
+    if (evt.target === infoModal || evt.target.classList.contains('modal__backdrop')) {
+        closeInfoModal();
+    }
+});
+document.addEventListener('keydown', evt => {
+    if (evt.key === 'Escape' && infoModal?.classList.contains('is-open')) closeInfoModal();
 });
 
 aggregationSlider.addEventListener('input', event => {
@@ -113,6 +134,8 @@ async function loadSet(setName) {
         return;
     }
 
+    currentSet = set;
+
     aggregation = null;
     aggregationData = null;
     partsList = [];
@@ -141,6 +164,8 @@ async function loadSet(setName) {
         frameAggregationScene(waspVisualization);
         renderSetPreview(set.name, 0);
         updateSetPreviewNav(set.name);
+        if (setNameLabel) setNameLabel.textContent = set.name;
+        populateInfoModal();
         // loaded successfully
         renderPart(partIndex);
     } catch (error) {
@@ -444,4 +469,21 @@ async function warmPreview(set) {
     } catch (err) {
         console.warn(`Preview warm failed for ${set.name}: ${err.message}`);
     }
+}
+
+function populateInfoModal() {
+    if (!currentSet || !infoModal) return;
+    infoModalTitle.textContent = currentSet.name || 'Set Info';
+    infoModalSet.textContent = currentSet.name || '—';
+    infoModalDesc.textContent = currentSet.description || '—';
+    infoModalAuthor.textContent = currentSet.author || '—';
+}
+
+function openInfoModal() {
+    populateInfoModal();
+    infoModal?.classList.add('is-open');
+}
+
+function closeInfoModal() {
+    infoModal?.classList.remove('is-open');
 }

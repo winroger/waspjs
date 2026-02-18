@@ -29,8 +29,8 @@ body.page {
   padding-inline: 1rem;
 }
 
-.navbar .centered {
-  margin: 0 auto;
+.navbar .navbar-brand {
+  margin: 0;
 }
 
 .brand-mark {
@@ -79,8 +79,9 @@ body.page {
   border-radius: 12px;
   transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
   cursor: pointer;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 
@@ -97,7 +98,7 @@ body.page {
 
 .set-card__preview {
   position: relative;
-  height: 200px;
+  flex: 1;
   background: radial-gradient(120% 120% at 50% 50%, rgba(255,255,255,0.04), rgba(0,0,0,0.4));
 }
 
@@ -198,9 +199,11 @@ body.page {
 }
 
 .controls__value--center {
-  text-align: center;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  display: none;
+}
+
+#partColorControls {
+  grid-template-columns: 110px auto;
 }
 
 .color-picker {
@@ -226,6 +229,10 @@ body.page {
   color: var(--text);
 }
 
+.set-name-label {
+  display: none;
+}
+
 .viewer__topbar {
   position: absolute;
   top: 12px;
@@ -235,6 +242,100 @@ body.page {
   display: flex;
   justify-content: center;
   pointer-events: auto;
+}
+
+.info-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.55);
+  color: var(--text);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  transition: border-color 120ms ease, transform 120ms ease, background 120ms ease;
+}
+
+.info-button:hover {
+  border-color: rgba(217,255,0,0.7);
+  background: rgba(0,0,0,0.7);
+  transform: translateY(-1px);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+}
+
+.modal__content {
+  position: relative;
+  z-index: 1;
+  background: #0f0f0f;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem 1.5rem;
+  width: min(420px, 90vw);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.16);
+  color: var(--text);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.01em;
+}
+
+.modal__meta {
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.modal__meta dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.modal__meta dd {
+  margin: 0.15rem 0 0;
+  color: var(--text);
+  font-weight: 600;
 }
 
 .canvas {
@@ -278,10 +379,12 @@ body.page {
 .controls {
   background: var(--surface);
   border-top: 1px solid rgba(255,255,255,0.08);
-  padding: 1rem clamp(1rem, 2vw, 2rem) 1.5rem;
+  padding: 0.75rem clamp(1rem, 2vw, 2rem) 1rem;
   display: grid;
   gap: 0.75rem;
   box-shadow: 0 -10px 40px rgba(0,0,0,0.35);
+  position: relative;
+  min-height: 76px;
 }
 
 .controls__row {
