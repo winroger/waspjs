@@ -4,13 +4,14 @@ node_modules/
 # Build output
 dist/
 
-# GitHub Actions workflows
-.github/workflows
-
 # macOS system files
 .DS_Store
 
 # npm ignore file
 .npmignore
+
+# Copilot instructions
+copilot-instructions.md
+.github/copilot-instructions.md
 
 ext_Wasp-master/
