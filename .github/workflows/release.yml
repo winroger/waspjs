@@ -40,5 +40,7 @@ jobs:
 
       - name: Publish webwaspjs (Trusted Publishing)
         run: |
+          unset NODE_AUTH_TOKEN NPM_CONFIG_USERCONFIG
+          rm -f ~/.npmrc ${NPM_CONFIG_USERCONFIG:-} || true
           npm config delete //registry.npmjs.org/:_authToken || true
           npm publish --workspace webwaspjs --access public --provenance
