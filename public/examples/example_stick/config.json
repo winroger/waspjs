@@ -1,0 +1,10 @@
+{
+  "name": "Stacked Sticks",
+  "description": "Stick aggregation example from WASP basic examples.",
+  "author": "Andrea Rossi",
+  "aggregation": "aggregation.json",
+  "byPart": {
+    "BRANCH": "#39ff14",
+    "STICK": "#00e5ff"
+  }
+}

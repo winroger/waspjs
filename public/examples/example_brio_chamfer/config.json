@@ -1,0 +1,13 @@
+{
+  "name": "Brio Rails",
+  "description": "Brio rails aggregation with chamfered colliders. Created this example during the development of WaspJS.",
+  "author": "Roger Winkler",
+  "aggregation": "aggregation.json",
+  "byPart": {
+    "YSHAPE": "#ff29ff",
+    "CORNER2": "#ff4dff",
+    "STICK": "#ff73ff",
+    "CORNER1": "#ff98ff",
+    "BRIDGE": "#ffb4ff"
+  }
+}

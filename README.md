@@ -3,7 +3,6 @@
 </div>
 <br>
 
-
 <p align="center">
     <a href="https://www.npmjs.com/package/webwaspjs">
         <img src="https://img.shields.io/npm/v/webwaspjs.svg" alt="npm version">
@@ -17,56 +16,49 @@
 </p>
 
 ---
-WaspJS is a JavaScript library (LICENSE HERE) designed to perform discrete aggregations on the Web.
+WaspJS is a JavaScript port of the WASP Grasshopper plugin for discrete aggregations in the browser. The monorepo ships the core library `webwaspjs` and a Vite demo showcasing it.
 
-This implementation is authored by Roger Winkler and builds upon the original concept of the python-based Grasshopper plug-in WASP by Andrea Rossi. For more information on WASP, visit the [original WASP repository](https://github.com/ar0551/Wasp).
+This implementation is authored by Roger Winkler and builds upon the original concept of the Python-based Grasshopper plug‑in WASP by Andrea Rossi. For more information on WASP, visit the [original WASP repository](https://github.com/ar0551/Wasp).
 
-# [Demo](https://winroger.github.io/waspjs/)
+## Packages and apps
 
-To get an idea of the library, you can play around with the [demo](https://winroger.github.io/waspjs/). The code for the demo can be found in the `test` folder. Example datasets can be found in the `public/examples` folder.
+- Library: [packages/waspjs](packages/waspjs) publishes `webwaspjs` (ESM + CJS).
+- Demo: [apps/demo](apps/demo) is a Vite app that loads example aggregations from [public/examples](public/examples) via [apps/demo/static/js/config.js](apps/demo/static/js/config.js).
 
-# Usage
+## Quickstart
 
-## Installation
+```bash
+npm install
+npm run dev            # start demo (Vite)
+npm run test           # vitest unit tests for the library
+npm run build          # build library + demo
+```
 
-You can install WaspJS via npm:
+Install the library directly in your own project:
 
 ```bash
 npm install webwaspjs
 ```
 
-# Documentation
+**TypeScript:** Currently ships JavaScript only (no bundled d.ts). Use `// @ts-check` or your own ambient types if needed.
 
-## Current Classes
+## Core concepts
 
-The `Visualizer` class is used to visualize the aggregation and perform other operations. It utilizes [Three.js](https://threejs.org/), a popular JavaScript library for 3D graphics. Additionally, the [three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh) library is used for collision detection. The [camera-controls](https://github.com/yomotsu/camera-controls) library is employed to change the scene's up axis from Y (default in Three.js) to Z (default in Rhino).
+- `Aggregation` grows assemblies using connection `Rule`s and collision checks.
+- `Part` stores geometry, connection planes, and colliders; active connections reset per rule set.
+- `Connection` defines a plane + type on a part; `generateRulesTable` maps rules to active connections.
+- `Plane` keeps orthonormal axes and applies transforms; `newPlaneToPlane` computes part placement transforms.
+- `Collider` can be single or per-connection; intersection uses `three-mesh-bvh` for speed.
+- `Visualizer` wraps Three.js + camera-controls, enforces Z-up, and renders aggregated meshes.
 
-The `Aggregation` class in holds the initial parts, rules, and the aggregated parts.
+## Demo data
 
-The `Part` class contains all relevant information to describe a part, including connections to other parts and colliders.
+`availableSets` in [apps/demo/static/js/config.js](apps/demo/static/js/config.js) list example aggregations. Files live under [public/examples](public/examples); tests ensure referenced JSON parses.
 
-The `Connection` class represents a possible connection plane and holds its current status.
+## License
 
-The `Plane` class is introduced to hold information similar to the logic of a Grasshopper plane. This is necessary because the concept of a plane in Rhino3D (origin, X- and Y-axis) does not exist in Three.js (a plane in Three.js is a plane surface).
+This project is licensed under MIT. See [LICENSE.txt](LICENSE.txt) for details.
 
-The `Collider` class is used for checking collisions based on simplified geometries before adding the original geometry to the aggregation. For collision detection, the [three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh) library is used.
+## Contact
 
-The `Rule` class defines which part and connection type can connect to which others.
-
-# License
-
-## Option 1: MIT
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-This project is inspired by the original WASP software, which was developed in Python and is licensed under the GNU Lesser General Public License, Version 3, 29 June 2007. For more information on the original WASP software, visit the [original WASP repository](https://github.com/ar0551/Wasp).
-
-## Option 2: LGPL
-
-This project is licensed under the GNU Lesser General Public License, Version 3, 29 June 2007. See the [LICENSE](LICENSE) file for details.
-
-This project is a reverse-engineered version of the original WASP software, which was developed in Python and is licensed under the GNU Lesser General Public License, Version 3, 29 June 2007. For more information on the original WASP software, visit the [original WASP repository](https://github.com/ar0551/Wasp).
-
-# Contact
-
-For any questions or feedback, get in touch via [hello@rogerwinkler.de](mailto:hello@rogerwinkler.de).
+Questions or feedback: [hello@rogerwinkler.de](mailto:hello@rogerwinkler.de).

@@ -12,3 +12,5 @@ dist/
 
 # npm ignore file
 .npmignore
+
+ext_Wasp-master/

@@ -1,0 +1,9 @@
+{
+  "name": "Corner Shape",
+  "description": "Corner aggregation example.",
+  "author": "Andrea Rossi",
+  "aggregation": "aggregation.json",
+  "byPart": {
+    "L": "#00e5ff"
+  }
+}

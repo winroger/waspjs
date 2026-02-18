@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaspJS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" href="/static/icons/fav.svg" type="image/svg+xml">
+
+
+   <!-- Open Graph Meta Tags -->
+   <meta property="og:title" content="WaspJS">
+   <meta property="og:description" content="Explore the WaspJS Playground with the BRIO example aggregation.">
+   <meta property="og:image" content="https://raw.githubusercontent.com/winroger/waspjs/refs/heads/main/test/static/img/ogimage.png">
+   <meta property="og:url" content="https://winroger.github.io/waspjs/">
+   <meta property="og:type" content="website">
+   <meta property="og:site_name" content="WaspJS">
+ 
+</head>
+<body class="page">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" aria-label="WaspJS home">
+        <img src="static/icons/logo.png" alt="WaspJS logo" class="brand-mark">
+      </a>  
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Available datasets">
+      <div class="sidebar__header">Datasets</div>
+      <div class="sidebar__list" id="setList"></div>
+    </aside>
+
+    <main class="workspace">
+      <div class="viewer" id="viewerArea">
+        <div class="viewer__topbar">
+          <div class="mode-toggle" role="group" aria-label="Viewer mode">
+            <button class="mode-toggle__btn is-active" data-mode="aggregation">Aggregation</button>
+            <button class="mode-toggle__btn" data-mode="parts">Parts</button>
+          </div>
+        </div>
+        <button id="infoButton" class="info-button" aria-label="Show set info">i</button>
+        <div id="agg-viewer" class="canvas" aria-label="Aggregation viewer"></div>
+        <div id="part-viewer" class="canvas is-hidden" aria-label="Part viewer"></div>
+        <div id="partOverlay" class="part-overlay is-hidden">
+          <button class="pill pill--ghost part-overlay__btn" id="prevPart" aria-label="Previous part">◀</button>
+          <button class="pill pill--ghost part-overlay__btn" id="nextPart" aria-label="Next part">▶</button>
+        </div>
+        <div id="partCaption" class="part-caption is-hidden">
+          <div id="partCaptionName" class="part-caption__name"></div>
+          <div id="partCaptionCounter" class="part-caption__counter"></div>
+        </div>
+        <div id="loadingOverlay" class="loading" aria-live="polite" aria-busy="true">
+          <div class="loading__spinner"></div>
+          <p id="loadingText" class="loading__text"></p>
+        </div>
+      </div>
+
+      <div id="infoModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="infoModalTitle" aria-describedby="infoModalDesc">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+          <button class="modal__close" id="infoModalClose" aria-label="Close info">×</button>
+          <h2 id="infoModalTitle" class="modal__title"></h2>
+          <dl class="modal__meta">
+            <div>
+              <dt>Set</dt>
+              <dd id="infoModalSet"></dd>
+            </div>
+            <div>
+              <dt>Description</dt>
+              <dd id="infoModalDesc"></dd>
+            </div>
+            <div>
+              <dt>Author</dt>
+              <dd id="infoModalAuthor"></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <section class="controls">
+        <div class="controls__row" id="aggregationControls">
+          <label class="controls__label" for="aggregationSlider">Parts</label>
+          <input id="aggregationSlider" type="range" min="0" max="200" value="100" class="slider is-rounded is-primary" aria-valuemin="0" aria-valuemax="200" aria-valuenow="100">
+          <span id="aggregationCounter" class="controls__value" aria-live="polite"></span>
+        </div>
+        <div class="controls__row is-hidden" id="partColorControls">
+          <label class="controls__label" for="partColorInput">Part Color</label>
+          <div class="color-picker">
+            <input id="partColorInput" type="color" value="#ffffff" aria-label="Pick part color">
+            <span id="partColorValue" class="color-value">#FFFFFF</span>
+          </div>
+          <span id="partColorName" class="controls__value controls__value--center"></span>
+        </div>
+        <span id="setNameLabel" class="set-name-label"></span>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="static/js/main.js"></script>
+</body>
+</html>
