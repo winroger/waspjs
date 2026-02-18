@@ -23,6 +23,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           always-auth: false
 
+      - name: Upgrade npm (ensure OIDC provenance support)
+        run: npm i -g npm@10.9.0
+
       - name: Install dependencies
         run: npm ci
 
@@ -36,8 +39,6 @@ jobs:
         run: npm run build:lib
 
       - name: Publish webwaspjs (Trusted Publishing)
-        env:
-          NODE_AUTH_TOKEN: ''
         run: |
           npm config delete //registry.npmjs.org/:_authToken || true
           npm publish --workspace webwaspjs --access public --provenance
