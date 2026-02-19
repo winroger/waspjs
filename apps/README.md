@@ -1,6 +1,6 @@
 # Apps
 
-The Vite demo lives in [apps/demo](demo). It loads aggregation examples from [public/examples](../public/examples) via [apps/demo/static/js/config.js](demo/static/js/config.js).
+The Vite demo lives in [apps/demo](demo). It loads aggregation examples from [public/examples](../public/examples) via [apps/demo/src/config/availableSets.ts](demo/src/config/availableSets.ts).
 
 Useful commands from repo root:
 - `npm run dev` – start the demo (Vite dev server)

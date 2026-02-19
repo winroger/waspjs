@@ -4,7 +4,7 @@ import prettierConfig from 'eslint-config-prettier';
 
 export default [
   {
-    ignores: ['node_modules/**', 'dist/**', 'public/**', 'ext_Wasp-master/**', 'apps/demo/static/**'],
+    ignores: ['node_modules/**', 'dist/**', 'public/**', 'ext_Wasp-master/**'],
   },
   {
     languageOptions: {

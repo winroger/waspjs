@@ -23,14 +23,14 @@ This implementation is authored by Roger Winkler and builds upon the original co
 ## Packages and apps
 
 - Library: [packages/waspjs](packages/waspjs) publishes `webwaspjs` (ESM + CJS).
-- Demo: [apps/demo](apps/demo) is a Vite app that loads example aggregations from [public/examples](public/examples) via [apps/demo/static/js/config.js](apps/demo/static/js/config.js).
+- Demo: [apps/demo](apps/demo) is a React + Vite app that loads example aggregations from [public/examples](public/examples) via [apps/demo/src/config/availableSets.ts](apps/demo/src/config/availableSets.ts).
 
 ## Quickstart
 
 ```bash
 npm install
 npm run dev            # start demo (Vite)
-npm run test           # vitest unit tests for the library
+npm run test           # vitest tests for library + demo
 npm run build          # build library + demo
 ```
 
@@ -55,7 +55,17 @@ npm install webwaspjs
 
 ## Demo data
 
-`availableSets` in [apps/demo/static/js/config.js](apps/demo/static/js/config.js) list example aggregations. Files live under [public/examples](public/examples); tests ensure referenced JSON parses.
+`availableSets` in [apps/demo/src/config/availableSets.ts](apps/demo/src/config/availableSets.ts) list example aggregations. Files live under [public/examples](public/examples); tests ensure referenced JSON parses.
+
+## Demo architecture (current)
+
+- React entry: [apps/demo/src/main.tsx](apps/demo/src/main.tsx) and [apps/demo/src/App.tsx](apps/demo/src/App.tsx)
+- Runtime adapter: [apps/demo/src/lib/demoRuntime.ts](apps/demo/src/lib/demoRuntime.ts)
+- webwaspjs integration wrapper: [apps/demo/src/lib/aggregationService.ts](apps/demo/src/lib/aggregationService.ts)
+- App state reducer: [apps/demo/src/state/appState.ts](apps/demo/src/state/appState.ts)
+- Bootstrap effect: [apps/demo/src/hooks/useDemoBootstrap.ts](apps/demo/src/hooks/useDemoBootstrap.ts)
+- Component tree: [apps/demo/src/components](apps/demo/src/components)
+- Demo tests: [apps/demo/src](apps/demo/src)
 
 ## License
 

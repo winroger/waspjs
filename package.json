@@ -9,7 +9,9 @@
     "build:lib": "npm run build --workspace webwaspjs",
     "build:demo": "vite build --config apps/demo/vite.config.js",
     "serve": "vite preview --config apps/demo/vite.config.js",
-    "test": "vitest --root packages/waspjs",
+    "test": "npm run test:lib && npm run test:demo",
+    "test:lib": "vitest --run --root packages/waspjs",
+    "test:demo": "vitest --run --config apps/demo/vitest.config.ts",
     "test:watch": "vitest watch --root packages/waspjs",
     "lint": "eslint \"packages/waspjs/{src,tests}/**/*.{js,jsx,mjs}\"",
     "format": "prettier -w ."

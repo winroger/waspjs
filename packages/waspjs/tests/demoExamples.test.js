@@ -1,23 +1,29 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..', '..', '..');
 const publicRoot = path.join(repoRoot, 'public');
-const configPath = path.join(repoRoot, 'apps', 'demo', 'static', 'js', 'config.js');
+const examplesRoot = path.join(publicRoot, 'examples');
 
 describe('demo availableSets assets', () => {
-  it('all referenced files exist and parse as JSON', async () => {
-    const { availableSets } = await import(pathToFileURL(configPath).href);
+  it('all referenced files exist and parse as JSON', () => {
+    const setDirs = readdirSync(examplesRoot, { withFileTypes: true })
+      .filter(entry => entry.isDirectory())
+      .map(entry => entry.name);
 
-    availableSets.forEach(set => {
-      const normalizedPath = set.path.startsWith('/') ? set.path.slice(1) : set.path;
-      const basePath = path.join(publicRoot, normalizedPath);
+    setDirs.forEach(slug => {
+      const configFile = path.join(examplesRoot, slug, 'config.json');
+      expect(existsSync(configFile)).toBe(true);
 
-      const aggPath = path.join(basePath, set.aggregation);
+      const config = JSON.parse(readFileSync(configFile, 'utf-8'));
+      const aggregationName = config.aggregation || 'aggregation.json';
+      const basePath = path.join(examplesRoot, slug);
+
+      const aggPath = path.join(basePath, aggregationName);
       expect(existsSync(aggPath)).toBe(true);
       expect(() => JSON.parse(readFileSync(aggPath, 'utf-8'))).not.toThrow();
     });
