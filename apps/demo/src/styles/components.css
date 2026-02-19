@@ -235,6 +235,7 @@
   grid-template-columns: 110px 1fr auto;
   align-items: center;
   gap: var(--space-3);
+  width: 100%;
 }
 
 .controls__label {

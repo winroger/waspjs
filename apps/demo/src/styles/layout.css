@@ -57,4 +57,6 @@
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35);
   padding: var(--space-3) clamp(1rem, 2vw, 2rem) calc(var(--space-3) + env(safe-area-inset-bottom));
   min-height: 78px;
+  display: flex;
+  align-items: center;
 }
