@@ -6,6 +6,7 @@ export { Part } from './core/part.js';
 export { Plane } from './core/plane.js';
 export { Rule } from './core/rule.js';
 export { Visualizer } from './core/visualizer.js';
+export * from './core/publicApi.js';
 
 export * from './importers/fromAggregation.js';
 export * from './importers/fromPartsAndRules.js';
