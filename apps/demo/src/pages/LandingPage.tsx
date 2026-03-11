@@ -1,0 +1,187 @@
+import React, { useEffect, useRef, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Visualizer } from 'webwaspjs';
+import { availableSets, type DemoSetConfig } from '../config/availableSets';
+import { aggregationService, centerCameraOnMesh } from '../lib/aggregationService';
+import { Navbar } from '../components/Navbar';
+
+async function loadJson(path: string) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
+  return response.json();
+}
+
+async function resolveColors(set: DemoSetConfig) {
+  const hasConfigColors =
+    (set.colors && set.colors.length) || Object.keys(set.byPart || {}).length;
+  if (hasConfigColors) return { colors: set.colors || [], byPart: set.byPart || {} };
+  try {
+    const response = await fetch(`${set.path}colors.json`);
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+/* ── Thumbnail card with a live Three.js preview ── */
+function DatasetCard({
+  set,
+  onSelect,
+  onShowInfo,
+}: {
+  set: DemoSetConfig;
+  onSelect: (slug: string) => void;
+  onShowInfo: (set: DemoSetConfig) => void;
+}) {
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const vizRef = useRef<any>(null);
+  const loadedRef = useRef(false);
+
+  useEffect(() => {
+    const container = canvasRef.current;
+    if (!container || loadedRef.current) return;
+    loadedRef.current = true;
+
+    let disposed = false;
+
+    (async () => {
+      try {
+        const data = await loadJson(`${set.path}${set.aggregation}`);
+        const colorsConfig = await resolveColors(set);
+        const agg = aggregationService.createAggregationFromData(data);
+        if (colorsConfig) aggregationService.applyAggregationColors(agg, colorsConfig);
+        const parts = aggregationService.getAggregationCatalogParts(agg);
+        if (disposed || !parts.length) return;
+
+        const viz = new Visualizer(container as any, container as any);
+        vizRef.current = viz;
+        if (viz.cameraControls) viz.cameraControls.enabled = false;
+
+        const mesh = parts[0].geo.clone();
+        mesh.name = `${parts[0].name}_landing_preview`;
+        viz.scene.add(mesh);
+        centerCameraOnMesh(viz, mesh, 2.5);
+      } catch (err: any) {
+        console.warn(`Preview failed for ${set.name}: ${err.message}`);
+      }
+    })();
+
+    return () => {
+      disposed = true;
+      const viz = vizRef.current;
+      if (!viz) return;
+      try {
+        viz.cameraControls?.dispose?.();
+        viz.renderer?.dispose?.();
+        const dom = viz.renderer?.domElement;
+        if (dom?.parentNode) dom.parentNode.removeChild(dom);
+      } catch {}
+    };
+  }, [set]);
+
+  return (
+    <div className="landing-card">
+      <button
+        className="landing-card__preview"
+        onClick={() => onSelect(set.slug)}
+        type="button"
+      >
+        <div className="landing-card__canvas" ref={canvasRef} />
+      </button>
+
+      <div className="landing-card__footer">
+        <span className="landing-card__title">{set.name}</span>
+        <button
+          className="landing-card__info-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onShowInfo(set);
+          }}
+          title="Dataset info"
+          aria-label={`Info about ${set.name}`}
+        >
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm.75 12.5h-1.5v-5h1.5v5Zm0-6.5h-1.5V6.5h1.5V8Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Info Modal ── */
+function DatasetInfoModal({
+  set,
+  onClose,
+}: {
+  set: DemoSetConfig | null;
+  onClose: () => void;
+}) {
+  if (!set) return null;
+  return (
+    <div className="modal is-open" aria-modal="true" role="dialog">
+      <div className="modal__backdrop" onClick={onClose} />
+      <div className="modal__content">
+        <button className="modal__close" aria-label="Close info" onClick={onClose}>
+          ×
+        </button>
+        <h2 className="modal__title">{set.name}</h2>
+        <dl className="modal__meta">
+          {set.description && (
+            <div>
+              <dt>Description</dt>
+              <dd>{set.description}</dd>
+            </div>
+          )}
+          {set.author && (
+            <div>
+              <dt>Author</dt>
+              <dd>{set.author}</dd>
+            </div>
+          )}
+          <div>
+            <dt>Slug</dt>
+            <dd>{set.slug}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+/* ── Landing page ── */
+export function LandingPage() {
+  const navigate = useNavigate();
+  const [infoSet, setInfoSet] = useState<DemoSetConfig | null>(null);
+
+  const handleSelect = useCallback(
+    (slug: string) => navigate(`/build/${slug}`),
+    [navigate],
+  );
+
+  return (
+    <div className="landing">
+      <Navbar />
+
+      <header className="landing__header">
+        <p className="landing__tagline">
+          Discrete aggregation toolkit — pick a dataset to start building.
+        </p>
+      </header>
+
+      <div className="landing__grid">
+        {availableSets.map((set) => (
+          <DatasetCard
+            key={set.slug}
+            set={set}
+            onSelect={handleSelect}
+            onShowInfo={setInfoSet}
+          />
+        ))}
+      </div>
+
+      <DatasetInfoModal set={infoSet} onClose={() => setInfoSet(null)} />
+    </div>
+  );
+}

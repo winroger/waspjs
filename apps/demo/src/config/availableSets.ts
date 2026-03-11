@@ -15,12 +15,13 @@ export type DemoSetConfig = {
 
 function normalizeEntry(entry: any, slug: string): DemoSetConfig {
   const data = entry?.default ?? entry ?? {};
+  const base = import.meta.env.BASE_URL ?? '/';
   return {
     slug,
     name: data.name || slug,
     description: data.description || '',
     author: data.author || '',
-    path: `examples/${slug}/`,
+    path: `${base}examples/${slug}/`,
     aggregation: data.aggregation || 'aggregation.json',
     colors: data.colors || data.palette || [],
     byPart: data.byPart || {},

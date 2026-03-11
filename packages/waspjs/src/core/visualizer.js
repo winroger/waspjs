@@ -8,8 +8,12 @@ CameraControls.install({ THREE: THREE });
  */
 export class Visualizer {
   constructor(containerId = '#threejs-container', parentContainerId = '#threejs-container-parent') {
-    this.container = document.querySelector(containerId);
-    this.parentContainer = document.querySelector(parentContainerId);
+    this.container = typeof containerId === 'string'
+      ? document.querySelector(containerId)
+      : containerId;
+    this.parentContainer = typeof parentContainerId === 'string'
+      ? document.querySelector(parentContainerId)
+      : parentContainerId;
 
     if (!this.container) {
       console.error('Container element not found.');
@@ -38,6 +42,23 @@ export class Visualizer {
     this.cameraControls.update();
 
     this.scene.userData = { camera: this.camera, controls: this.cameraControls };
+
+    // Raycasting support
+    this.raycaster = new THREE.Raycaster();
+    this.pointer = new THREE.Vector2();
+
+    // Ghost meshes for manual placement previews
+    this._ghostMeshes = [];
+    this._ghostGroup = new THREE.Group();
+    this._ghostGroup.name = '__ghost_group__';
+    this.scene.add(this._ghostGroup);
+
+    // Connection marker spheres
+    this._markerMeshes = [];
+    this._markerData = [];  // parallel array of connection metadata
+    this._markerGroup = new THREE.Group();
+    this._markerGroup.name = '__marker_group__';
+    this.scene.add(this._markerGroup);
 
     this.initLights();
     //this.addAxesHelper(); // Add the axis helper
@@ -108,6 +129,198 @@ export class Visualizer {
       this.scene.remove(selectedObject);
     } else {
       console.log("Object not found:", `${object.name}_${object.id}`);
+    }
+  }
+
+  // ── Raycasting ──────────────────────────────────────────────
+
+  /**
+   * Raycast from a pointer event against placed part meshes (excludes ghosts).
+   * @param {{ clientX: number, clientY: number }} event
+   * @returns {{ object: THREE.Object3D, point: THREE.Vector3, partId: number|null }|null}
+   */
+  raycastParts(event) {
+    if (!this.renderer) return null;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+
+    const meshes = [];
+    this.scene.traverse(obj => {
+      if (obj.isMesh && obj.parent !== this._ghostGroup && obj.parent !== this._markerGroup) {
+        meshes.push(obj);
+      }
+    });
+
+    const intersects = this.raycaster.intersectObjects(meshes, false);
+    if (intersects.length === 0) return null;
+
+    const hit = intersects[0];
+    const nameParts = hit.object.name.split('_');
+    const partId = nameParts.length >= 2 ? parseInt(nameParts[nameParts.length - 1], 10) : null;
+    return { object: hit.object, point: hit.point, partId: isNaN(partId) ? null : partId };
+  }
+
+  /**
+   * Raycast from a pointer event against ghost meshes only.
+   * @param {{ clientX: number, clientY: number }} event
+   * @returns {{ index: number, point: THREE.Vector3 }|null}
+   */
+  raycastGhosts(event) {
+    if (!this.renderer || this._ghostMeshes.length === 0) return null;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const intersects = this.raycaster.intersectObjects(this._ghostMeshes, false);
+    if (intersects.length === 0) return null;
+
+    const hit = intersects[0];
+    const index = this._ghostMeshes.indexOf(hit.object);
+    return { index, point: hit.point };
+  }
+
+  // ── Ghost Meshes ────────────────────────────────────────────
+
+  /**
+   * Display semi-transparent ghost meshes for manual placement previews.
+   * Each placement must have a `transformedPart` with a `.geo` mesh.
+   * @param {Array<{ transformedPart: { geo: THREE.Mesh } }>} placements
+   */
+  addGhostMeshes(placements) {
+    this.clearGhostMeshes();
+    for (const placement of placements) {
+      const mesh = placement.transformedPart.geo.clone();
+      mesh.material = mesh.material.clone();
+      mesh.material.transparent = true;
+      mesh.material.opacity = 0.3;
+      mesh.material.depthWrite = false;
+      mesh.name = `__ghost_${this._ghostMeshes.length}`;
+      this._ghostGroup.add(mesh);
+      this._ghostMeshes.push(mesh);
+    }
+  }
+
+  /**
+   * Remove all ghost meshes from the scene.
+   */
+  clearGhostMeshes() {
+    for (const mesh of this._ghostMeshes) {
+      this._ghostGroup.remove(mesh);
+      mesh.geometry?.dispose();
+      mesh.material?.dispose();
+    }
+    this._ghostMeshes = [];
+  }
+
+  /**
+   * Highlight a specific ghost mesh by index.
+   * @param {number} index
+   */
+  highlightGhost(index) {
+    this.unhighlightGhosts();
+    if (index >= 0 && index < this._ghostMeshes.length) {
+      this._ghostMeshes[index].material.opacity = 0.7;
+      if (this._ghostMeshes[index].material.emissive) {
+        this._ghostMeshes[index].material.emissive.setHex(0x444444);
+      }
+    }
+  }
+
+  /**
+   * Reset all ghost meshes to default appearance.
+   */
+  unhighlightGhosts() {
+    for (const mesh of this._ghostMeshes) {
+      mesh.material.opacity = 0.3;
+      if (mesh.material.emissive) {
+        mesh.material.emissive.setHex(0x000000);
+      }
+    }
+  }
+
+  // ── Connection Markers ──────────────────────────────────────
+
+  /**
+   * Show small spheres at open connection positions.
+   * @param {Array<{partId: number, connectionId: number, plane: {origin: THREE.Vector3}}>} connections
+   * @param {number} [radius=1.5] Marker sphere radius
+   */
+  addConnectionMarkers(connections, radius = 1.5) {
+    this.clearConnectionMarkers();
+    const geometry = new THREE.SphereGeometry(radius, 12, 8);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x00ccff,
+      transparent: true,
+      opacity: 0.6,
+      depthWrite: false,
+      emissive: 0x004466,
+    });
+    for (const conn of connections) {
+      const mesh = new THREE.Mesh(geometry, material.clone());
+      mesh.position.copy(conn.plane.origin);
+      mesh.name = `__marker_${this._markerMeshes.length}`;
+      this._markerGroup.add(mesh);
+      this._markerMeshes.push(mesh);
+      this._markerData.push(conn);
+    }
+  }
+
+  /**
+   * Remove all connection marker spheres.
+   */
+  clearConnectionMarkers() {
+    for (const mesh of this._markerMeshes) {
+      this._markerGroup.remove(mesh);
+      mesh.geometry?.dispose();
+      mesh.material?.dispose();
+    }
+    this._markerMeshes = [];
+    this._markerData = [];
+  }
+
+  /**
+   * Raycast against connection marker spheres.
+   * @param {{ clientX: number, clientY: number }} event
+   * @returns {{ index: number, data: {partId: number, connectionId: number}, point: THREE.Vector3 }|null}
+   */
+  raycastMarkers(event) {
+    if (!this.renderer || this._markerMeshes.length === 0) return null;
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const intersects = this.raycaster.intersectObjects(this._markerMeshes, false);
+    if (intersects.length === 0) return null;
+
+    const hit = intersects[0];
+    const index = this._markerMeshes.indexOf(hit.object);
+    return { index, data: this._markerData[index], point: hit.point };
+  }
+
+  /**
+   * Highlight a specific marker sphere by index.
+   * @param {number} index
+   */
+  highlightMarker(index) {
+    this.unhighlightMarkers();
+    if (index >= 0 && index < this._markerMeshes.length) {
+      this._markerMeshes[index].material.opacity = 1.0;
+      this._markerMeshes[index].material.emissive.setHex(0x00aaff);
+    }
+  }
+
+  /**
+   * Reset all marker spheres to default appearance.
+   */
+  unhighlightMarkers() {
+    for (const mesh of this._markerMeshes) {
+      mesh.material.opacity = 0.6;
+      mesh.material.emissive.setHex(0x004466);
     }
   }
 }

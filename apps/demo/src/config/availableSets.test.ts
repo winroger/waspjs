@@ -10,7 +10,7 @@ describe('availableSets', () => {
     for (const set of availableSets) {
       expect(set.slug).toBeTruthy();
       expect(set.name).toBeTruthy();
-      expect(set.path.startsWith('examples/')).toBe(true);
+      expect(set.path).toContain('examples/');
       expect(set.aggregation).toBeTruthy();
       expect(Array.isArray(set.colors)).toBe(true);
       expect(typeof set.byPart).toBe('object');

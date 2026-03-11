@@ -39,6 +39,12 @@ export class Aggregation {
       // random seed
       this.rnd_seed = _rnd_seed === null ? Date.now() : _rnd_seed;
       this.randomFn = createRng(this.rnd_seed);
+
+      /** @type {Set<string>|null} When non-null, only these part names may be placed randomly. */
+      this.activePartTypes = null;
+
+      /** Monotonically increasing counter for unique part IDs. */
+      this._nextId = 0;
   }
 
     /**
@@ -115,7 +121,7 @@ export class Aggregation {
             isCount--;
             let partToRemove = this.getParts()[isCount];
             waspVisualization.removeEntity(partToRemove);
-            this.removePartFromAggregation(isCount);
+            this.removePartFromAggregation(partToRemove.id);
         }
     }
   }
@@ -149,14 +155,18 @@ aggregate_rnd(num) {
 }
 
 addFirstPartToAggregation() {
-    let first_part = this.parts[randomChoice(this.randomFn, Object.keys(this.parts))];
+    const partKeys = this.activePartTypes
+        ? Object.keys(this.parts).filter(k => this.activePartTypes.has(k))
+        : Object.keys(this.parts);
+    if (partKeys.length === 0) return false;
+    let first_part = this.parts[randomChoice(this.randomFn, partKeys)];
     if (first_part !== null) {
             let first_part_trans = first_part.copy()
             first_part_trans.connections.forEach(conn => {
                     conn.generateRulesTable(this.rules);
             });
 
-            first_part_trans.id = 0;
+            first_part_trans.id = this._nextId++;
             this.aggregated_parts.push(first_part_trans);  
             return true;
     }
@@ -170,7 +180,7 @@ addPartToAggregation() {
         return true;
     } else {
         let next_rule = null;
-        let part_01_id = -1;
+        let part_01 = null;
         let conn_01_id = -1;
         let next_rule_id = -1;
         let new_rule_attempts = 0;
@@ -179,8 +189,8 @@ addPartToAggregation() {
             new_rule_attempts += 1;
             next_rule = null;
 
-            part_01_id = randomInt(this.randomFn, 0, this.aggregated_parts.length - 1);
-            let part_01 = this.aggregated_parts[part_01_id];
+            const part_01_idx = randomInt(this.randomFn, 0, this.aggregated_parts.length - 1);
+            part_01 = this.aggregated_parts[part_01_idx];
             if (part_01.active_connections.length > 0) {
                 conn_01_id = randomChoice(this.randomFn, part_01.active_connections);
                 let conn_01 = part_01.connections[conn_01_id];
@@ -191,6 +201,11 @@ addPartToAggregation() {
             }
 
             if (next_rule !== null) {
+                // Skip if part type is not in the active set
+                if (this.activePartTypes && !this.activePartTypes.has(next_rule.partB)) {
+                    continue;
+                }
+
                 let next_part = this.parts[next_rule.partB];
 
                 if (!next_part) {
@@ -206,7 +221,7 @@ addPartToAggregation() {
                 }
 
                 // EXISTING PART
-                let targetPlane = this.aggregated_parts[part_01_id].connections[conn_01_id].pln;
+                let targetPlane = part_01.connections[conn_01_id].pln;
                 if (!targetPlane) {
                     console.error(`Target plane not found for connection 01 with id ${conn_01_id}.`);
                     return false;
@@ -266,11 +281,11 @@ addPartToAggregation() {
                 // REST OF STUFF
                 next_part_trans.resetPart(this.rules);
                 next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.connectionB);
-                next_part_trans.id = this.aggregated_parts.length;
+                next_part_trans.id = this._nextId++;
 
                 // parent-child tracking
-                this.aggregated_parts[part_01_id].children.push(next_part_trans.id);
-                next_part_trans.parent = this.aggregated_parts[part_01_id].id;
+                part_01.children.push(next_part_trans.id);
+                next_part_trans.parent = part_01.id;
                 next_part_trans.conn_on_parent = next_rule.connectionA;
                 next_part_trans.conn_to_parent = next_rule.connectionB;
 
@@ -278,7 +293,7 @@ addPartToAggregation() {
                 this.aggregated_parts.push(next_part_trans);
 
                 // remove connection from parent part's active connections
-                this.aggregated_parts[part_01_id].active_connections = this.aggregated_parts[part_01_id].active_connections.filter(conn => conn !== conn_01_id);
+                part_01.active_connections = part_01.active_connections.filter(conn => conn !== conn_01_id);
 
                 return true;
             }
@@ -320,6 +335,272 @@ removePartFromAggregation(part_id) {
         return false;
     }
     
+}
+
+/**
+ * Check if a transformed part collides with any existing aggregated part.
+ * @param {Part} partTrans
+ * @returns {boolean}
+ */
+_checkCollision(partTrans) {
+    const colliderGeo = partTrans.copy().collider.geometry[0];
+    const scaledGeo = partTrans.copy().geo;
+    scaledGeo.scale.set(0.99, 0.99, 0.99);
+
+    for (const existing of this.aggregated_parts) {
+        const part1mesh = existing.collider.geometry[0] != undefined
+            ? existing.collider.geometry[0]
+            : existing.geo;
+        const part2mesh = colliderGeo != undefined
+            ? colliderGeo
+            : scaledGeo;
+        part1mesh.updateMatrixWorld();
+        part2mesh.updateMatrixWorld();
+        if (checkMeshesIntersection(part1mesh, part2mesh)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Place the first part in the aggregation by name (for manual mode).
+ * @param {string} partName
+ * @returns {{ success: boolean, part?: Part, error?: string }}
+ */
+placeFirstPart(partName) {
+    if (this.aggregated_parts.length > 0) {
+        return { success: false, error: 'Aggregation is not empty' };
+    }
+    const catalogPart = this.parts[partName];
+    if (!catalogPart) {
+        return { success: false, error: `Part "${partName}" not found in catalog` };
+    }
+    const partCopy = catalogPart.copy();
+    partCopy.connections.forEach(conn => conn.generateRulesTable(this.rules));
+    partCopy.id = this._nextId++;
+    this.aggregated_parts.push(partCopy);
+    return { success: true, part: partCopy };
+}
+
+/**
+ * Place a specific part at a specific connection (deterministic, for manual mode).
+ * @param {number} parentPartId
+ * @param {number} connectionId
+ * @param {string} partName
+ * @param {number} connectionBId
+ * @returns {{ success: boolean, part?: Part, error?: string }}
+ */
+placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
+    const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
+    if (!parentPart) return { success: false, error: 'Parent part not found' };
+    if (!parentPart.active_connections.includes(connectionId)) {
+        return { success: false, error: 'Connection is not active on parent' };
+    }
+
+    const conn = parentPart.connections[connectionId];
+    const catalogPart = this.parts[partName];
+    if (!catalogPart) return { success: false, error: `Part "${partName}" not found in catalog` };
+
+    const rule = conn.rules_table.find(
+        r => r.partB === partName && r.connectionB === connectionBId
+    );
+    if (!rule) return { success: false, error: 'No matching rule for this placement' };
+
+    const startingPlane = catalogPart.connections[connectionBId].flip_pln;
+    const targetPlane = parentPart.connections[connectionId].pln;
+    const orientTransform = newPlaneToPlane(startingPlane, targetPlane);
+    if (!orientTransform) return { success: false, error: 'Transform computation failed' };
+
+    const partTrans = catalogPart.transform(orientTransform);
+    if (!partTrans) return { success: false, error: 'Part transform failed' };
+
+    if (this._checkCollision(partTrans)) {
+        return { success: false, error: 'Collision detected' };
+    }
+
+    partTrans.resetPart(this.rules);
+    partTrans.active_connections = partTrans.active_connections.filter(c => c !== connectionBId);
+    partTrans.id = this._nextId++;
+
+    parentPart.children.push(partTrans.id);
+    partTrans.parent = parentPart.id;
+    partTrans.conn_on_parent = connectionId;
+    partTrans.conn_to_parent = connectionBId;
+
+    this.aggregated_parts.push(partTrans);
+    parentPart.active_connections = parentPart.active_connections.filter(c => c !== connectionId);
+
+    return { success: true, part: partTrans };
+}
+
+/**
+ * Return all open (unused) connections across aggregated parts.
+ * @returns {Array<{partId: number, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
+ */
+getOpenConnections() {
+    const openConns = [];
+    for (const part of this.aggregated_parts) {
+        for (const connIdx of part.active_connections) {
+            const conn = part.connections[connIdx];
+            openConns.push({
+                partId: part.id,
+                connectionId: connIdx,
+                plane: conn.pln,
+                type: conn.type,
+                rules: conn.rules_table,
+            });
+        }
+    }
+    return openConns;
+}
+
+/**
+ * Compute all valid placements for a given part type.
+ * Returns positions where the part can be placed without collision.
+ * @param {string} partName
+ * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ */
+getValidPlacementsForPart(partName) {
+    const catalogPart = this.parts[partName];
+    if (!catalogPart) return [];
+
+    const placements = [];
+    const openConns = this.getOpenConnections();
+
+    for (const openConn of openConns) {
+        for (let ruleIdx = 0; ruleIdx < openConn.rules.length; ruleIdx++) {
+            const rule = openConn.rules[ruleIdx];
+            if (rule.partB !== partName) continue;
+
+            const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
+            if (!startingPlane) continue;
+
+            const targetPlane = openConn.plane;
+            const orientTransform = newPlaneToPlane(startingPlane, targetPlane);
+            if (!orientTransform) continue;
+
+            const partTrans = catalogPart.transform(orientTransform);
+            if (!partTrans) continue;
+
+            if (!this._checkCollision(partTrans)) {
+                placements.push({
+                    parentPartId: openConn.partId,
+                    connectionId: openConn.connectionId,
+                    partName,
+                    connectionBId: rule.connectionB,
+                    ruleIndex: ruleIdx,
+                    transform: orientTransform,
+                    transformedPart: partTrans,
+                });
+            }
+        }
+    }
+
+    return placements;
+}
+
+/**
+ * Compute valid placements for a given part type, scoped to a single parent part.
+ * Much cheaper than getValidPlacementsForPart when the aggregation is large.
+ * @param {string} partName
+ * @param {number} parentPartId
+ * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ */
+getValidPlacementsAtParent(partName, parentPartId) {
+    const catalogPart = this.parts[partName];
+    if (!catalogPart) return [];
+
+    const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
+    if (!parentPart) return [];
+
+    const placements = [];
+    for (const connIdx of parentPart.active_connections) {
+        const conn = parentPart.connections[connIdx];
+        for (let ruleIdx = 0; ruleIdx < conn.rules_table.length; ruleIdx++) {
+            const rule = conn.rules_table[ruleIdx];
+            if (rule.partB !== partName) continue;
+
+            const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
+            if (!startingPlane) continue;
+
+            const orientTransform = newPlaneToPlane(startingPlane, conn.pln);
+            if (!orientTransform) continue;
+
+            const partTrans = catalogPart.transform(orientTransform);
+            if (!partTrans) continue;
+
+            if (!this._checkCollision(partTrans)) {
+                placements.push({
+                    parentPartId,
+                    connectionId: connIdx,
+                    partName,
+                    connectionBId: rule.connectionB,
+                    ruleIndex: ruleIdx,
+                    transform: orientTransform,
+                    transformedPart: partTrans,
+                });
+            }
+        }
+    }
+    return placements;
+}
+
+/**
+ * Compute valid placements for a given part type at a single connection.
+ * Cheapest option — only checks rules for one connection slot.
+ * @param {string} partName
+ * @param {number} parentPartId
+ * @param {number} connectionId
+ * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ */
+getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
+    const catalogPart = this.parts[partName];
+    if (!catalogPart) return [];
+
+    const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
+    if (!parentPart) return [];
+
+    if (!parentPart.active_connections.includes(connectionId)) return [];
+    const conn = parentPart.connections[connectionId];
+    if (!conn) return [];
+
+    const placements = [];
+    for (let ruleIdx = 0; ruleIdx < conn.rules_table.length; ruleIdx++) {
+        const rule = conn.rules_table[ruleIdx];
+        if (rule.partB !== partName) continue;
+
+        const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
+        if (!startingPlane) continue;
+
+        const orientTransform = newPlaneToPlane(startingPlane, conn.pln);
+        if (!orientTransform) continue;
+
+        const partTrans = catalogPart.transform(orientTransform);
+        if (!partTrans) continue;
+
+        if (!this._checkCollision(partTrans)) {
+            placements.push({
+                parentPartId,
+                connectionId,
+                partName,
+                connectionBId: rule.connectionB,
+                ruleIndex: ruleIdx,
+                transform: orientTransform,
+                transformedPart: partTrans,
+            });
+        }
+    }
+    return placements;
+}
+
+/**
+ * Set which part types are allowed for random aggregation.
+ * Pass null or undefined to allow all parts.
+ * @param {string[]|null} partNames
+ */
+setActivePartTypes(partNames) {
+    this.activePartTypes = partNames ? new Set(partNames) : null;
 }
 }
 
