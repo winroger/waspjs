@@ -1,8 +1,7 @@
-import React, { useEffect, useReducer, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useReducer, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { availableSets } from '../config/availableSets';
 import { buildReducer, initialBuildState } from '../state/buildState';
-import type { BuildAction } from '../state/buildState';
 import {
   loadDataset,
   createVisualizerInContainer,
@@ -22,6 +21,7 @@ import {
   setAggregationPartCount,
 } from 'webwaspjs';
 import { Navbar } from '../components/Navbar';
+import { InfoModal } from '../components/InfoModal';
 import { PartCatalog } from '../components/PartCatalog';
 import { RandomControls } from '../components/RandomControls';
 import { ManualControls } from '../components/ManualControls';
@@ -30,6 +30,7 @@ export function BuildScreen() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(buildReducer, initialBuildState);
+  const currentSet = availableSets.find((item) => item.slug === slug) ?? null;
 
   /* refs for mutable Three.js objects */
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -38,9 +39,11 @@ export function BuildScreen() {
   const colorsRef = useRef<any>(null);
   /** Cached placement for the currently-hovered connection marker */
   const placementsRef = useRef<any[]>([]);
+  const activePlacementIndexRef = useRef(0);
   const hoveredParentRef = useRef<number | null>(null);
   /** Which marker index is currently showing a ghost */
   const hoveredMarkerRef = useRef<number | null>(null);
+  const hoveredConnectionRef = useRef<{ partId: number; connectionId: number } | null>(null);
 
   /* ── Load dataset on mount / slug change ── */
   useEffect(() => {
@@ -98,11 +101,112 @@ export function BuildScreen() {
         viz.clearConnectionMarkers?.();
       }
       placementsRef.current = [];
+      activePlacementIndexRef.current = 0;
       hoveredParentRef.current = null;
       hoveredMarkerRef.current = null;
+      hoveredConnectionRef.current = null;
     },
     [],
   );
+
+  const showGhostPlacement = useCallback(() => {
+    const viz = vizRef.current;
+    if (!viz) return;
+
+    viz.clearGhostMeshes?.();
+    dispatch({ type: 'setHoveredGhost', payload: null });
+
+    if (placementsRef.current.length === 0) return;
+
+    const placement = placementsRef.current[activePlacementIndexRef.current];
+    if (!placement) return;
+
+    viz.addGhostMeshes?.([placement]);
+  }, []);
+
+  const updateMarkersForPart = useCallback((partName: string | null) => {
+    const viz = vizRef.current;
+    const agg = aggRef.current;
+    const parentId = hoveredParentRef.current;
+
+    if (!viz || !agg) return [];
+
+    viz.clearConnectionMarkers?.();
+    if (parentId == null || !partName) return [];
+
+    const conns = getOpenConnectionsForPart(agg, parentId);
+    const relevant = conns.filter((connection: any) =>
+      connection.rules.some((rule: any) => rule.partB === partName),
+    );
+
+    if (relevant.length > 0) {
+      viz.addConnectionMarkers?.(relevant);
+    }
+
+    return relevant;
+  }, []);
+
+  const updateGhostForConnection = useCallback((partName: string | null, resetIndex = true) => {
+    const agg = aggRef.current;
+    const viz = vizRef.current;
+    const connection = hoveredConnectionRef.current;
+
+    if (!agg || !viz || !connection || !partName) {
+      placementsRef.current = [];
+      activePlacementIndexRef.current = 0;
+      viz?.clearGhostMeshes?.();
+      dispatch({ type: 'setHoveredGhost', payload: null });
+      return;
+    }
+
+    placementsRef.current = getValidPlacementsAtConnection(
+      agg,
+      partName,
+      connection.partId,
+      connection.connectionId,
+    );
+
+    if (resetIndex || activePlacementIndexRef.current >= placementsRef.current.length) {
+      activePlacementIndexRef.current = 0;
+    }
+
+    showGhostPlacement();
+  }, [showGhostPlacement]);
+
+  const refreshHoveredPreview = useCallback((partName: string | null) => {
+    const viz = vizRef.current;
+    if (!viz) return;
+
+    const relevantConnections = updateMarkersForPart(partName);
+
+    if (!hoveredConnectionRef.current) {
+      placementsRef.current = [];
+      activePlacementIndexRef.current = 0;
+      viz.clearGhostMeshes?.();
+      dispatch({ type: 'setHoveredGhost', payload: null });
+      return;
+    }
+
+    const matchingIndex = relevantConnections.findIndex(
+      (connection: any) =>
+        connection.partId === hoveredConnectionRef.current?.partId
+        && connection.connectionId === hoveredConnectionRef.current?.connectionId,
+    );
+
+    if (matchingIndex === -1) {
+      hoveredMarkerRef.current = null;
+      hoveredConnectionRef.current = null;
+      placementsRef.current = [];
+      activePlacementIndexRef.current = 0;
+      viz.clearGhostMeshes?.();
+      dispatch({ type: 'setHoveredGhost', payload: null });
+      return;
+    }
+
+    hoveredMarkerRef.current = matchingIndex;
+    viz.highlightMarker?.(matchingIndex);
+    updateGhostForConnection(partName, true);
+  }, [updateGhostForConnection, updateMarkersForPart]);
 
   /* ── Random mode: slider ── */
   const handleTargetChange = useCallback(
@@ -170,8 +274,10 @@ export function BuildScreen() {
         viz.clearConnectionMarkers?.();
       }
       placementsRef.current = [];
+      activePlacementIndexRef.current = 0;
       hoveredParentRef.current = null;
       hoveredMarkerRef.current = null;
+      hoveredConnectionRef.current = null;
       dispatch({ type: 'setHoveredGhost', payload: null });
     },
     [],
@@ -185,8 +291,10 @@ export function BuildScreen() {
       viz.clearConnectionMarkers?.();
     }
     placementsRef.current = [];
+    activePlacementIndexRef.current = 0;
     hoveredParentRef.current = null;
     hoveredMarkerRef.current = null;
+    hoveredConnectionRef.current = null;
     dispatch({ type: 'setHoveredGhost', payload: null });
   }, []);
 
@@ -219,28 +327,20 @@ export function BuildScreen() {
           // Only recompute ghost if we moved to a different marker
           if (markerIdx !== hoveredMarkerRef.current) {
             hoveredMarkerRef.current = markerIdx;
+            hoveredConnectionRef.current = markerHit.data;
             viz.highlightMarker?.(markerIdx);
-            viz.clearGhostMeshes?.();
-            placementsRef.current = [];
-            dispatch({ type: 'setHoveredGhost', payload: null });
-
-            const connData = markerHit.data;
-            const placements = getValidPlacementsAtConnection(
-              agg, state.selectedPartName, connData.partId, connData.connectionId,
-            );
-            if (placements.length > 0) {
-              placementsRef.current = placements;
-              viz.addGhostMeshes?.(placements);
-            }
+            updateGhostForConnection(state.selectedPartName, true);
           }
           return;
         } else {
           // Moved off markers — clear ghost but keep markers
           if (hoveredMarkerRef.current != null) {
             hoveredMarkerRef.current = null;
+            hoveredConnectionRef.current = null;
             viz.unhighlightMarkers?.();
             viz.clearGhostMeshes?.();
             placementsRef.current = [];
+            activePlacementIndexRef.current = 0;
             dispatch({ type: 'setHoveredGhost', payload: null });
           }
         }
@@ -253,24 +353,19 @@ export function BuildScreen() {
       if (hitParentId !== hoveredParentRef.current) {
         hoveredParentRef.current = hitParentId;
         hoveredMarkerRef.current = null;
+        hoveredConnectionRef.current = null;
         viz.clearConnectionMarkers?.();
         viz.clearGhostMeshes?.();
         placementsRef.current = [];
+        activePlacementIndexRef.current = 0;
         dispatch({ type: 'setHoveredGhost', payload: null });
 
         if (hitParentId != null) {
-          const conns = getOpenConnectionsForPart(agg, hitParentId);
-          // Filter to only connections that have rules matching selected part
-          const relevant = conns.filter((c: any) =>
-            c.rules.some((r: any) => r.partB === state.selectedPartName),
-          );
-          if (relevant.length > 0) {
-            viz.addConnectionMarkers?.(relevant);
-          }
+          updateMarkersForPart(state.selectedPartName);
         }
       }
     },
-    [state.buildMode, state.selectedPartName],
+    [state.buildMode, state.selectedPartName, updateGhostForConnection, updateMarkersForPart],
   );
 
   const handleCanvasClick = useCallback(
@@ -282,7 +377,7 @@ export function BuildScreen() {
 
       if (state.selectedPartName && state.hoveredGhostIndex != null) {
         // Place at ghost location using the cached placements
-        const placement = placementsRef.current[state.hoveredGhostIndex];
+        const placement = placementsRef.current[activePlacementIndexRef.current];
         if (placement) {
           placePartManually(
             agg,
@@ -332,14 +427,47 @@ export function BuildScreen() {
         vizRef.current?.clearGhostMeshes?.();
         vizRef.current?.clearConnectionMarkers?.();
         placementsRef.current = [];
+        activePlacementIndexRef.current = 0;
         hoveredParentRef.current = null;
         hoveredMarkerRef.current = null;
+        hoveredConnectionRef.current = null;
         dispatch({ type: 'setInfoOpen', payload: false });
+        return;
+      }
+
+      if (state.buildMode !== 'manual' || state.catalog.length === 0) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        if (hoveredConnectionRef.current && placementsRef.current.length > 1) {
+          e.preventDefault();
+          const delta = e.key === 'ArrowRight' ? 1 : -1;
+          activePlacementIndexRef.current =
+            (activePlacementIndexRef.current + delta + placementsRef.current.length)
+            % placementsRef.current.length;
+          showGhostPlacement();
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const step = e.key === 'ArrowDown' ? 1 : -1;
+        const currentIndex = state.catalog.findIndex((entry) => entry.name === state.selectedPartName);
+        const fallbackIndex = step > 0 ? 0 : state.catalog.length - 1;
+        const nextIndex = currentIndex === -1
+          ? fallbackIndex
+          : (currentIndex + step + state.catalog.length) % state.catalog.length;
+        const nextPartName = state.catalog[nextIndex]?.name ?? null;
+
+        dispatch({ type: 'selectPart', payload: nextPartName });
+        refreshHoveredPreview(nextPartName);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [refreshHoveredPreview, showGhostPlacement, state.buildMode, state.catalog, state.selectedPartName]);
 
   /* ── Render ── */
   return (
@@ -355,6 +483,18 @@ export function BuildScreen() {
           onClick={handleCanvasClick}
           onContextMenu={handleCanvasContextMenu}
         >
+          <div className="build-viewer__dataset-name">{state.setName || currentSet?.name || slug}</div>
+
+          <button
+            className="build-viewer__info"
+            type="button"
+            onClick={() => dispatch({ type: 'setInfoOpen', payload: true })}
+            aria-label="Show dataset info"
+            title="Dataset info"
+          >
+            i
+          </button>
+
           {/* Back arrow – bottom left */}
           <button
             className="build-viewer__back"
@@ -365,8 +505,11 @@ export function BuildScreen() {
             ←
           </button>
 
-          {/* Mode toggle – bottom center */}
-          <div className="build-viewer__mode-toggle">
+        </div>
+
+        {/* ── Right sidebar ── */}
+        <aside className="build-sidebar">
+          <div className="build-sidebar__mode-picker">
             <button
               className={`mode-btn ${state.buildMode === 'random' ? 'mode-btn--active' : ''}`}
               onClick={() => handleModeChange('random')}
@@ -380,30 +523,50 @@ export function BuildScreen() {
               Manual
             </button>
           </div>
-        </div>
 
-        {/* ── Right sidebar ── */}
-        <aside className="build-sidebar">
-          <PartCatalog
-            catalog={state.catalog}
-            selectedPartName={state.selectedPartName}
-            buildMode={state.buildMode}
-            onToggleActive={handleToggleActive}
-            onColorChange={handleColorChange}
-            onSelectPart={handleSelectPart}
-          />
+          <div className="build-sidebar__settings">
+            <h3 className="build-sidebar__section-title">Mode Settings</h3>
 
-          {state.buildMode === 'random' ? (
-            <RandomControls
-              targetCount={state.aggregationTargetCount}
-              onTargetChange={handleTargetChange}
-            />
-          ) : (
-            <ManualControls
+            {state.buildMode === 'random' ? (
+              <RandomControls
+                targetCount={state.aggregationTargetCount}
+                onTargetChange={handleTargetChange}
+              />
+            ) : (
+              <ManualControls
+                selectedPartName={state.selectedPartName}
+                partCount={aggRef.current?.aggregated_parts?.length ?? 0}
+              />
+            )}
+
+            <PartCatalog
+              catalog={state.catalog}
               selectedPartName={state.selectedPartName}
-              partCount={aggRef.current?.aggregated_parts?.length ?? 0}
+              buildMode={state.buildMode}
+              onToggleActive={handleToggleActive}
+              onColorChange={handleColorChange}
+              onSelectPart={handleSelectPart}
             />
-          )}
+          </div>
+
+          <div className="build-sidebar__usage">
+            <h3 className="build-sidebar__section-title">Usage</h3>
+            {state.buildMode === 'manual' ? (
+              <>
+                <p><kbd>Click</kbd> ghost to place</p>
+                <p><kbd>Right-click</kbd> part to remove</p>
+                <p><kbd>Left</kbd>/<kbd>Right</kbd> switch placement variants</p>
+                <p><kbd>Up</kbd>/<kbd>Down</kbd> switch parts</p>
+                <p><kbd>Esc</kbd> to deselect</p>
+              </>
+            ) : (
+              <>
+                <p>Use the slider to grow or shrink the aggregation.</p>
+                <p>Toggle parts off to exclude them from random growth.</p>
+                <p>Use the color swatch to update part materials.</p>
+              </>
+            )}
+          </div>
         </aside>
       </div>
 
@@ -421,6 +584,15 @@ export function BuildScreen() {
           <button onClick={() => navigate('/')}>Back to datasets</button>
         </div>
       )}
+
+      <InfoModal
+        isOpen={state.isInfoOpen}
+        onClose={() => dispatch({ type: 'setInfoOpen', payload: false })}
+        title={currentSet?.name || state.setName || 'Dataset Info'}
+        setName={currentSet?.name || state.setName}
+        description={currentSet?.description}
+        author={currentSet?.author}
+      />
     </div>
   );
 }

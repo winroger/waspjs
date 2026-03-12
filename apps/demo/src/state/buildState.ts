@@ -82,7 +82,7 @@ export function buildReducer(state: BuildState, action: BuildAction): BuildState
       return {
         ...state,
         buildMode: action.payload,
-        selectedPartName: null,           // clear manual selection on mode switch
+        selectedPartName: action.payload === 'manual' ? (state.catalog[0]?.name ?? null) : null,
         hoveredGhostIndex: null,
       };
 

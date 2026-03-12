@@ -19,12 +19,6 @@ export function ManualControls({ selectedPartName, partCount }: Props) {
       <p className="manual-controls__count">
         Parts placed: <strong>{partCount}</strong>
       </p>
-
-      <div className="manual-controls__hints">
-        <p><kbd>Click</kbd> ghost to place</p>
-        <p><kbd>Right-click</kbd> part to remove</p>
-        <p><kbd>Esc</kbd> to deselect</p>
-      </div>
     </div>
   );
 }
