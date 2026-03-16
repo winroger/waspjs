@@ -17,7 +17,10 @@
 
 ---
 
-**WASP Atlas** is a growing, open collection of discrete modular building systems designed with the Grasshopper plug-in [WASP](https://github.com/ar0551/Wasp). The web app is powered by [`webwaspjs`](https://www.npmjs.com/package/webwaspjs), a JavaScript port of WASP for discrete aggregations in the browser.
+**WASPJS** is a JavaScript port of WASP for discrete aggregations in the browser. 
+
+**WASP ATLAS** is a growing, open collection of discrete modular building systems designed with the Grasshopper plug-in [WASP](https://github.com/ar0551/Wasp). The Wasp Atlas app is powered by [`webwaspjs`](https://www.npmjs.com/package/webwaspjs).
+
 
 **[Explore the Atlas →](https://winroger.github.io/waspjs/)**
 
