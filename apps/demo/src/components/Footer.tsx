@@ -24,17 +24,17 @@ export function Footer() {
           <ul className="site-footer__links">
             <li>
               <a href="https://github.com/winroger/waspjs" target="_blank" rel="noreferrer noopener">
-                WASP Atlas GitHub
+                WASPJS & WASP Atlas @GitHub
               </a>
             </li>
             <li>
               <a href="https://github.com/ar0551/Wasp" target="_blank" rel="noreferrer noopener">
-                WASP Plugin GitHub
+                GH_WASP Plugin @GitHub
               </a>
             </li>
             <li>
               <a href="https://www.food4rhino.com/en/app/wasp" target="_blank" rel="noreferrer noopener">
-                Food4Rhino
+                GH_WASP@Food4Rhino
               </a>
             </li>
           </ul>
