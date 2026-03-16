@@ -1,6 +1,6 @@
 .navbar {
   height: var(--navbar-height);
-  background: linear-gradient(90deg, rgba(217, 255, 0, 0.08), transparent 40%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 50%);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   padding: var(--space-3) var(--space-4);

@@ -1,7 +1,6 @@
 .brand-mark {
-  height: 34px;
+  height: 48px;
   width: auto;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
 }
 
 .navbar__actions {
@@ -24,12 +23,15 @@
 }
 
 .navbar__github-link:hover {
-  border-color: rgba(217, 255, 0, 0.5);
-  color: var(--accent);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--text);
+  box-shadow: 0 0 12px 2px rgba(255, 80, 80, 0.15),
+              0 0 12px 2px rgba(255, 200, 0, 0.12),
+              0 0 12px 2px rgba(0, 200, 255, 0.12);
 }
 
 .navbar__github-link:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
 }
 

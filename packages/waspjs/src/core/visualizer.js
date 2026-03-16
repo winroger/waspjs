@@ -49,16 +49,12 @@ export class Visualizer {
 
     // Ghost meshes for manual placement previews
     this._ghostMeshes = [];
+    this._ghostData = [];  // parallel array of placement metadata
     this._ghostGroup = new THREE.Group();
     this._ghostGroup.name = '__ghost_group__';
     this.scene.add(this._ghostGroup);
 
-    // Connection marker spheres
-    this._markerMeshes = [];
-    this._markerData = [];  // parallel array of connection metadata
-    this._markerGroup = new THREE.Group();
-    this._markerGroup.name = '__marker_group__';
-    this.scene.add(this._markerGroup);
+
 
     this.initLights();
     //this.addAxesHelper(); // Add the axis helper
@@ -149,7 +145,7 @@ export class Visualizer {
 
     const meshes = [];
     this.scene.traverse(obj => {
-      if (obj.isMesh && obj.parent !== this._ghostGroup && obj.parent !== this._markerGroup) {
+      if (obj.isMesh && obj.parent !== this._ghostGroup) {
         meshes.push(obj);
       }
     });
@@ -180,7 +176,7 @@ export class Visualizer {
 
     const hit = intersects[0];
     const index = this._ghostMeshes.indexOf(hit.object);
-    return { index, point: hit.point };
+    return { index, data: this._ghostData[index] ?? null, point: hit.point };
   }
 
   // ── Ghost Meshes ────────────────────────────────────────────
@@ -201,6 +197,7 @@ export class Visualizer {
       mesh.name = `__ghost_${this._ghostMeshes.length}`;
       this._ghostGroup.add(mesh);
       this._ghostMeshes.push(mesh);
+      this._ghostData.push(placement);
     }
   }
 
@@ -214,6 +211,7 @@ export class Visualizer {
       mesh.material?.dispose();
     }
     this._ghostMeshes = [];
+    this._ghostData = [];
   }
 
   /**
@@ -239,88 +237,6 @@ export class Visualizer {
       if (mesh.material.emissive) {
         mesh.material.emissive.setHex(0x000000);
       }
-    }
-  }
-
-  // ── Connection Markers ──────────────────────────────────────
-
-  /**
-   * Show small spheres at open connection positions.
-   * @param {Array<{partId: number, connectionId: number, plane: {origin: THREE.Vector3}}>} connections
-   * @param {number} [radius=1.5] Marker sphere radius
-   */
-  addConnectionMarkers(connections, radius = 1.5) {
-    this.clearConnectionMarkers();
-    const geometry = new THREE.SphereGeometry(radius, 12, 8);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x00ccff,
-      transparent: true,
-      opacity: 0.6,
-      depthWrite: false,
-      emissive: 0x004466,
-    });
-    for (const conn of connections) {
-      const mesh = new THREE.Mesh(geometry, material.clone());
-      mesh.position.copy(conn.plane.origin);
-      mesh.name = `__marker_${this._markerMeshes.length}`;
-      this._markerGroup.add(mesh);
-      this._markerMeshes.push(mesh);
-      this._markerData.push(conn);
-    }
-  }
-
-  /**
-   * Remove all connection marker spheres.
-   */
-  clearConnectionMarkers() {
-    for (const mesh of this._markerMeshes) {
-      this._markerGroup.remove(mesh);
-      mesh.geometry?.dispose();
-      mesh.material?.dispose();
-    }
-    this._markerMeshes = [];
-    this._markerData = [];
-  }
-
-  /**
-   * Raycast against connection marker spheres.
-   * @param {{ clientX: number, clientY: number }} event
-   * @returns {{ index: number, data: {partId: number, connectionId: number}, point: THREE.Vector3 }|null}
-   */
-  raycastMarkers(event) {
-    if (!this.renderer || this._markerMeshes.length === 0) return null;
-    const rect = this.renderer.domElement.getBoundingClientRect();
-    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.pointer, this.camera);
-    const intersects = this.raycaster.intersectObjects(this._markerMeshes, false);
-    if (intersects.length === 0) return null;
-
-    const hit = intersects[0];
-    const index = this._markerMeshes.indexOf(hit.object);
-    return { index, data: this._markerData[index], point: hit.point };
-  }
-
-  /**
-   * Highlight a specific marker sphere by index.
-   * @param {number} index
-   */
-  highlightMarker(index) {
-    this.unhighlightMarkers();
-    if (index >= 0 && index < this._markerMeshes.length) {
-      this._markerMeshes[index].material.opacity = 1.0;
-      this._markerMeshes[index].material.emissive.setHex(0x00aaff);
-    }
-  }
-
-  /**
-   * Reset all marker spheres to default appearance.
-   */
-  unhighlightMarkers() {
-    for (const mesh of this._markerMeshes) {
-      mesh.material.opacity = 0.6;
-      mesh.material.emissive.setHex(0x004466);
     }
   }
 }

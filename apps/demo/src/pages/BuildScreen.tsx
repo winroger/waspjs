@@ -10,8 +10,7 @@ import {
   frameScene,
   applyColors,
   normalizeHex,
-  getOpenConnectionsForPart,
-  getValidPlacementsAtConnection,
+  getValidPlacementsAtParent,
   placeFirstPartManually,
   placePartManually,
   removePartById,
@@ -26,7 +25,20 @@ import { PartCatalog } from '../components/PartCatalog';
 import { RandomControls } from '../components/RandomControls';
 import { ManualControls } from '../components/ManualControls';
 
+function useIsPortrait() {
+  const [isPortrait, setIsPortrait] = React.useState(
+    () => typeof window !== 'undefined' && (window.innerWidth < window.innerHeight || window.innerWidth < 700),
+  );
+  useEffect(() => {
+    const check = () => setIsPortrait(window.innerWidth < window.innerHeight || window.innerWidth < 700);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isPortrait;
+}
+
 export function BuildScreen() {
+  const isPortrait = useIsPortrait();
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(buildReducer, initialBuildState);
@@ -37,13 +49,13 @@ export function BuildScreen() {
   const vizRef = useRef<any>(null);
   const aggRef = useRef<any>(null);
   const colorsRef = useRef<any>(null);
-  /** Cached placement for the currently-hovered connection marker */
-  const placementsRef = useRef<any[]>([]);
-  const activePlacementIndexRef = useRef(0);
+  /** All valid placements at the currently-hovered parent part, grouped by connectionId */
+  const placementsByConnRef = useRef<Map<number, any[]>>(new Map());
+  /** Index into the variant list for the currently-hovered ghost's connection */
+  const activeVariantIndexRef = useRef<Map<number, number>>(new Map());
   const hoveredParentRef = useRef<number | null>(null);
-  /** Which marker index is currently showing a ghost */
-  const hoveredMarkerRef = useRef<number | null>(null);
-  const hoveredConnectionRef = useRef<{ partId: number; connectionId: number } | null>(null);
+  /** The ghost index currently under the pointer */
+  const hoveredGhostRef = useRef<number | null>(null);
 
   /* ── Load dataset on mount / slug change ── */
   useEffect(() => {
@@ -98,115 +110,70 @@ export function BuildScreen() {
       const viz = vizRef.current;
       if (viz) {
         viz.clearGhostMeshes?.();
-        viz.clearConnectionMarkers?.();
       }
-      placementsRef.current = [];
-      activePlacementIndexRef.current = 0;
+      placementsByConnRef.current = new Map();
+      activeVariantIndexRef.current = new Map();
       hoveredParentRef.current = null;
-      hoveredMarkerRef.current = null;
-      hoveredConnectionRef.current = null;
+      hoveredGhostRef.current = null;
     },
     [],
   );
 
-  const showGhostPlacement = useCallback(() => {
-    const viz = vizRef.current;
-    if (!viz) return;
-
-    viz.clearGhostMeshes?.();
-    dispatch({ type: 'setHoveredGhost', payload: null });
-
-    if (placementsRef.current.length === 0) return;
-
-    const placement = placementsRef.current[activePlacementIndexRef.current];
-    if (!placement) return;
-
-    viz.addGhostMeshes?.([placement]);
-  }, []);
-
-  const updateMarkersForPart = useCallback((partName: string | null) => {
+  /** Show ghosts at all open connections of the hovered parent part. */
+  const showGhostsForParent = useCallback((partName: string | null) => {
     const viz = vizRef.current;
     const agg = aggRef.current;
     const parentId = hoveredParentRef.current;
 
-    if (!viz || !agg) return [];
-
-    viz.clearConnectionMarkers?.();
-    if (parentId == null || !partName) return [];
-
-    const conns = getOpenConnectionsForPart(agg, parentId);
-    const relevant = conns.filter((connection: any) =>
-      connection.rules.some((rule: any) => rule.partB === partName),
-    );
-
-    if (relevant.length > 0) {
-      viz.addConnectionMarkers?.(relevant);
+    if (!viz || !agg || parentId == null || !partName) {
+      viz?.clearGhostMeshes?.();
+      placementsByConnRef.current = new Map();
+      activeVariantIndexRef.current = new Map();
+      dispatch({ type: 'setHoveredGhost', payload: null });
+      return;
     }
 
-    return relevant;
+    const allPlacements: any[] = getValidPlacementsAtParent(agg, partName, parentId);
+
+    // Group by connectionId
+    const byConn = new Map<number, any[]>();
+    for (const p of allPlacements) {
+      const list = byConn.get(p.connectionId) ?? [];
+      list.push(p);
+      byConn.set(p.connectionId, list);
+    }
+    placementsByConnRef.current = byConn;
+
+    // Pick one placement per connection (using current variant index or 0)
+    const ghostPlacements: any[] = [];
+    const newVariantIndex = new Map<number, number>();
+    for (const [connId, variants] of byConn) {
+      const prevIdx = activeVariantIndexRef.current.get(connId) ?? 0;
+      const idx = prevIdx < variants.length ? prevIdx : 0;
+      newVariantIndex.set(connId, idx);
+      ghostPlacements.push(variants[idx]);
+    }
+    activeVariantIndexRef.current = newVariantIndex;
+
+    viz.clearGhostMeshes?.();
+    if (ghostPlacements.length > 0) {
+      viz.addGhostMeshes?.(ghostPlacements);
+    }
+    dispatch({ type: 'setHoveredGhost', payload: null });
   }, []);
 
-  const updateGhostForConnection = useCallback((partName: string | null, resetIndex = true) => {
-    const agg = aggRef.current;
+  /** Helper: clear all visual overlays and refs */
+  const clearOverlays = useCallback(() => {
     const viz = vizRef.current;
-    const connection = hoveredConnectionRef.current;
-
-    if (!agg || !viz || !connection || !partName) {
-      placementsRef.current = [];
-      activePlacementIndexRef.current = 0;
-      viz?.clearGhostMeshes?.();
-      dispatch({ type: 'setHoveredGhost', payload: null });
-      return;
-    }
-
-    placementsRef.current = getValidPlacementsAtConnection(
-      agg,
-      partName,
-      connection.partId,
-      connection.connectionId,
-    );
-
-    if (resetIndex || activePlacementIndexRef.current >= placementsRef.current.length) {
-      activePlacementIndexRef.current = 0;
-    }
-
-    showGhostPlacement();
-  }, [showGhostPlacement]);
-
-  const refreshHoveredPreview = useCallback((partName: string | null) => {
-    const viz = vizRef.current;
-    if (!viz) return;
-
-    const relevantConnections = updateMarkersForPart(partName);
-
-    if (!hoveredConnectionRef.current) {
-      placementsRef.current = [];
-      activePlacementIndexRef.current = 0;
+    if (viz) {
       viz.clearGhostMeshes?.();
-      dispatch({ type: 'setHoveredGhost', payload: null });
-      return;
     }
-
-    const matchingIndex = relevantConnections.findIndex(
-      (connection: any) =>
-        connection.partId === hoveredConnectionRef.current?.partId
-        && connection.connectionId === hoveredConnectionRef.current?.connectionId,
-    );
-
-    if (matchingIndex === -1) {
-      hoveredMarkerRef.current = null;
-      hoveredConnectionRef.current = null;
-      placementsRef.current = [];
-      activePlacementIndexRef.current = 0;
-      viz.clearGhostMeshes?.();
-      dispatch({ type: 'setHoveredGhost', payload: null });
-      return;
-    }
-
-    hoveredMarkerRef.current = matchingIndex;
-    viz.highlightMarker?.(matchingIndex);
-    updateGhostForConnection(partName, true);
-  }, [updateGhostForConnection, updateMarkersForPart]);
+    placementsByConnRef.current = new Map();
+    activeVariantIndexRef.current = new Map();
+    hoveredParentRef.current = null;
+    hoveredGhostRef.current = null;
+    dispatch({ type: 'setHoveredGhost', payload: null });
+  }, []);
 
   /* ── Random mode: slider ── */
   const handleTargetChange = useCallback(
@@ -268,35 +235,10 @@ export function BuildScreen() {
   const handleSelectPart = useCallback(
     (partName: string | null) => {
       dispatch({ type: 'selectPart', payload: partName });
-      const viz = vizRef.current;
-      if (viz) {
-        viz.clearGhostMeshes?.();
-        viz.clearConnectionMarkers?.();
-      }
-      placementsRef.current = [];
-      activePlacementIndexRef.current = 0;
-      hoveredParentRef.current = null;
-      hoveredMarkerRef.current = null;
-      hoveredConnectionRef.current = null;
-      dispatch({ type: 'setHoveredGhost', payload: null });
+      clearOverlays();
     },
-    [],
+    [clearOverlays],
   );
-
-  /** Helper: clear all visual overlays and refs */
-  const clearOverlays = useCallback(() => {
-    const viz = vizRef.current;
-    if (viz) {
-      viz.clearGhostMeshes?.();
-      viz.clearConnectionMarkers?.();
-    }
-    placementsRef.current = [];
-    activePlacementIndexRef.current = 0;
-    hoveredParentRef.current = null;
-    hoveredMarkerRef.current = null;
-    hoveredConnectionRef.current = null;
-    dispatch({ type: 'setHoveredGhost', payload: null });
-  }, []);
 
   /* ── Manual mode: pointer events on canvas ── */
   const handleCanvasPointerMove = useCallback(
@@ -306,66 +248,42 @@ export function BuildScreen() {
       const agg = aggRef.current;
       if (!viz || !agg) return;
 
-      // Priority 1: if ghosts are visible, check for ghost hover
-      if (placementsRef.current.length > 0) {
+      // Priority 1: check ghost hover (highlight the one under pointer)
+      if (viz._ghostMeshes?.length > 0) {
         const ghostHit = viz.raycastGhosts?.(e.nativeEvent);
         if (ghostHit) {
-          viz.highlightGhost?.(ghostHit.index);
-          dispatch({ type: 'setHoveredGhost', payload: ghostHit.index });
+          if (ghostHit.index !== hoveredGhostRef.current) {
+            hoveredGhostRef.current = ghostHit.index;
+            viz.highlightGhost?.(ghostHit.index);
+            dispatch({ type: 'setHoveredGhost', payload: ghostHit.index });
+          }
           return;
-        } else {
+        } else if (hoveredGhostRef.current != null) {
+          hoveredGhostRef.current = null;
           viz.unhighlightGhosts?.();
           dispatch({ type: 'setHoveredGhost', payload: null });
         }
       }
 
-      // Priority 2: check for marker sphere hover → show ghost at that connection
-      if (viz._markerMeshes?.length > 0) {
-        const markerHit = viz.raycastMarkers?.(e.nativeEvent);
-        if (markerHit) {
-          const markerIdx = markerHit.index;
-          // Only recompute ghost if we moved to a different marker
-          if (markerIdx !== hoveredMarkerRef.current) {
-            hoveredMarkerRef.current = markerIdx;
-            hoveredConnectionRef.current = markerHit.data;
-            viz.highlightMarker?.(markerIdx);
-            updateGhostForConnection(state.selectedPartName, true);
-          }
-          return;
-        } else {
-          // Moved off markers — clear ghost but keep markers
-          if (hoveredMarkerRef.current != null) {
-            hoveredMarkerRef.current = null;
-            hoveredConnectionRef.current = null;
-            viz.unhighlightMarkers?.();
-            viz.clearGhostMeshes?.();
-            placementsRef.current = [];
-            activePlacementIndexRef.current = 0;
-            dispatch({ type: 'setHoveredGhost', payload: null });
-          }
-        }
-      }
-
-      // Priority 3: raycast placed parts → show markers at open connections
+      // Priority 2: raycast placed parts → show ghosts at all open connections
       const partHit = viz.raycastParts?.(e.nativeEvent);
       const hitParentId = partHit?.partId ?? null;
 
       if (hitParentId !== hoveredParentRef.current) {
         hoveredParentRef.current = hitParentId;
-        hoveredMarkerRef.current = null;
-        hoveredConnectionRef.current = null;
-        viz.clearConnectionMarkers?.();
-        viz.clearGhostMeshes?.();
-        placementsRef.current = [];
-        activePlacementIndexRef.current = 0;
-        dispatch({ type: 'setHoveredGhost', payload: null });
+        hoveredGhostRef.current = null;
 
         if (hitParentId != null) {
-          updateMarkersForPart(state.selectedPartName);
+          showGhostsForParent(state.selectedPartName);
+        } else {
+          viz.clearGhostMeshes?.();
+          placementsByConnRef.current = new Map();
+          activeVariantIndexRef.current = new Map();
+          dispatch({ type: 'setHoveredGhost', payload: null });
         }
       }
     },
-    [state.buildMode, state.selectedPartName, updateGhostForConnection, updateMarkersForPart],
+    [state.buildMode, state.selectedPartName, showGhostsForParent],
   );
 
   const handleCanvasClick = useCallback(
@@ -376,22 +294,21 @@ export function BuildScreen() {
       if (!agg || !viz) return;
 
       if (state.selectedPartName && state.hoveredGhostIndex != null) {
-        // Place at ghost location using the cached placements
-        const placement = placementsRef.current[activePlacementIndexRef.current];
-        if (placement) {
+        // Get the placement data from the hovered ghost
+        const ghostData = viz._ghostData?.[state.hoveredGhostIndex];
+        if (ghostData) {
           placePartManually(
             agg,
-            placement.parentPartId,
-            placement.connectionId,
-            placement.partName,
-            placement.connectionBId,
+            ghostData.parentPartId,
+            ghostData.connectionId,
+            ghostData.partName,
+            ghostData.connectionBId,
             viz,
           );
           clearOverlays();
           dispatch({ type: 'setAggregationTarget', payload: agg.aggregated_parts.length });
         }
       } else if (!state.selectedPartName) {
-        // If nothing selected and aggregation is empty, place first part of first catalog entry
         if (agg.aggregated_parts.length === 0 && state.catalog.length > 0) {
           placeFirstPartManually(agg, state.catalog[0].name, viz);
           dispatch({ type: 'setAggregationTarget', payload: agg.aggregated_parts.length });
@@ -419,18 +336,12 @@ export function BuildScreen() {
     [state.buildMode, clearOverlays],
   );
 
-  /* ── Keyboard: Escape deselects ── */
+  /* ── Keyboard: Escape deselects, arrows cycle variants/parts ── */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         dispatch({ type: 'selectPart', payload: null });
-        vizRef.current?.clearGhostMeshes?.();
-        vizRef.current?.clearConnectionMarkers?.();
-        placementsRef.current = [];
-        activePlacementIndexRef.current = 0;
-        hoveredParentRef.current = null;
-        hoveredMarkerRef.current = null;
-        hoveredConnectionRef.current = null;
+        clearOverlays();
         dispatch({ type: 'setInfoOpen', payload: false });
         return;
       }
@@ -440,13 +351,22 @@ export function BuildScreen() {
       }
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        if (hoveredConnectionRef.current && placementsRef.current.length > 1) {
-          e.preventDefault();
-          const delta = e.key === 'ArrowRight' ? 1 : -1;
-          activePlacementIndexRef.current =
-            (activePlacementIndexRef.current + delta + placementsRef.current.length)
-            % placementsRef.current.length;
-          showGhostPlacement();
+        // Cycle variant at the currently hovered ghost's connection
+        const viz = vizRef.current;
+        if (hoveredGhostRef.current != null && viz?._ghostData) {
+          const ghostData = viz._ghostData[hoveredGhostRef.current];
+          if (ghostData) {
+            const connId = ghostData.connectionId;
+            const variants = placementsByConnRef.current.get(connId);
+            if (variants && variants.length > 1) {
+              e.preventDefault();
+              const curIdx = activeVariantIndexRef.current.get(connId) ?? 0;
+              const delta = e.key === 'ArrowRight' ? 1 : -1;
+              const nextIdx = (curIdx + delta + variants.length) % variants.length;
+              activeVariantIndexRef.current.set(connId, nextIdx);
+              showGhostsForParent(state.selectedPartName);
+            }
+          }
         }
         return;
       }
@@ -462,16 +382,42 @@ export function BuildScreen() {
         const nextPartName = state.catalog[nextIndex]?.name ?? null;
 
         dispatch({ type: 'selectPart', payload: nextPartName });
-        refreshHoveredPreview(nextPartName);
+        // Re-show ghosts with new part if hovering a parent
+        if (hoveredParentRef.current != null) {
+          // Need to defer to let state update
+          hoveredGhostRef.current = null;
+          placementsByConnRef.current = new Map();
+          activeVariantIndexRef.current = new Map();
+          vizRef.current?.clearGhostMeshes?.();
+        }
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [refreshHoveredPreview, showGhostPlacement, state.buildMode, state.catalog, state.selectedPartName]);
+  }, [clearOverlays, showGhostsForParent, state.buildMode, state.catalog, state.selectedPartName]);
+
+  /* Re-show ghosts when selected part changes while hovering a parent */
+  useEffect(() => {
+    if (state.buildMode === 'manual' && hoveredParentRef.current != null && state.selectedPartName) {
+      showGhostsForParent(state.selectedPartName);
+    }
+  }, [state.selectedPartName, state.buildMode, showGhostsForParent]);
 
   /* ── Render ── */
   return (
     <div className="build-screen">
+      {isPortrait && (
+        <div className="build-portrait-overlay" aria-live="polite">
+          <svg className="build-portrait-overlay__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="5" y="2" width="14" height="20" rx="2"/>
+            <path d="M12 18h.01"/>
+            <path d="M3 11l3-3 3 3" opacity="0.5"/>
+            <path d="M21 13l-3 3-3-3" opacity="0.5"/>
+          </svg>
+          <h2 className="build-portrait-overlay__title">Rotate your device</h2>
+          <p className="build-portrait-overlay__desc">The editor works best in landscape mode.</p>
+        </div>
+      )}
       <Navbar />
 
       <div className="build-layout">
@@ -483,9 +429,20 @@ export function BuildScreen() {
           onClick={handleCanvasClick}
           onContextMenu={handleCanvasContextMenu}
         >
-          <div className="build-viewer__dataset-name">{state.setName || currentSet?.name || slug}</div>
+            <div className="build-viewer__dataset-name">
+              Dataset: {state.setName || currentSet?.name || slug}
+            </div>
 
           <button
+              className="build-viewer__back"
+              onClick={() => navigate('/')}
+              title="Back to datasets"
+              aria-label="Back to datasets"
+            >
+              ←
+            </button>
+
+            <button
             className="build-viewer__info"
             type="button"
             onClick={() => dispatch({ type: 'setInfoOpen', payload: true })}
@@ -493,16 +450,6 @@ export function BuildScreen() {
             title="Dataset info"
           >
             i
-          </button>
-
-          {/* Back arrow – bottom left */}
-          <button
-            className="build-viewer__back"
-            onClick={() => navigate('/')}
-            title="Back to datasets"
-            aria-label="Back to datasets"
-          >
-            ←
           </button>
 
         </div>
@@ -553,6 +500,7 @@ export function BuildScreen() {
             <h3 className="build-sidebar__section-title">Usage</h3>
             {state.buildMode === 'manual' ? (
               <>
+                <p><kbd>Hover</kbd> a part to see placement options</p>
                 <p><kbd>Click</kbd> ghost to place</p>
                 <p><kbd>Right-click</kbd> part to remove</p>
                 <p><kbd>Left</kbd>/<kbd>Right</kbd> switch placement variants</p>

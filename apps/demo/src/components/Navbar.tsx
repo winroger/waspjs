@@ -1,16 +1,17 @@
 import React from 'react';
-import logoUrl from '../assets/logo.png';
+
+const BASE = import.meta.env.BASE_URL ?? '/';
 
 /**
  * Shared top-bar for both the landing page and the build screen.
- * Displays the WaspJS logo on the left and a GitHub link on the right.
+ * Displays the WASP Atlas logo on the left and a GitHub link on the right.
  */
 export function Navbar() {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href={import.meta.env.BASE_URL ?? '/'} aria-label="WaspJS home">
-          <img src={logoUrl} alt="WaspJS logo" className="brand-mark" />
+        <a className="navbar-item" href={BASE} aria-label="WASP Atlas home">
+          <img src={`${BASE}assets/waspatlas.png`} alt="WASP Atlas logo" className="brand-mark" />
         </a>
       </div>
       <div className="navbar__actions">

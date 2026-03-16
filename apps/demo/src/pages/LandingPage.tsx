@@ -4,6 +4,7 @@ import { Visualizer } from 'webwaspjs';
 import { availableSets, type DemoSetConfig } from '../config/availableSets';
 import { aggregationService, centerCameraOnMesh } from '../lib/aggregationService';
 import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 async function loadJson(path: string) {
   const response = await fetch(path);
@@ -160,28 +161,61 @@ export function LandingPage() {
     [navigate],
   );
 
+  const handleScrollToDatasets = () => {
+    document.getElementById('datasets')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="landing">
       <Navbar />
 
-      <header className="landing__header">
-        <p className="landing__tagline">
-          Discrete aggregation toolkit — pick a dataset to start building.
+      <section className="landing__hero" aria-label="Introduction">
+        <span className="landing__hero-label">Wasp Atlas of Modularity</span>
+        <h1 className="landing__hero-title">
+          Explore modular<br />building systems
+        </h1>
+        <p className="landing__hero-desc">
+          A growing open library of modular building systems designed with the 
+          Grasshopper plug-in WASP, a combinatorial toolkit for discrete design. 
+          Each dataset encodes parts, connection rules, and spatial logic — 
+          ready to explore, reconfigure, and grow.
         </p>
-      </header>
+        <div className="landing__hero-actions">
+          <button
+            type="button"
+            className="landing__cta-primary"
+            onClick={handleScrollToDatasets}
+          >
+            Explore datasets
+          </button>
+          <a
+            className="landing__cta-secondary"
+            href="https://forms.gle/SYdRbsySKonq19GJ8"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Submit your design ↗
+          </a>
+        </div>
+      </section>
 
-      <div className="landing__grid">
-        {availableSets.map((set) => (
-          <DatasetCard
-            key={set.slug}
-            set={set}
-            onSelect={handleSelect}
-            onShowInfo={setInfoSet}
-          />
-        ))}
-      </div>
+      <section id="datasets" className="landing__datasets" aria-label="Available datasets">
+        <h2 className="landing__datasets-title">Datasets</h2>
+        <div className="landing__grid">
+          {availableSets.map((set) => (
+            <DatasetCard
+              key={set.slug}
+              set={set}
+              onSelect={handleSelect}
+              onShowInfo={setInfoSet}
+            />
+          ))}
+        </div>
+      </section>
 
       <DatasetInfoModal set={infoSet} onClose={() => setInfoSet(null)} />
+
+      <Footer />
     </div>
   );
 }
