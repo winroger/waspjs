@@ -74,11 +74,12 @@
   }
 
   .about-page__center-title {
-    font-size: clamp(2rem, 10vw, 2.9rem);
+    font-size: clamp(1.45rem, 7vw, 1.8rem);
   }
 
   .about-page__center-text {
-    font-size: 0.95rem;
+    font-size: 0.86rem;
+    line-height: 1.4;
   }
 
   .about-page__center-links {
