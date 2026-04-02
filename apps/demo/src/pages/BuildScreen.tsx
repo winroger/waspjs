@@ -417,6 +417,7 @@ export function BuildScreen() {
           const ghostData = viz._ghostData[hoveredGhostRef.current];
           if (ghostData) {
             const connId = ghostData.connectionId;
+            const parentPartId = ghostData.parentPartId;
             const variants = placementsByConnRef.current.get(connId);
             if (variants && variants.length > 1) {
               e.preventDefault();
@@ -425,6 +426,19 @@ export function BuildScreen() {
               const nextIdx = (curIdx + delta + variants.length) % variants.length;
               activeVariantIndexRef.current.set(connId, nextIdx);
               showGhostsForParent(selectedPartName);
+
+              // Keep the same connection hovered after cycling, so click-to-place stays active.
+              const refreshedGhosts: any[] | undefined = viz._ghostData;
+              if (refreshedGhosts?.length) {
+                const nextHoveredIndex = refreshedGhosts.findIndex(
+                  (entry) => entry.connectionId === connId && entry.parentPartId === parentPartId,
+                );
+                if (nextHoveredIndex >= 0) {
+                  hoveredGhostRef.current = nextHoveredIndex;
+                  viz.highlightGhost?.(nextHoveredIndex);
+                  setHoveredGhost(nextHoveredIndex);
+                }
+              }
             }
           }
         }
@@ -461,6 +475,7 @@ export function BuildScreen() {
     clearOverlays,
     showGhostsForParent,
     selectPart,
+    setHoveredGhost,
     setInfoOpen,
   ]);
 
