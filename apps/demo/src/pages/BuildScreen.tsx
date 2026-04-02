@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { availableSets } from '../config/availableSets';
+import { loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
 import { buildReducer, initialBuildState } from '../state/buildState';
 import {
   loadDataset,
@@ -42,7 +42,10 @@ export function BuildScreen() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(buildReducer, initialBuildState);
-  const currentSet = availableSets.find((item) => item.slug === slug) ?? null;
+  const [sets, setSets] = React.useState<DemoSetConfig[]>([]);
+  const [areSetsLoaded, setAreSetsLoaded] = React.useState(false);
+  const [catalogNotice, setCatalogNotice] = React.useState<string | null>(null);
+  const currentSet = sets.find((item) => item.slug === slug) ?? null;
 
   /* refs for mutable Three.js objects */
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -57,9 +60,26 @@ export function BuildScreen() {
   /** The ghost index currently under the pointer */
   const hoveredGhostRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const result = await loadAvailableSets();
+      if (!active) return;
+      setSets(result.sets);
+      setCatalogNotice(result.notice);
+      setAreSetsLoaded(true);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   /* ── Load dataset on mount / slug change ── */
   useEffect(() => {
-    const set = availableSets.find((s) => s.slug === slug);
+    if (!areSetsLoaded) return;
+
+    const set = sets.find((s) => s.slug === slug);
     if (!set) {
       navigate('/', { replace: true });
       return;
@@ -101,7 +121,7 @@ export function BuildScreen() {
       vizRef.current = null;
       aggRef.current = null;
     };
-  }, [slug, navigate]);
+  }, [slug, navigate, sets, areSetsLoaded]);
 
   /* ── Mode switch ── */
   const handleModeChange = useCallback(
@@ -519,11 +539,17 @@ export function BuildScreen() {
       </div>
 
       {/* Loading overlay */}
-      {state.isLoading && (
+      {(state.isLoading || !areSetsLoaded) && (
         <div className="build-loading">
           <p>Loading {state.setName || slug}…</p>
         </div>
       )}
+
+      {catalogNotice ? (
+        <div className="dataset-source-notice dataset-source-notice--build" role="status" aria-live="polite">
+          {catalogNotice}
+        </div>
+      ) : null}
 
       {/* Error */}
       {state.loadError && (
@@ -540,6 +566,11 @@ export function BuildScreen() {
         setName={currentSet?.name || state.setName}
         description={currentSet?.description}
         author={currentSet?.author}
+        tags={currentSet?.tags}
+        license={currentSet?.license}
+        units={currentSet?.units}
+        version={currentSet?.version}
+        created={currentSet?.created}
       />
     </div>
   );

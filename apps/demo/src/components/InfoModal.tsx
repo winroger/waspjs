@@ -7,6 +7,11 @@ type InfoModalProps = {
   setName?: string;
   description?: string;
   author?: string;
+  tags?: string[];
+  license?: string;
+  units?: string;
+  version?: string;
+  created?: string;
 };
 
 export function InfoModal({
@@ -16,6 +21,11 @@ export function InfoModal({
   setName,
   description,
   author,
+  tags,
+  license,
+  units,
+  version,
+  created,
 }: InfoModalProps) {
   return (
     <div
@@ -49,6 +59,42 @@ export function InfoModal({
             <div>
               <dt>Author</dt>
               <dd id="infoModalAuthor">{author}</dd>
+            </div>
+          ) : null}
+          {tags && tags.length > 0 ? (
+            <div>
+              <dt>Tags</dt>
+              <dd>
+                <div className="modal__tags">
+                  {tags.map((tag) => (
+                    <span key={tag} className="modal__tag">{tag}</span>
+                  ))}
+                </div>
+              </dd>
+            </div>
+          ) : null}
+          {license ? (
+            <div>
+              <dt>License</dt>
+              <dd>{license}</dd>
+            </div>
+          ) : null}
+          {units ? (
+            <div>
+              <dt>Units</dt>
+              <dd>{units}</dd>
+            </div>
+          ) : null}
+          {version ? (
+            <div>
+              <dt>Version</dt>
+              <dd>{version}</dd>
+            </div>
+          ) : null}
+          {created ? (
+            <div>
+              <dt>Created</dt>
+              <dd>{created}</dd>
             </div>
           ) : null}
         </dl>

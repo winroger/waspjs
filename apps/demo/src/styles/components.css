@@ -400,6 +400,7 @@
 
 .modal__title {
   margin: 0 0 var(--space-3);
+  font-weight: 600;
 }
 
 .modal__meta {
@@ -413,12 +414,31 @@
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .modal__meta dd {
   margin: 0.15rem 0 0;
   color: var(--text);
-  font-weight: 600;
+  font-weight: 400;
+}
+
+.modal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.modal__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  font-weight: 500;
 }
 
 .dataset-overlay {

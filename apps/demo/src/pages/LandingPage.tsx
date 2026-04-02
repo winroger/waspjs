@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Visualizer } from 'webwaspjs';
-import { availableSets, type DemoSetConfig } from '../config/availableSets';
+import { loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
 import { aggregationService, centerCameraOnMesh } from '../lib/aggregationService';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -16,6 +16,23 @@ async function resolveColors(set: DemoSetConfig) {
   const hasConfigColors =
     (set.colors && set.colors.length) || Object.keys(set.byPart || {}).length;
   if (hasConfigColors) return { colors: set.colors || [], byPart: set.byPart || {} };
+
+  if (set.meta) {
+    try {
+      const response = await fetch(set.meta);
+      if (response.ok) {
+        const meta = await response.json();
+        const colors = Array.isArray(meta?.colors) ? meta.colors : Array.isArray(meta?.palette) ? meta.palette : [];
+        const byPart = meta?.byPart || meta?.by_part || {};
+        if (colors.length || Object.keys(byPart).length) {
+          return { colors, byPart };
+        }
+      }
+    } catch {
+      // Fall through to colors.json lookup.
+    }
+  }
+
   try {
     const response = await fetch(`${set.path}colors.json`);
     if (!response.ok) return null;
@@ -145,6 +162,43 @@ function DatasetInfoModal({
             <dt>Slug</dt>
             <dd>{set.slug}</dd>
           </div>
+          {set.tags && set.tags.length > 0 ? (
+            <div>
+              <dt>Tags</dt>
+                    <dd>
+                      <div className="modal__tags">
+                        {set.tags.map((tag) => (
+                          <span key={tag} className="modal__tag">{tag}</span>
+                        ))}
+                      </div>
+                    </dd>
+              <dd>{set.tags.join(', ')}</dd>
+            </div>
+          ) : null}
+          {set.license ? (
+            <div>
+              <dt>License</dt>
+              <dd>{set.license}</dd>
+            </div>
+          ) : null}
+          {set.units ? (
+            <div>
+              <dt>Units</dt>
+              <dd>{set.units}</dd>
+            </div>
+          ) : null}
+          {set.version ? (
+            <div>
+              <dt>Version</dt>
+              <dd>{set.version}</dd>
+            </div>
+          ) : null}
+          {set.created ? (
+            <div>
+              <dt>Created</dt>
+              <dd>{set.created}</dd>
+            </div>
+          ) : null}
         </dl>
       </div>
     </div>
@@ -154,7 +208,23 @@ function DatasetInfoModal({
 /* ── Landing page ── */
 export function LandingPage() {
   const navigate = useNavigate();
+  const [sets, setSets] = useState<DemoSetConfig[]>([]);
+  const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
   const [infoSet, setInfoSet] = useState<DemoSetConfig | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const result = await loadAvailableSets();
+      if (!active) return;
+      setSets(result.sets);
+      setCatalogNotice(result.notice);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleSelect = useCallback(
     (slug: string) => navigate(`/build/${slug}`),
@@ -201,8 +271,13 @@ export function LandingPage() {
 
       <section id="datasets" className="landing__datasets" aria-label="Available datasets">
         <h2 className="landing__datasets-title">Datasets</h2>
+        {catalogNotice ? (
+          <p className="dataset-source-notice" role="status" aria-live="polite">
+            {catalogNotice}
+          </p>
+        ) : null}
         <div className="landing__grid">
-          {availableSets.map((set) => (
+          {sets.map((set) => (
             <DatasetCard
               key={set.slug}
               set={set}
