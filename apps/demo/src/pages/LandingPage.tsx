@@ -78,8 +78,10 @@ function DatasetCard({
 
         const mesh = parts[0].geo.clone();
         mesh.name = `${parts[0].name}_landing_preview`;
-        viz.scene.add(mesh);
-        centerCameraOnMesh(viz, mesh, 2.5);
+        if (viz.scene) {
+          viz.scene.add(mesh);
+          centerCameraOnMesh(viz, mesh, 2.5);
+        }
       } catch (err: any) {
         console.warn(`Preview failed for ${set.name}: ${err.message}`);
       }
@@ -165,14 +167,13 @@ function DatasetInfoModal({
           {set.tags && set.tags.length > 0 ? (
             <div>
               <dt>Tags</dt>
-                    <dd>
-                      <div className="modal__tags">
-                        {set.tags.map((tag) => (
-                          <span key={tag} className="modal__tag">{tag}</span>
-                        ))}
-                      </div>
-                    </dd>
-              <dd>{set.tags.join(', ')}</dd>
+              <dd>
+                <div className="modal__tags">
+                  {set.tags.map((tag) => (
+                    <span key={tag} className="modal__tag">{tag}</span>
+                  ))}
+                </div>
+              </dd>
             </div>
           ) : null}
           {set.license ? (

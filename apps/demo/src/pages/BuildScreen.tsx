@@ -1,7 +1,8 @@
-import React, { useEffect, useReducer, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 import { loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
-import { buildReducer, initialBuildState } from '../state/buildState';
+import { useBuildStore } from '../state/buildStore';
 import {
   loadDataset,
   createVisualizerInContainer,
@@ -41,7 +42,49 @@ export function BuildScreen() {
   const isPortrait = useIsPortrait();
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [state, dispatch] = useReducer(buildReducer, initialBuildState);
+  const {
+    buildMode,
+    selectedPartName,
+    hoveredGhostIndex,
+    catalog,
+    aggregationTargetCount,
+    setName,
+    isLoading,
+    loadError,
+    isInfoOpen,
+    setLoaded,
+    setLoading,
+    setLoadError,
+    setBuildMode,
+    setAggregationTarget,
+    togglePartActive,
+    selectPart,
+    setHoveredGhost,
+    setPartColor,
+    setInfoOpen,
+  } = useBuildStore(
+    useShallow((store) => ({
+      buildMode: store.buildMode,
+      selectedPartName: store.selectedPartName,
+      hoveredGhostIndex: store.hoveredGhostIndex,
+      catalog: store.catalog,
+      aggregationTargetCount: store.aggregationTargetCount,
+      setName: store.setName,
+      isLoading: store.isLoading,
+      loadError: store.loadError,
+      isInfoOpen: store.isInfoOpen,
+      setLoaded: store.setLoaded,
+      setLoading: store.setLoading,
+      setLoadError: store.setLoadError,
+      setBuildMode: store.setBuildMode,
+      setAggregationTarget: store.setAggregationTarget,
+      togglePartActive: store.togglePartActive,
+      selectPart: store.selectPart,
+      setHoveredGhost: store.setHoveredGhost,
+      setPartColor: store.setPartColor,
+      setInfoOpen: store.setInfoOpen,
+    })),
+  );
   const [sets, setSets] = React.useState<DemoSetConfig[]>([]);
   const [areSetsLoaded, setAreSetsLoaded] = React.useState(false);
   const [catalogNotice, setCatalogNotice] = React.useState<string | null>(null);
@@ -86,7 +129,7 @@ export function BuildScreen() {
     }
 
     let cancelled = false;
-    dispatch({ type: 'setLoading', payload: true });
+    setLoading(true);
 
     (async () => {
       try {
@@ -103,15 +146,12 @@ export function BuildScreen() {
         }
 
         /* grow to default count */
-        await growToTarget(aggregation, initialBuildState.aggregationTargetCount, vizRef.current);
+        await growToTarget(aggregation, 50, vizRef.current);
         frameScene(vizRef.current);
 
-        dispatch({
-          type: 'setLoaded',
-          payload: { slug: set.slug, setName: set.name, catalog },
-        });
+        setLoaded({ slug: set.slug, setName: set.name, catalog });
       } catch (err: any) {
-        if (!cancelled) dispatch({ type: 'setLoadError', payload: err.message });
+        if (!cancelled) setLoadError(err.message);
       }
     })();
 
@@ -121,12 +161,12 @@ export function BuildScreen() {
       vizRef.current = null;
       aggRef.current = null;
     };
-  }, [slug, navigate, sets, areSetsLoaded]);
+  }, [slug, navigate, sets, areSetsLoaded, setLoading, setLoaded, setLoadError]);
 
   /* ── Mode switch ── */
   const handleModeChange = useCallback(
     (mode: 'random' | 'manual') => {
-      dispatch({ type: 'setBuildMode', payload: mode });
+      setBuildMode(mode);
       const viz = vizRef.current;
       if (viz) {
         viz.clearGhostMeshes?.();
@@ -136,7 +176,7 @@ export function BuildScreen() {
       hoveredParentRef.current = null;
       hoveredGhostRef.current = null;
     },
-    [],
+    [setBuildMode],
   );
 
   /** Show ghosts at all open connections of the hovered parent part. */
@@ -149,7 +189,7 @@ export function BuildScreen() {
       viz?.clearGhostMeshes?.();
       placementsByConnRef.current = new Map();
       activeVariantIndexRef.current = new Map();
-      dispatch({ type: 'setHoveredGhost', payload: null });
+      setHoveredGhost(null);
       return;
     }
 
@@ -179,8 +219,8 @@ export function BuildScreen() {
     if (ghostPlacements.length > 0) {
       viz.addGhostMeshes?.(ghostPlacements);
     }
-    dispatch({ type: 'setHoveredGhost', payload: null });
-  }, []);
+    setHoveredGhost(null);
+  }, [setHoveredGhost]);
 
   /** Helper: clear all visual overlays and refs */
   const clearOverlays = useCallback(() => {
@@ -192,48 +232,48 @@ export function BuildScreen() {
     activeVariantIndexRef.current = new Map();
     hoveredParentRef.current = null;
     hoveredGhostRef.current = null;
-    dispatch({ type: 'setHoveredGhost', payload: null });
-  }, []);
+    setHoveredGhost(null);
+  }, [setHoveredGhost]);
 
   /* ── Random mode: slider ── */
   const handleTargetChange = useCallback(
     (targetCount: number) => {
-      dispatch({ type: 'setAggregationTarget', payload: targetCount });
+      setAggregationTarget(targetCount);
       const agg = aggRef.current;
       const viz = vizRef.current;
       if (agg && viz) {
         setAggregationPartCount(agg, targetCount, viz);
       }
     },
-    [],
+    [setAggregationTarget],
   );
 
   /* ── Part catalog: toggle active ── */
   const handleToggleActive = useCallback(
     (partName: string) => {
-      dispatch({ type: 'togglePartActive', payload: partName });
+      togglePartActive(partName);
       // We'll sync activePartTypes after state update via effect
     },
-    [],
+    [togglePartActive],
   );
 
   /* Sync active part list to aggregation whenever catalog changes */
   useEffect(() => {
     const agg = aggRef.current;
     if (!agg) return;
-    const activeNames = state.catalog.filter((p) => p.active).map((p) => p.name);
-    if (activeNames.length === state.catalog.length) {
+    const activeNames = catalog.filter((p) => p.active).map((p) => p.name);
+    if (activeNames.length === catalog.length) {
       setActivePartTypes(agg, null); // all active
     } else {
       setActivePartTypes(agg, activeNames);
     }
-  }, [state.catalog]);
+  }, [catalog]);
 
   /* ── Part catalog: color change ── */
   const handleColorChange = useCallback(
     (partName: string, hex: string) => {
       const normalized = normalizeHex(hex);
-      dispatch({ type: 'setPartColor', payload: { name: partName, color: normalized } });
+      setPartColor({ name: partName, color: normalized });
 
       const agg = aggRef.current;
       const viz = vizRef.current;
@@ -246,24 +286,24 @@ export function BuildScreen() {
       colorsRef.current = cfg;
       applyColors(agg, cfg);
       // Re-render current part count to refresh materials
-      setAggregationPartCount(agg, state.aggregationTargetCount, viz);
+      setAggregationPartCount(agg, aggregationTargetCount, viz);
     },
-    [state.aggregationTargetCount],
+    [setPartColor, aggregationTargetCount],
   );
 
   /* ── Manual mode: select part for placement ── */
   const handleSelectPart = useCallback(
     (partName: string | null) => {
-      dispatch({ type: 'selectPart', payload: partName });
+      selectPart(partName);
       clearOverlays();
     },
-    [clearOverlays],
+    [clearOverlays, selectPart],
   );
 
   /* ── Manual mode: pointer events on canvas ── */
   const handleCanvasPointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (state.buildMode !== 'manual' || !state.selectedPartName) return;
+      if (buildMode !== 'manual' || !selectedPartName) return;
       const viz = vizRef.current;
       const agg = aggRef.current;
       if (!viz || !agg) return;
@@ -275,13 +315,13 @@ export function BuildScreen() {
           if (ghostHit.index !== hoveredGhostRef.current) {
             hoveredGhostRef.current = ghostHit.index;
             viz.highlightGhost?.(ghostHit.index);
-            dispatch({ type: 'setHoveredGhost', payload: ghostHit.index });
+            setHoveredGhost(ghostHit.index);
           }
           return;
         } else if (hoveredGhostRef.current != null) {
           hoveredGhostRef.current = null;
           viz.unhighlightGhosts?.();
-          dispatch({ type: 'setHoveredGhost', payload: null });
+          setHoveredGhost(null);
         }
       }
 
@@ -294,28 +334,28 @@ export function BuildScreen() {
         hoveredGhostRef.current = null;
 
         if (hitParentId != null) {
-          showGhostsForParent(state.selectedPartName);
+          showGhostsForParent(selectedPartName);
         } else {
           viz.clearGhostMeshes?.();
           placementsByConnRef.current = new Map();
           activeVariantIndexRef.current = new Map();
-          dispatch({ type: 'setHoveredGhost', payload: null });
+          setHoveredGhost(null);
         }
       }
     },
-    [state.buildMode, state.selectedPartName, showGhostsForParent],
+    [buildMode, selectedPartName, showGhostsForParent, setHoveredGhost],
   );
 
   const handleCanvasClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (state.buildMode !== 'manual') return;
+      if (buildMode !== 'manual') return;
       const agg = aggRef.current;
       const viz = vizRef.current;
       if (!agg || !viz) return;
 
-      if (state.selectedPartName && state.hoveredGhostIndex != null) {
+      if (selectedPartName && hoveredGhostIndex != null) {
         // Get the placement data from the hovered ghost
-        const ghostData = viz._ghostData?.[state.hoveredGhostIndex];
+        const ghostData = viz._ghostData?.[hoveredGhostIndex];
         if (ghostData) {
           placePartManually(
             agg,
@@ -326,22 +366,22 @@ export function BuildScreen() {
             viz,
           );
           clearOverlays();
-          dispatch({ type: 'setAggregationTarget', payload: agg.aggregated_parts.length });
+          setAggregationTarget(agg.aggregated_parts.length);
         }
-      } else if (!state.selectedPartName) {
-        if (agg.aggregated_parts.length === 0 && state.catalog.length > 0) {
-          placeFirstPartManually(agg, state.catalog[0].name, viz);
-          dispatch({ type: 'setAggregationTarget', payload: agg.aggregated_parts.length });
+      } else if (!selectedPartName) {
+        if (agg.aggregated_parts.length === 0 && catalog.length > 0) {
+          placeFirstPartManually(agg, catalog[0].name, viz);
+          setAggregationTarget(agg.aggregated_parts.length);
         }
       }
     },
-    [state.buildMode, state.selectedPartName, state.hoveredGhostIndex, state.catalog, clearOverlays],
+    [buildMode, selectedPartName, hoveredGhostIndex, catalog, clearOverlays, setAggregationTarget],
   );
 
   const handleCanvasContextMenu = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
-      if (state.buildMode !== 'manual') return;
+      if (buildMode !== 'manual') return;
       const agg = aggRef.current;
       const viz = vizRef.current;
       if (!agg || !viz) return;
@@ -350,23 +390,23 @@ export function BuildScreen() {
       if (hit && hit.partId != null) {
         removePartById(agg, hit.partId, viz);
         clearOverlays();
-        dispatch({ type: 'setAggregationTarget', payload: agg.aggregated_parts.length });
+        setAggregationTarget(agg.aggregated_parts.length);
       }
     },
-    [state.buildMode, clearOverlays],
+    [buildMode, clearOverlays, setAggregationTarget],
   );
 
   /* ── Keyboard: Escape deselects, arrows cycle variants/parts ── */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        dispatch({ type: 'selectPart', payload: null });
+        selectPart(null);
         clearOverlays();
-        dispatch({ type: 'setInfoOpen', payload: false });
+        setInfoOpen(false);
         return;
       }
 
-      if (state.buildMode !== 'manual' || state.catalog.length === 0) {
+      if (buildMode !== 'manual' || catalog.length === 0) {
         return;
       }
 
@@ -384,7 +424,7 @@ export function BuildScreen() {
               const delta = e.key === 'ArrowRight' ? 1 : -1;
               const nextIdx = (curIdx + delta + variants.length) % variants.length;
               activeVariantIndexRef.current.set(connId, nextIdx);
-              showGhostsForParent(state.selectedPartName);
+              showGhostsForParent(selectedPartName);
             }
           }
         }
@@ -394,14 +434,14 @@ export function BuildScreen() {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault();
         const step = e.key === 'ArrowDown' ? 1 : -1;
-        const currentIndex = state.catalog.findIndex((entry) => entry.name === state.selectedPartName);
-        const fallbackIndex = step > 0 ? 0 : state.catalog.length - 1;
+        const currentIndex = catalog.findIndex((entry) => entry.name === selectedPartName);
+        const fallbackIndex = step > 0 ? 0 : catalog.length - 1;
         const nextIndex = currentIndex === -1
           ? fallbackIndex
-          : (currentIndex + step + state.catalog.length) % state.catalog.length;
-        const nextPartName = state.catalog[nextIndex]?.name ?? null;
+          : (currentIndex + step + catalog.length) % catalog.length;
+        const nextPartName = catalog[nextIndex]?.name ?? null;
 
-        dispatch({ type: 'selectPart', payload: nextPartName });
+        selectPart(nextPartName);
         // Re-show ghosts with new part if hovering a parent
         if (hoveredParentRef.current != null) {
           // Need to defer to let state update
@@ -414,14 +454,22 @@ export function BuildScreen() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [clearOverlays, showGhostsForParent, state.buildMode, state.catalog, state.selectedPartName]);
+  }, [
+    buildMode,
+    selectedPartName,
+    catalog,
+    clearOverlays,
+    showGhostsForParent,
+    selectPart,
+    setInfoOpen,
+  ]);
 
   /* Re-show ghosts when selected part changes while hovering a parent */
   useEffect(() => {
-    if (state.buildMode === 'manual' && hoveredParentRef.current != null && state.selectedPartName) {
-      showGhostsForParent(state.selectedPartName);
+    if (buildMode === 'manual' && hoveredParentRef.current != null && selectedPartName) {
+      showGhostsForParent(selectedPartName);
     }
-  }, [state.selectedPartName, state.buildMode, showGhostsForParent]);
+  }, [selectedPartName, buildMode, showGhostsForParent]);
 
   /* ── Render ── */
   return (
@@ -450,7 +498,7 @@ export function BuildScreen() {
           onContextMenu={handleCanvasContextMenu}
         >
             <div className="build-viewer__dataset-name">
-              Dataset: {state.setName || currentSet?.name || slug}
+              Dataset: {setName || currentSet?.name || slug}
             </div>
 
           <button
@@ -465,7 +513,7 @@ export function BuildScreen() {
             <button
             className="build-viewer__info"
             type="button"
-            onClick={() => dispatch({ type: 'setInfoOpen', payload: true })}
+              onClick={() => setInfoOpen(true)}
             aria-label="Show dataset info"
             title="Dataset info"
           >
@@ -478,13 +526,13 @@ export function BuildScreen() {
         <aside className="build-sidebar">
           <div className="build-sidebar__mode-picker">
             <button
-              className={`mode-btn ${state.buildMode === 'random' ? 'mode-btn--active' : ''}`}
+              className={`mode-btn ${buildMode === 'random' ? 'mode-btn--active' : ''}`}
               onClick={() => handleModeChange('random')}
             >
               Random
             </button>
             <button
-              className={`mode-btn ${state.buildMode === 'manual' ? 'mode-btn--active' : ''}`}
+              className={`mode-btn ${buildMode === 'manual' ? 'mode-btn--active' : ''}`}
               onClick={() => handleModeChange('manual')}
             >
               Manual
@@ -494,22 +542,22 @@ export function BuildScreen() {
           <div className="build-sidebar__settings">
             <h3 className="build-sidebar__section-title">Mode Settings</h3>
 
-            {state.buildMode === 'random' ? (
+            {buildMode === 'random' ? (
               <RandomControls
-                targetCount={state.aggregationTargetCount}
+                targetCount={aggregationTargetCount}
                 onTargetChange={handleTargetChange}
               />
             ) : (
               <ManualControls
-                selectedPartName={state.selectedPartName}
+                selectedPartName={selectedPartName}
                 partCount={aggRef.current?.aggregated_parts?.length ?? 0}
               />
             )}
 
             <PartCatalog
-              catalog={state.catalog}
-              selectedPartName={state.selectedPartName}
-              buildMode={state.buildMode}
+              catalog={catalog}
+              selectedPartName={selectedPartName}
+              buildMode={buildMode}
               onToggleActive={handleToggleActive}
               onColorChange={handleColorChange}
               onSelectPart={handleSelectPart}
@@ -518,7 +566,7 @@ export function BuildScreen() {
 
           <div className="build-sidebar__usage">
             <h3 className="build-sidebar__section-title">Usage</h3>
-            {state.buildMode === 'manual' ? (
+            {buildMode === 'manual' ? (
               <>
                 <p><kbd>Hover</kbd> a part to see placement options</p>
                 <p><kbd>Click</kbd> ghost to place</p>
@@ -539,9 +587,9 @@ export function BuildScreen() {
       </div>
 
       {/* Loading overlay */}
-      {(state.isLoading || !areSetsLoaded) && (
+      {(isLoading || !areSetsLoaded) && (
         <div className="build-loading">
-          <p>Loading {state.setName || slug}…</p>
+          <p>Loading {setName || slug}…</p>
         </div>
       )}
 
@@ -552,18 +600,18 @@ export function BuildScreen() {
       ) : null}
 
       {/* Error */}
-      {state.loadError && (
+      {loadError && (
         <div className="build-error">
-          <p>Error: {state.loadError}</p>
+          <p>Error: {loadError}</p>
           <button onClick={() => navigate('/')}>Back to datasets</button>
         </div>
       )}
 
       <InfoModal
-        isOpen={state.isInfoOpen}
-        onClose={() => dispatch({ type: 'setInfoOpen', payload: false })}
-        title={currentSet?.name || state.setName || 'Dataset Info'}
-        setName={currentSet?.name || state.setName}
+        isOpen={isInfoOpen}
+        onClose={() => setInfoOpen(false)}
+        title={currentSet?.name || setName || 'Dataset Info'}
+        setName={currentSet?.name || setName}
         description={currentSet?.description}
         author={currentSet?.author}
         tags={currentSet?.tags}

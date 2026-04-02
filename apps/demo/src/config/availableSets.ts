@@ -156,6 +156,3 @@ export async function loadAvailableSets(): Promise<CatalogLoadResult> {
   }
   return catalogLoadPromise;
 }
-
-// Legacy export kept for compatibility with old runtime/tests.
-export const availableSets: DemoSetConfig[] = [];

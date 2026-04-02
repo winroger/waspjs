@@ -94,6 +94,7 @@ export function frameVisualizerToScene(visualizer, distanceScale = 0.8) {
 
 /**
  * Get all open connections in the aggregation.
+ * @deprecated Prefer `getOpenConnectionsForPart` in interactive/manual workflows.
  * @param {Aggregation} aggregation
  * @returns {Array<{partId: number, connectionId: number, plane: object, type: string, rules: Array}>}
  */
@@ -104,6 +105,8 @@ export function getOpenConnections(aggregation) {
 
 /**
  * Compute all valid placements for a given part type (collision-checked).
+ * @deprecated Prefer `getValidPlacementsAtParent` or `getValidPlacementsAtConnection`
+ * in interactive/manual workflows for better performance.
  * @param {Aggregation} aggregation
  * @param {string} partName
  * @returns {Array}
