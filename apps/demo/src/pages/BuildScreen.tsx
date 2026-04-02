@@ -124,7 +124,7 @@ export function BuildScreen() {
 
     const set = sets.find((s) => s.slug === slug);
     if (!set) {
-      navigate('/', { replace: true });
+      navigate('/datasets', { replace: true });
       return;
     }
 
@@ -497,23 +497,23 @@ export function BuildScreen() {
           onClick={handleCanvasClick}
           onContextMenu={handleCanvasContextMenu}
         >
-            <div className="build-viewer__dataset-name">
-              Dataset: {setName || currentSet?.name || slug}
-            </div>
+          <div className="build-viewer__dataset-name">
+            Dataset: {setName || currentSet?.name || slug}
+          </div>
 
           <button
-              className="build-viewer__back"
-              onClick={() => navigate('/')}
-              title="Back to datasets"
-              aria-label="Back to datasets"
-            >
-              ←
-            </button>
+            className="build-viewer__back"
+            onClick={() => navigate('/datasets')}
+            title="Back to datasets"
+            aria-label="Back to datasets"
+          >
+            ←
+          </button>
 
-            <button
+          <button
             className="build-viewer__info"
             type="button"
-              onClick={() => setInfoOpen(true)}
+            onClick={() => setInfoOpen(true)}
             aria-label="Show dataset info"
             title="Dataset info"
           >
@@ -603,7 +603,7 @@ export function BuildScreen() {
       {loadError && (
         <div className="build-error">
           <p>Error: {loadError}</p>
-          <button onClick={() => navigate('/')}>Back to datasets</button>
+          <button onClick={() => navigate('/datasets')}>Back to datasets</button>
         </div>
       )}
 

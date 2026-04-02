@@ -18,6 +18,22 @@
 </head>
 <body class="page">
   <div id="root"></div>
+  <script>
+    // GitHub Pages SPA fallback: decode /?/<route> redirects from 404.html.
+    (function (location) {
+      if (location.search[1] === '/') {
+        var decoded = location.search
+          .slice(1)
+          .split('&')
+          .map(function (segment) {
+            return segment.replace(/~and~/g, '&');
+          })
+          .join('?');
+
+        window.history.replaceState(null, '', location.pathname.slice(0, -1) + decoded + location.hash);
+      }
+    })(window.location);
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
