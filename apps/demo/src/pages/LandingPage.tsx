@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Visualizer } from 'webwaspjs';
 import { loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
-import { aggregationService, centerCameraOnMesh } from '../lib/aggregationService';
+import { aggregationService } from '../lib/aggregationService';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 
@@ -12,206 +12,10 @@ async function loadJson(path: string) {
   return response.json();
 }
 
-async function resolveColors(set: DemoSetConfig) {
-  const hasConfigColors =
-    (set.colors && set.colors.length) || Object.keys(set.byPart || {}).length;
-  if (hasConfigColors) return { colors: set.colors || [], byPart: set.byPart || {} };
-
-  if (set.meta) {
-    try {
-      const response = await fetch(set.meta);
-      if (response.ok) {
-        const meta = await response.json();
-        const colors = Array.isArray(meta?.colors) ? meta.colors : Array.isArray(meta?.palette) ? meta.palette : [];
-        const byPart = meta?.byPart || meta?.by_part || {};
-        if (colors.length || Object.keys(byPart).length) {
-          return { colors, byPart };
-        }
-      }
-    } catch {
-      // Fall through to colors.json lookup.
-    }
-  }
-
-  try {
-    const response = await fetch(`${set.path}colors.json`);
-    if (!response.ok) return null;
-    return response.json();
-  } catch {
-    return null;
-  }
-}
-
-/* ── Thumbnail card with a live Three.js preview ── */
-function DatasetCard({
-  set,
-  onSelect,
-  onShowInfo,
-}: {
-  set: DemoSetConfig;
-  onSelect: (slug: string) => void;
-  onShowInfo: (set: DemoSetConfig) => void;
-}) {
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const vizRef = useRef<any>(null);
-  const loadedRef = useRef(false);
-
-  useEffect(() => {
-    const container = canvasRef.current;
-    if (!container || loadedRef.current) return;
-    loadedRef.current = true;
-
-    let disposed = false;
-
-    (async () => {
-      try {
-        const data = await loadJson(`${set.path}${set.aggregation}`);
-        const colorsConfig = await resolveColors(set);
-        const agg = aggregationService.createAggregationFromData(data);
-        if (colorsConfig) aggregationService.applyAggregationColors(agg, colorsConfig);
-        const parts = aggregationService.getAggregationCatalogParts(agg);
-        if (disposed || !parts.length) return;
-
-        const viz = new Visualizer(container as any, container as any);
-        vizRef.current = viz;
-        if (viz.cameraControls) viz.cameraControls.enabled = false;
-
-        const mesh = parts[0].geo.clone();
-        mesh.name = `${parts[0].name}_landing_preview`;
-        if (viz.scene) {
-          viz.scene.add(mesh);
-          centerCameraOnMesh(viz, mesh, 2.5);
-        }
-      } catch (err: any) {
-        console.warn(`Preview failed for ${set.name}: ${err.message}`);
-      }
-    })();
-
-    return () => {
-      disposed = true;
-      const viz = vizRef.current;
-      if (!viz) return;
-      try {
-        viz.cameraControls?.dispose?.();
-        viz.renderer?.dispose?.();
-        const dom = viz.renderer?.domElement;
-        if (dom?.parentNode) dom.parentNode.removeChild(dom);
-      } catch {}
-    };
-  }, [set]);
-
-  return (
-    <div className="landing-card">
-      <button
-        className="landing-card__preview"
-        onClick={() => onSelect(set.slug)}
-        type="button"
-      >
-        <div className="landing-card__canvas" ref={canvasRef} />
-      </button>
-
-      <div className="landing-card__footer">
-        <span className="landing-card__title">{set.name}</span>
-        <button
-          className="landing-card__info-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            onShowInfo(set);
-          }}
-          title="Dataset info"
-          aria-label={`Info about ${set.name}`}
-        >
-          <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
-            <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm.75 12.5h-1.5v-5h1.5v5Zm0-6.5h-1.5V6.5h1.5V8Z"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/* ── Info Modal ── */
-function DatasetInfoModal({
-  set,
-  onClose,
-}: {
-  set: DemoSetConfig | null;
-  onClose: () => void;
-}) {
-  if (!set) return null;
-  return (
-    <div className="modal is-open" aria-modal="true" role="dialog">
-      <div className="modal__backdrop" onClick={onClose} />
-      <div className="modal__content">
-        <button className="modal__close" aria-label="Close info" onClick={onClose}>
-          ×
-        </button>
-        <h2 className="modal__title">{set.name}</h2>
-        <dl className="modal__meta">
-          {set.description && (
-            <div>
-              <dt>Description</dt>
-              <dd>{set.description}</dd>
-            </div>
-          )}
-          {set.author && (
-            <div>
-              <dt>Author</dt>
-              <dd>{set.author}</dd>
-            </div>
-          )}
-          <div>
-            <dt>Slug</dt>
-            <dd>{set.slug}</dd>
-          </div>
-          {set.tags && set.tags.length > 0 ? (
-            <div>
-              <dt>Tags</dt>
-              <dd>
-                <div className="modal__tags">
-                  {set.tags.map((tag) => (
-                    <span key={tag} className="modal__tag">{tag}</span>
-                  ))}
-                </div>
-              </dd>
-            </div>
-          ) : null}
-          {set.license ? (
-            <div>
-              <dt>License</dt>
-              <dd>{set.license}</dd>
-            </div>
-          ) : null}
-          {set.units ? (
-            <div>
-              <dt>Units</dt>
-              <dd>{set.units}</dd>
-            </div>
-          ) : null}
-          {set.version ? (
-            <div>
-              <dt>Version</dt>
-              <dd>{set.version}</dd>
-            </div>
-          ) : null}
-          {set.created ? (
-            <div>
-              <dt>Created</dt>
-              <dd>{set.created}</dd>
-            </div>
-          ) : null}
-        </dl>
-      </div>
-    </div>
-  );
-}
-
 /* ── Landing page ── */
 export function LandingPage() {
-  const navigate = useNavigate();
   const [sets, setSets] = useState<DemoSetConfig[]>([]);
-  const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
-  const [infoSet, setInfoSet] = useState<DemoSetConfig | null>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -219,7 +23,6 @@ export function LandingPage() {
       const result = await loadAvailableSets();
       if (!active) return;
       setSets(result.sets);
-      setCatalogNotice(result.notice);
     })();
 
     return () => {
@@ -227,69 +30,136 @@ export function LandingPage() {
     };
   }, []);
 
-  const handleSelect = useCallback(
-    (slug: string) => navigate(`/build/${slug}`),
-    [navigate],
-  );
+  useEffect(() => {
+    const host = backgroundRef.current;
+    if (!host || sets.length === 0) return;
 
-  const handleScrollToDatasets = () => {
-    document.getElementById('datasets')?.scrollIntoView({ behavior: 'smooth' });
-  };
+    const brioSet =
+      sets.find((set) => /brio.*rail|rail.*brio/i.test(`${set.name} ${set.slug}`)) ??
+      sets.find((set) => /brio/i.test(`${set.name} ${set.slug}`));
+    if (!brioSet) return;
+
+    let disposed = false;
+    let timerId: number | null = null;
+    let viz: any = null;
+    let aggregation: any = null;
+
+    const minCount = 10;
+    const maxCount = 200;
+    const step = 1;
+    const tickMs = 33;
+    let targetCount = 80;
+    let direction: 1 | -1 = 1;
+
+    const animateGrowth = async () => {
+      if (disposed || !viz || !aggregation) return;
+
+      // Occasionally switch direction to keep the motion organic.
+      if (Math.random() < 0.06) {
+        direction = direction === 1 ? -1 : 1;
+      }
+
+      targetCount += direction * step;
+      if (targetCount >= maxCount) {
+        targetCount = maxCount;
+        direction = -1;
+      } else if (targetCount <= minCount) {
+        targetCount = minCount;
+        direction = 1;
+      }
+
+      await aggregationService.setAggregationPartCount(aggregation, targetCount, viz);
+
+      timerId = window.setTimeout(() => {
+        void animateGrowth();
+      }, tickMs);
+    };
+
+    (async () => {
+      try {
+        const data = await loadJson(`${brioSet.path}${brioSet.aggregation}`);
+        if (disposed) return;
+
+        aggregation = aggregationService.createAggregationFromData(data);
+        const catalogParts = aggregationService.getAggregationCatalogParts(aggregation);
+        const whiteByPart: Record<string, string> = {};
+        for (const part of catalogParts) {
+          whiteByPart[part.name] = '#ffffff';
+        }
+        aggregationService.applyAggregationColors(aggregation, {
+          colors: ['#ffffff'],
+          byPart: whiteByPart,
+        });
+
+        viz = new Visualizer(host as any, host as any);
+        if (!viz) return;
+        viz.cameraControls.enabled = false;
+        viz.renderer?.setPixelRatio?.(1);
+
+        await aggregationService.setAggregationPartCount(aggregation, targetCount, viz);
+        aggregationService.frameVisualizerToScene(viz, 0.72);
+        viz.cameraControls?.setLookAt?.(-110, 0, 210, -110, 0, 0, false);
+
+        void animateGrowth();
+      } catch (err: any) {
+        console.warn(`Landing background effect failed: ${err.message}`);
+      }
+    })();
+
+    return () => {
+      disposed = true;
+      if (timerId != null) {
+        window.clearTimeout(timerId);
+      }
+
+      if (viz) {
+        try {
+          viz.cameraControls?.dispose?.();
+          viz.renderer?.dispose?.();
+          const dom = viz.renderer?.domElement;
+          if (dom?.parentNode) dom.parentNode.removeChild(dom);
+        } catch {
+          // ignore cleanup errors
+        }
+      }
+    };
+  }, [sets]);
 
   return (
-    <div className="landing">
+    <div className="landing landing--home">
+      <div className="landing__bg" aria-hidden="true">
+        <div className="landing__bg-canvas" ref={backgroundRef} />
+      </div>
+
       <Navbar />
 
-      <section className="landing__hero" aria-label="Introduction">
-        <span className="landing__hero-label">Wasp Atlas of Modularity</span>
-        <h1 className="landing__hero-title">
-          Explore modular<br />building systems
-        </h1>
-        <p className="landing__hero-desc">
-          A growing open library of modular building systems designed with the 
-          Grasshopper plug-in WASP, a combinatorial toolkit for discrete design. 
-          Each dataset encodes parts, connection rules, and spatial logic — 
-          ready to explore, reconfigure, and grow.
-        </p>
-        <div className="landing__hero-actions">
-          <button
-            type="button"
-            className="landing__cta-primary"
-            onClick={handleScrollToDatasets}
-          >
-            Explore datasets
-          </button>
-          <a
-            className="landing__cta-secondary"
-            href="https://forms.gle/SYdRbsySKonq19GJ8"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Submit your design ↗
-          </a>
-        </div>
-      </section>
-
-      <section id="datasets" className="landing__datasets" aria-label="Available datasets">
-        <h2 className="landing__datasets-title">Datasets</h2>
-        {catalogNotice ? (
-          <p className="dataset-source-notice" role="status" aria-live="polite">
-            {catalogNotice}
+      <main className="landing__main">
+        <section className="landing__hero landing__hero--home" aria-label="Introduction">
+          <span className="landing__hero-label">Wasp Atlas of Modularity</span>
+          <h1 className="landing__hero-title">
+            Explore modular<br />building systems
+          </h1>
+          <p className="landing__hero-desc">
+            A growing open library of modular building systems designed with the
+            Grasshopper plug-in WASP, a combinatorial toolkit for discrete design.
+            Each dataset encodes parts, connection rules, and spatial logic,
+            ready to explore, reconfigure, and grow.
           </p>
-        ) : null}
-        <div className="landing__grid">
-          {sets.map((set) => (
-            <DatasetCard
-              key={set.slug}
-              set={set}
-              onSelect={handleSelect}
-              onShowInfo={setInfoSet}
-            />
-          ))}
-        </div>
-      </section>
-
-      <DatasetInfoModal set={infoSet} onClose={() => setInfoSet(null)} />
+          <div className="landing__hero-actions">
+            <Link to="/datasets" className="landing__cta-primary">
+              Explore datasets
+            </Link>
+            <a
+              className="landing__cta-secondary"
+              href="https://forms.gle/SYdRbsySKonq19GJ8"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Submit a dataset ↗
+            </a>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>

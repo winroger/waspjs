@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BASE = import.meta.env.BASE_URL ?? '/';
 
@@ -10,11 +11,17 @@ export function Navbar() {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href={BASE} aria-label="WASP Atlas home">
+        <Link className="navbar-item" to="/" aria-label="WASP Atlas home">
           <img src={`${BASE}assets/waspatlas.png`} alt="WASP Atlas logo" className="brand-mark" />
-        </a>
+        </Link>
       </div>
       <div className="navbar__actions">
+        <Link className="navbar__explore-link" to="/datasets" aria-label="Explore datasets">
+          Datasets
+        </Link>
+        <Link className="navbar__page-link" to="/about" aria-label="About Wasp Atlas">
+          About
+        </Link>
         <a
           className="navbar__github-link"
           href="https://github.com/winroger/waspjs"

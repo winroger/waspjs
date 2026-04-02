@@ -9,6 +9,40 @@
   gap: var(--space-2);
 }
 
+.navbar__page-link,
+.navbar__explore-link {
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.navbar__page-link {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.navbar__explore-link {
+  color: #0f0f0f;
+  background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.92);
+}
+
+.navbar__page-link:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navbar__explore-link:hover {
+  background: #f3f3f3;
+}
+
 .navbar__github-link {
   width: 40px;
   height: 40px;
