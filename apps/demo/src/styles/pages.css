@@ -333,35 +333,64 @@
 
 .landing-card__preview--upload {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
 }
 
-.landing-card__upload-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  color: rgba(255, 255, 255, 0.9);
+.landing-card__upload-icon {
+  width: 54px;
+  height: 54px;
+  color: rgba(255, 255, 255, 0.88);
+  fill: currentColor;
 }
 
-.landing-card__upload-text {
-  font-size: 0.85rem;
+.upload-start__copy {
+  margin: 0 0 0.35rem;
   color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.58;
 }
 
-.upload-input-hidden {
+.modal__content--upload-start {
+  width: min(460px, 92vw);
+  display: grid;
+  gap: 0.72rem;
+  padding-top: calc(var(--space-5) + 0.3rem);
+}
+
+.upload-start__button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.upload-start__file-input {
   position: absolute;
-  width: 0;
-  height: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  pointer-events: none;
+  cursor: pointer;
+}
+
+.upload-start__error {
+  margin: 0;
+  color: #ffb4b4;
+  font-size: 0.83rem;
+}
+
+.modal__content--upload-config {
+  width: min(520px, 92vw);
+  display: grid;
+  gap: 0.7rem;
+  padding-top: calc(var(--space-5) + 0.35rem);
+}
+
+.modal__content--upload-config .modal__title {
+  margin: 0;
 }
 
 .upload-modal__subtitle {
@@ -434,7 +463,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.55rem;
-  margin-top: 0.35rem;
+  margin-top: 0.55rem;
 }
 
 .landing-card__footer {
@@ -989,6 +1018,24 @@
   border-color: rgba(255, 255, 255, 0.45);
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
+}
+
+.about-page__feedback-cta--primary {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: #fff;
+  color: #0f0f0f;
+  transition: transform 120ms ease, box-shadow 200ms ease;
+}
+
+.about-page__feedback-cta--primary:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: #fff;
+  color: #0f0f0f;
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px 4px rgba(255, 80, 80, 0.3),
+              0 0 18px 4px rgba(255, 200, 0, 0.24),
+              0 0 18px 4px rgba(0, 200, 255, 0.24),
+              0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .about-page__break {

@@ -208,6 +208,49 @@ function DatasetInfoModal({
   );
 }
 
+function UploadStartModal({
+  isOpen,
+  uploadError,
+  onClose,
+  onFileChange,
+}: {
+  isOpen: boolean;
+  uploadError: string | null;
+  onClose: () => void;
+  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal is-open" aria-modal="true" role="dialog">
+      <div className="modal__backdrop" onClick={onClose} />
+      <div className="modal__content modal__content--upload-start">
+        <button className="modal__close" aria-label="Close upload instructions" onClick={onClose}>
+          ×
+        </button>
+        <h2 className="modal__title">Upload your own dataset</h2>
+        <p className="upload-start__copy">
+          Export your own custom dataset from WASP with the "Wasp_Serialize Object to File" component from the "Experimental" Tab and upload the generated aggregation.json.
+        </p>
+        <label className="landing__cta-secondary upload-start__button">
+          Upload
+          <input
+            className="upload-start__file-input"
+            type="file"
+            accept="application/json,.json"
+            onChange={onFileChange}
+          />
+        </label>
+        {uploadError ? (
+          <p className="upload-start__error" role="alert" aria-live="polite">
+            {uploadError}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function UploadDatasetModal({
   fileName,
   parts,
@@ -224,7 +267,7 @@ function UploadDatasetModal({
   return (
     <div className="modal is-open" aria-modal="true" role="dialog">
       <div className="modal__backdrop" onClick={onClose} />
-      <div className="modal__content">
+      <div className="modal__content modal__content--upload-config">
         <button className="modal__close" aria-label="Close upload dialog" onClick={onClose}>
           ×
         </button>
@@ -264,10 +307,10 @@ export function DatasetsPage() {
   const [catalogNotice, setCatalogNotice] = useState<string | null>(null);
   const [infoSet, setInfoSet] = useState<DemoSetConfig | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadStartOpen, setUploadStartOpen] = useState(false);
   const [uploadFileName, setUploadFileName] = useState<string>('');
   const [uploadedAggregationData, setUploadedAggregationData] = useState<any>(null);
   const [uploadParts, setUploadParts] = useState<PartCatalogEntry[] | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -286,7 +329,8 @@ export function DatasetsPage() {
   const handleSelect = useCallback(
     (slug: string) => {
       if (slug === CUSTOM_UPLOAD_SLUG) {
-        fileInputRef.current?.click();
+        setUploadError(null);
+        setUploadStartOpen(true);
         return;
       }
       navigate(`/build/${slug}`);
@@ -320,6 +364,7 @@ export function DatasetsPage() {
 
       setUploadFileName(file.name);
       setUploadedAggregationData(aggregationData);
+      setUploadStartOpen(false);
       setUploadParts(
         parts.map((part) => ({
           name: part.name,
@@ -386,11 +431,6 @@ export function DatasetsPage() {
               {catalogNotice}
             </p>
           ) : null}
-          {uploadError ? (
-            <p className="dataset-source-notice" role="alert" aria-live="polite">
-              {uploadError}
-            </p>
-          ) : null}
           <div className="landing__grid datasets-page__grid">
             {sets.map((set) => (
               <DatasetCard
@@ -402,26 +442,25 @@ export function DatasetsPage() {
             ))}
             <div className="landing-card landing-card--upload">
               <button className="landing-card__preview landing-card__preview--upload" onClick={() => handleSelect(CUSTOM_UPLOAD_SLUG)} type="button">
-                <div className="landing-card__upload-mark" aria-hidden="true">+</div>
-                <div className="landing-card__upload-text">Upload aggregation.json</div>
+                <svg className="landing-card__upload-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3.5a1 1 0 0 1 1 1v7.09l2.8-2.8a1 1 0 1 1 1.4 1.42l-4.5 4.5a1 1 0 0 1-1.4 0l-4.5-4.5a1 1 0 0 1 1.4-1.42l2.8 2.8V4.5a1 1 0 0 1 1-1ZM5 15.5a1 1 0 0 1 1 1V18a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-1.5a1 1 0 1 1 2 0V18a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18v-1.5a1 1 0 0 1 1-1Z" />
+                </svg>
               </button>
               <div className="landing-card__footer">
-                <span className="landing-card__title">Try your own</span>
+                <span className="landing-card__title">Upload you own dataset</span>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="application/json,.json"
-        className="upload-input-hidden"
-        onChange={handleUploadInput}
-      />
-
       <DatasetInfoModal set={infoSet} onClose={() => setInfoSet(null)} />
+      <UploadStartModal
+        isOpen={uploadStartOpen}
+        uploadError={uploadError}
+        onClose={() => setUploadStartOpen(false)}
+        onFileChange={handleUploadInput}
+      />
       {uploadParts ? (
         <UploadDatasetModal
           fileName={uploadFileName}

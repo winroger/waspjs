@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 
 export function AboutPage() {
@@ -27,9 +28,14 @@ export function AboutPage() {
             and are still under development.
             Wasp Atlas is still evolving, so suggestions, feedback, and questions are welcome.
           </p>
-          <a className="about-page__feedback-cta" href="mailto:hello@rogerwinkler.de">
-            Get in touch ↗
-          </a>
+          <div className="about-page__center-links">
+            <Link className="about-page__feedback-cta about-page__feedback-cta--primary" to="/datasets">
+              Explore datasets
+            </Link>
+            <a className="about-page__feedback-cta" href="mailto:hello@rogerwinkler.de">
+              Get in touch ↗
+            </a>
+          </div>
         </section>
       </main>
     </div>
