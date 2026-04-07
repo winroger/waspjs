@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
-import { loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
+import { CUSTOM_UPLOAD_SLUG, loadAvailableSets, type DemoSetConfig } from '../config/availableSets';
 import { useBuildStore } from '../state/buildStore';
 import {
   loadDataset,
+  loadUploadedDataset,
   createVisualizerInContainer,
   disposeVisualizer,
   growToTarget,
@@ -62,6 +63,7 @@ export function BuildScreen() {
     setHoveredGhost,
     setPartColor,
     setInfoOpen,
+    uploadedDataset,
   } = useBuildStore(
     useShallow((store) => ({
       buildMode: store.buildMode,
@@ -83,6 +85,7 @@ export function BuildScreen() {
       setHoveredGhost: store.setHoveredGhost,
       setPartColor: store.setPartColor,
       setInfoOpen: store.setInfoOpen,
+      uploadedDataset: store.uploadedDataset,
     })),
   );
   const [sets, setSets] = React.useState<DemoSetConfig[]>([]);
@@ -122,9 +125,15 @@ export function BuildScreen() {
   useEffect(() => {
     if (!areSetsLoaded) return;
 
+    const isCustomUpload = slug === CUSTOM_UPLOAD_SLUG;
     const set = sets.find((s) => s.slug === slug);
-    if (!set) {
+    if (!isCustomUpload && !set) {
       navigate('/datasets', { replace: true });
+      return;
+    }
+
+    if (isCustomUpload && !uploadedDataset) {
+      setLoadError('No uploaded dataset found. Please upload aggregation.json from the datasets page.');
       return;
     }
 
@@ -133,7 +142,10 @@ export function BuildScreen() {
 
     (async () => {
       try {
-        const { aggregation, colorsConfig, catalog } = await loadDataset(set);
+        const result = isCustomUpload
+          ? await loadUploadedDataset(uploadedDataset as any)
+          : await loadDataset(set as DemoSetConfig);
+        const { aggregation, colorsConfig, catalog } = result;
         if (cancelled) return;
 
         aggRef.current = aggregation;
@@ -149,7 +161,11 @@ export function BuildScreen() {
         await growToTarget(aggregation, 50, vizRef.current);
         frameScene(vizRef.current);
 
-        setLoaded({ slug: set.slug, setName: set.name, catalog });
+        setLoaded({
+          slug: isCustomUpload ? CUSTOM_UPLOAD_SLUG : (set as DemoSetConfig).slug,
+          setName: isCustomUpload ? (uploadedDataset as any).setName : (set as DemoSetConfig).name,
+          catalog,
+        });
       } catch (err: any) {
         if (!cancelled) setLoadError(err.message);
       }
@@ -161,7 +177,7 @@ export function BuildScreen() {
       vizRef.current = null;
       aggRef.current = null;
     };
-  }, [slug, navigate, sets, areSetsLoaded, setLoading, setLoaded, setLoadError]);
+  }, [slug, navigate, sets, areSetsLoaded, setLoading, setLoaded, setLoadError, uploadedDataset]);
 
   /* ── Mode switch ── */
   const handleModeChange = useCallback(

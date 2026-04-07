@@ -8,6 +8,12 @@ export type PartCatalogEntry = {
   active: boolean;          // active in random mode
 };
 
+export type UploadedDatasetPayload = {
+  setName: string;
+  aggregationData: any;
+  byPart: Record<string, string>;
+};
+
 export type BuildState = {
   /* dataset */
   slug: string;
@@ -30,6 +36,7 @@ export type BuildState = {
   isInfoOpen: boolean;
   description: string;
   author: string;
+  uploadedDataset: UploadedDatasetPayload | null;
 };
 
 export type BuildAction =
@@ -58,6 +65,7 @@ export const initialBuildState: BuildState = {
   isInfoOpen: false,
   description: '',
   author: '',
+  uploadedDataset: null,
 };
 
 export function buildReducer(state: BuildState, action: BuildAction): BuildState {

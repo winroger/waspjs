@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { BuildMode, BuildState, PartCatalogEntry } from './buildState';
+import type { BuildMode, BuildState, PartCatalogEntry, UploadedDatasetPayload } from './buildState';
 import { initialBuildState } from './buildState';
 
 type BuildActions = {
@@ -14,6 +14,8 @@ type BuildActions = {
   setPartColor: (payload: { name: string; color: string }) => void;
   setCatalog: (catalog: PartCatalogEntry[]) => void;
   setInfoOpen: (isInfoOpen: boolean) => void;
+  setUploadedDataset: (payload: UploadedDatasetPayload) => void;
+  clearUploadedDataset: () => void;
   resetBuildState: () => void;
 };
 
@@ -65,6 +67,10 @@ export const useBuildStore = create<BuildStore>((set) => ({
   setCatalog: (catalog) => set({ catalog }),
 
   setInfoOpen: (isInfoOpen) => set({ isInfoOpen }),
+
+  setUploadedDataset: (uploadedDataset) => set({ uploadedDataset }),
+
+  clearUploadedDataset: () => set({ uploadedDataset: null }),
 
   resetBuildState: () => set({ ...initialBuildState }),
 }));

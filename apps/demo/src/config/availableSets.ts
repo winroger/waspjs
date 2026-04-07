@@ -1,6 +1,8 @@
 const ATLAS_RAW_BASE = 'https://raw.githubusercontent.com/Wasp-Framework/Wasp-Atlas/main/';
 const ATLAS_CATALOG_URL = `${ATLAS_RAW_BASE}catalog/catalog.json`;
 
+export const CUSTOM_UPLOAD_SLUG = '__custom_upload__';
+
 export type DemoSetConfig = {
   slug: string;
   name: string;

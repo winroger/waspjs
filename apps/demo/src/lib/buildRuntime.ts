@@ -85,6 +85,31 @@ export async function loadDataset(
   return { aggregation: agg, colorsConfig, catalog };
 }
 
+export async function loadUploadedDataset(
+  payload: { aggregationData: any; byPart?: Record<string, string> },
+): Promise<LoadResult> {
+  const agg = createAggregationFromData(payload.aggregationData);
+  const byPart = payload.byPart || {};
+  const colorValues = Object.values(byPart);
+  const colorsConfig = {
+    colors: Array.from(new Set(colorValues)).map((value) => normalizeHex(value)),
+    byPart,
+  };
+
+  if (Object.keys(byPart).length > 0) {
+    applyAggregationColors(agg, colorsConfig);
+  }
+
+  const parts = getAggregationCatalogParts(agg);
+  const catalog: PartCatalogEntry[] = parts.map((p: any) => ({
+    name: p.name,
+    color: normalizeHex(byPart[p.name] || '#ffffff'),
+    active: true,
+  }));
+
+  return { aggregation: agg, colorsConfig, catalog };
+}
+
 /* ── visualizer lifecycle ── */
 
 export function createVisualizerInContainer(container: HTMLElement): any {
