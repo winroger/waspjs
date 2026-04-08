@@ -12,7 +12,7 @@ export function ImpressumPage() {
         <section className="legal-page__section">
           <h2>Responsible for content</h2>
           <p>
-            <strong>Roger Winkler</strong><br />
+            <strong className="legal-page__name">Roger Winkler</strong><br />
             Email:{' '}
             <a href="mailto:hello@rogerwinkler.de">hello@rogerwinkler.de</a><br />
             Web:{' '}
@@ -21,7 +21,7 @@ export function ImpressumPage() {
             </a>
           </p>
           <p>
-            <strong>Andrea Rossi</strong><br />
+            <strong className="legal-page__name">Andrea Rossi</strong><br />
             Email:{' '}
             <a href="mailto:a.rossi.andrea@gmail.com">a.rossi.andrea@gmail.com</a><br />
             Web:{' '}
@@ -57,11 +57,17 @@ export function ImpressumPage() {
         <section className="legal-page__section">
           <h2>Open source</h2>
           <p>
-            WASP Atlas is an open-source project. The source code is available on{' '}
+            WASP Atlas is open source and split into two repositories:
+            <br />
             <a href="https://github.com/winroger/waspjs" target="_blank" rel="noreferrer noopener">
-              GitHub
+              waspjs
             </a>{' '}
-            under the terms of its license.
+            contains the reusable assembly engine and core logic.
+            <br />
+            <a href="https://github.com/winroger/wasp-atlas" target="_blank" rel="noreferrer noopener">
+              wasp-atlas
+            </a>{' '}
+            contains the website/app, datasets, and project presentation around that engine.
           </p>
         </section>
       </main>

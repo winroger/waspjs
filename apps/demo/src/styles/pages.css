@@ -1187,6 +1187,10 @@
   margin: 0 0 var(--space-2);
 }
 
+.legal-page__name {
+  color: var(--text);
+}
+
 .legal-page__section a {
   color: var(--text);
   text-decoration: underline;

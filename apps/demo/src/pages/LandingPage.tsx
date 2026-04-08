@@ -155,7 +155,7 @@ export function LandingPage() {
               target="_blank"
               rel="noreferrer noopener"
             >
-              Submit a dataset ↗
+              Submit a dataset ⤴
             </a>
           </div>
         </section>
