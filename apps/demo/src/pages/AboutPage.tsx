@@ -32,7 +32,7 @@ export function AboutPage() {
             <Link className="about-page__feedback-cta about-page__feedback-cta--primary" to="/datasets">
               Explore datasets
             </Link>
-            <a className="about-page__feedback-cta" href="mailto:hello@rogerwinkler.de">
+            <a className="landing__cta-secondary" href="mailto:hello@rogerwinkler.de">
               Get in touch ⤴
             </a>
           </div>

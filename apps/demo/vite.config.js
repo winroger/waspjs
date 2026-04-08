@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     outDir: resolve(__dirname, '../../dist')
   },
   // Allow overriding base for external hosting (e.g., GH Pages) via env.
-  base: process.env.VITE_BASE_PATH || (mode === 'production' ? '/waspjs/' : '/'),
+  base: process.env.VITE_BASE_PATH || (mode === 'production' ? '/' : '/'),
   resolve: {
     alias: useLocalSource
       ? {

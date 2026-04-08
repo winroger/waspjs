@@ -19,28 +19,30 @@
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  border: 1px solid var(--border-strong);
+  transition: border-color var(--ease-fast), background var(--ease-fast), color var(--ease-fast), box-shadow var(--ease-glow);
 }
 
 .navbar__page-link {
   color: var(--text);
-  background: rgba(0, 0, 0, 0.38);
+  background: var(--black-40);
 }
 
 .navbar__explore-link {
-  color: #0f0f0f;
-  background: #ffffff;
-  border-color: rgba(255, 255, 255, 0.92);
+  color: var(--text-inverse);
+  background: var(--white-100);
+  border-color: var(--white-90);
 }
 
 .navbar__page-link:hover {
-  border-color: rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-hover);
+  background: var(--black-100);
+  box-shadow: var(--glow-secondary);
 }
 
 .navbar__explore-link:hover {
-  background: #f3f3f3;
+  background: var(--text);
+  box-shadow: var(--glow-secondary);
 }
 
 .navbar__github-link {
@@ -50,22 +52,20 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-overlay);
   color: var(--text);
-  transition: border-color 120ms ease, color 120ms ease, background 120ms ease;
+  transition: border-color var(--ease-fast), color var(--ease-fast), background var(--ease-fast);
 }
 
 .navbar__github-link:hover {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: var(--border-hover);
   color: var(--text);
-  box-shadow: 0 0 12px 2px rgba(255, 80, 80, 0.15),
-              0 0 12px 2px rgba(255, 200, 0, 0.12),
-              0 0 12px 2px rgba(0, 200, 255, 0.12);
+  box-shadow: var(--glow-subtle);
 }
 
 .navbar__github-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline: 2px solid var(--white-50);
   outline-offset: 2px;
 }
 
@@ -83,7 +83,7 @@
   place-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 160ms ease;
+  transition: opacity var(--ease-fade);
 }
 
 .modal.is-open {
@@ -94,14 +94,14 @@
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--black-60);
   backdrop-filter: blur(6px);
 }
 
 .modal__content {
   position: relative;
   z-index: 1;
-  background: #0f0f0f;
+  background: var(--text-inverse);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
@@ -114,16 +114,16 @@
   right: 12px;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--white-70);
   font-size: 1.2rem;
   line-height: 1;
   padding: 0.1rem;
   cursor: pointer;
-  transition: color 120ms ease, transform 120ms ease;
+  transition: color var(--ease-fast), transform var(--ease-fast);
 }
 
 .modal__close:hover {
-  color: #fff;
+  color: var(--white-100);
   transform: scale(1.05);
 }
 
@@ -163,8 +163,8 @@
   align-items: center;
   padding: 3px 9px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--white-20);
+  background: var(--surface-soft);
   font-size: 0.78rem;
   line-height: 1.2;
   font-weight: 500;
