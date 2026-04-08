@@ -60,12 +60,12 @@ export function ImpressumPage() {
             WASP Atlas is open source and split into two repositories:
             <br />
             <a href="https://github.com/winroger/waspjs" target="_blank" rel="noreferrer noopener">
-              waspjs
+              WaspJS
             </a>{' '}
             contains the reusable assembly engine and core logic.
             <br />
-            <a href="https://github.com/winroger/wasp-atlas" target="_blank" rel="noreferrer noopener">
-              wasp-atlas
+            <a href="https://github.com/Wasp-Framework/Wasp-Atlas" target="_blank" rel="noreferrer noopener">
+              Wasp Atlas
             </a>{' '}
             contains the website/app, datasets, and project presentation around that engine.
           </p>
