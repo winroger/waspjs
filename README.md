@@ -17,48 +17,105 @@
 
 ---
 
-**WASPJS** is a JavaScript port of WASP for discrete aggregations in the browser. 
+This monorepo contains two closely connected projects:
 
-**WASP ATLAS** is a growing, open collection of discrete modular building systems designed with the Grasshopper plug-in [WASP](https://github.com/ar0551/Wasp). The Wasp Atlas app is powered by [`webwaspjs`](https://www.npmjs.com/package/webwaspjs).
+1. **webwaspjs**: a JavaScript port of the Grasshopper Plugin WASP for discrete aggregation in the browser.
+2. **Wasp Atlas**: a web app that showcases a collection of modular building systems and runs on top of `webwaspjs`.
 
+Wasp Atlas is based on datasets authored with the original Grasshopper plug-in [WASP](https://github.com/ar0551/Wasp).
 
-**[Explore the Atlas →](https://winroger.github.io/waspjs/)**
+**Explore the live app:** [https://www.wasp-atlas.net/](https://www.wasp-atlas.net/)
 
-Want to add your own design? **[Submit here →](https://docs.google.com/forms/d/e/1FAIpQLScgPC3Vqh0p0fUfVR93iz_Zu8LHh6uFl_7-8dxACncJXgKX_Q/viewform)**
+## Repository sitemap
+
+```text
+waspjs/
+├─ apps/
+│  ├─ README.md
+│  └─ demo/
+│     ├─ src/
+│     │  ├─ components/      # UI modules (navbar, catalog, controls, modal)
+│     │  ├─ pages/           # route-level screens (landing, datasets, build, legal)
+│     │  ├─ config/          # available dataset metadata
+│     │  ├─ state/           # build state/store utilities
+│     │  ├─ lib/             # demo runtime + aggregation services
+│     │  └─ styles/          # global, layout, component and responsive styles
+│     ├─ index.html
+│     ├─ vite.config.js
+│     └─ vitest.config.ts
+├─ packages/
+│  ├─ README.md
+│  └─ waspjs/
+│     ├─ src/
+│     │  ├─ core/            # aggregation + geometric core
+│     │  ├─ importers/       # input conversion helpers
+│     │  ├─ types/           # type and API shape exports
+│     │  └─ index.js         # package entry point
+│     ├─ tests/              # library test suite
+│     ├─ examples/           # package-level sample input data
+│     └─ tsup.config.js
+├─ public/
+│  ├─ examples/              # app-consumed datasets (config.json + aggregation.json)
+│  ├─ graphics/
+│  └─ assets/
+├─ eslint.config.js
+├─ vite.config.js
+├─ vitest.config.js
+└─ package.json
+```
 
 ## Quickstart
 
+### Prerequisites
+
+- Node.js 18+ (Node.js 20 recommended)
+- npm 9+
+
+### Install and run
+
 ```bash
-npm install          # install all workspaces
-npm run dev          # start demo (Vite)
-npm run test         # run all tests
-npm run build        # build library + demo
+npm install
+npm run dev
 ```
 
-Use the library in your own project:
+The development server starts the demo app from `apps/demo`.
+
+## Using webwaspjs in your own project
+
+Install from npm:
 
 ```bash
 npm install webwaspjs
 ```
 
+Example import:
+
 ```js
-import { Aggregation, Part, Rule, Connection, Collider, Visualizer } from 'webwaspjs';
+import {
+    Aggregation,
+    Part,
+    Rule,
+    Connection,
+    Collider,
+    Visualizer,
+} from 'webwaspjs';
 ```
 
-## Structure
+## Technology stack
 
-| Path | Description |
-|------|-------------|
-| [`packages/waspjs`](packages/waspjs) | Core library — published as `webwaspjs` (ESM + CJS) |
-| [`apps/demo`](apps/demo) | React + Vite demo app (landing page, configurator) |
-| [`public/examples`](public/examples) | Example aggregation datasets |
+- Monorepo: npm workspaces
+- Library build: tsup (ESM + CJS output)
+- Demo app: React + Vite
+- Tests: Vitest
+- Lint/format: ESLint + Prettier
+- Geometry/rendering ecosystem: Three.js-based runtime components inside `webwaspjs`
 
-## Authors
+## Authors and credits
 
 - **Roger Winkler** — [rogerwinkler.de](https://www.rogerwinkler.de) · [hello@rogerwinkler.de](mailto:hello@rogerwinkler.de)
 - **Andrea Rossi** — [thecomputationalhive.com](https://thecomputationalhive.com/) · [a.rossi.andrea@gmail.com](mailto:a.rossi.andrea@gmail.com)
 
-Built upon the original [WASP](https://github.com/ar0551/Wasp) Grasshopper plug-in by Andrea Rossi. Also available on [Food4Rhino](https://www.food4rhino.com/en/app/wasp).
+This project builds upon the original [WASP](https://github.com/ar0551/Wasp) Grasshopper plug-in by Andrea Rossi (also on [Food4Rhino](https://www.food4rhino.com/en/app/wasp)).
 
 ## License
 
