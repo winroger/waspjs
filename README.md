@@ -80,6 +80,12 @@ npm run dev
 
 The development server starts the demo app from `apps/demo`.
 
+## Dataset source and submissions
+
+Demo datasets are fetched from [Wasp-Framework/Wasp-Atlas](https://github.com/Wasp-Framework/Wasp-Atlas), where the dataset files are maintained.
+
+New datasets can be submitted through the form linked on the landing page of [https://www.wasp-atlas.net/](https://www.wasp-atlas.net/).
+
 ## Using webwaspjs in your own project
 
 Install from npm:
