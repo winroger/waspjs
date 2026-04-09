@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>WaspJS</title>
+    <title>Wasp Atlas</title>
     <script>
-      // GitHub Pages SPA fallback.
-      // Keep the first path segment (repo name: /waspjs) and redirect the rest via query.
-      var pathSegmentsToKeep = 1;
+      // SPA fallback for root-domain hosting.
+      // Keep 0 path segments because the app is served at domain root.
+      var pathSegmentsToKeep = 0;
       var locationRef = window.location;
       var newUrl =
         locationRef.protocol +
