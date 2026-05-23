@@ -1,19 +1,24 @@
 {
-  "name": "waspjs-monorepo",
-  "private": true,
-  "version": "0.2.2",
+  "name": "webwaspjs",
+  "version": "0.3.0",
   "type": "module",
+  "description": "JavaScript port of WASP for discrete aggregations (Three.js)",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "dev": "vite --config apps/demo/vite.config.js",
-    "build": "npm run build:lib && npm run build:demo",
-    "build:lib": "npm run build --workspace webwaspjs",
-    "build:demo": "vite build --config apps/demo/vite.config.js",
-    "serve": "vite preview --config apps/demo/vite.config.js",
-    "test": "npm run test:lib && npm run test:demo",
-    "test:lib": "vitest --run --root packages/waspjs",
-    "test:demo": "vitest --run --config apps/demo/vitest.config.ts",
-    "test:watch": "vitest watch --root packages/waspjs",
-    "lint": "eslint \"packages/waspjs/{src,tests}/**/*.{js,jsx,mjs}\"",
+    "build": "tsup",
+    "test": "vitest --run",
+    "test:watch": "vitest watch",
+    "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\"",
     "format": "prettier -w ."
   },
   "repository": {
@@ -22,30 +27,39 @@
   },
   "keywords": [
     "wasp",
+    "aggregation",
+    "threejs",
     "discrete",
-    "configurator",
-    "modular"
+    "geometry"
   ],
   "author": "Roger Winkler",
   "license": "MIT",
-  "description": "A replica of the Rhino3D / Grasshopper plugin WASP by Andrea Rossi in Javascript.",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
-  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "camera-controls": "^2.9.0",
+    "three-mesh-bvh": "^0.8.2"
+  },
+  "peerDependencies": {
+    "three": "^0.169.0"
+  },
   "devDependencies": {
-    "vite": "^5.4.11",
-    "vitest": "^1.6.1",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "prettier": "^3.2.5",
+    "three": "^0.169.0",
     "tsup": "^8.1.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.1"
   },
   "directories": {
-    "test": "test"
+    "test": "tests"
   },
   "bugs": {
     "url": "https://github.com/winroger/waspjs/issues"

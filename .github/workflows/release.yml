@@ -35,7 +35,7 @@ jobs:
         run: npm test
 
       - name: Build library
-        run: npm run build:lib
+        run: npm run build
 
       - name: Publish webwaspjs (Trusted Publishing)
-        run: npm publish --workspace webwaspjs --access public
+        run: npm publish --access public
