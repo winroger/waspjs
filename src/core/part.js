@@ -1,4 +1,4 @@
-import { meshFromData, meshToData, transformToData } from "./utilities";
+import { meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
 import { Connection } from "./connection"; 
 import { Collider } from "./collider"; 
 import * as THREE from 'three';
@@ -82,10 +82,15 @@ export class Part {
         let p_field = data['field'];
 
         let part = new Part(p_name, p_geometry, p_connections, p_collider,  p_attributes, p_dim, p_id, p_field);
-        part.transformation = new THREE.Matrix4().identity() //transformFromData(data['transform']);
-        part.parent = data['parent'];
-        part.conn_on_parent = data['conn_on_parent'];
-        part.conn_to_parent = data['conn_to_parent'];
+        part.transformation = data['transform']
+            ? transformFromData(data['transform'])
+            : new THREE.Matrix4().identity();
+        part.parent = parsePossiblyNumericId(data['parent']);
+        part.conn_on_parent = parsePossiblyNumericId(data['conn_on_parent']);
+        part.conn_to_parent = parsePossiblyNumericId(data['conn_to_parent']);
+        if (Array.isArray(data['active_connections'])) {
+            part.active_connections = data['active_connections'].map(parsePossiblyNumericId);
+        }
 
         for (let child_data of data['children'] || []) {
             part.children.push(parsePossiblyNumericId(child_data));

@@ -2,6 +2,53 @@ import { PlaneToPlane, checkMeshesIntersection } from './utilities';
 import { Part } from './part';
 import { Rule } from './rule';
 
+function normalizeList(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'object') return Object.values(value);
+    return [];
+}
+
+function normalizeAggregatedParts(value, sequence = []) {
+    if (!value) return [];
+
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    if (typeof value === 'object') {
+        if (Array.isArray(sequence) && sequence.length > 0) {
+            return sequence
+                .map(id => value[String(id)] ?? value[id])
+                .filter(Boolean);
+        }
+
+        return Object.values(value);
+    }
+
+    return [];
+}
+
+function restorePart(partData) {
+    if (partData['class_type'] === 'Part') {
+        return Part.fromData(partData);
+    }
+
+    throw new Error(`Unsupported part class_type: ${partData['class_type']}`);
+}
+
+function computeNextId(parts) {
+    const numericIds = parts
+        .map(part => part.id)
+        .filter(id => typeof id === 'number' && Number.isFinite(id));
+
+    if (numericIds.length === 0) {
+        return parts.length;
+    }
+
+    return Math.max(...numericIds) + 1;
+}
+
 /**
  * Manages procedural aggregation of parts using connection rules and collision checks.
  */
@@ -44,20 +91,7 @@ export class Aggregation {
      */
     static fromData(data) {
     const d_name = data['name'];
-
-    const normalizeList = value => {
-        if (!value) return [];
-        if (Array.isArray(value)) return value;
-        if (typeof value === 'object') return Object.values(value);
-        return [];
-    };
-
-        const d_parts = normalizeList(data['parts']).map((part_data) => {
-            if (part_data['class_type'] === 'Part') {
-                return Part.fromData(part_data);
-            }
-            throw new Error(`Unsupported part class_type: ${part_data['class_type']}`);
-    });
+        const d_parts = normalizeList(data['parts']).map(restorePart);
 
     const d_rules = normalizeList(data['rules']).map(rule => Rule.fromData(rule));
 
@@ -71,19 +105,53 @@ export class Aggregation {
     }
 
     const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed);
+    const aggregatedPartsData = normalizeAggregatedParts(
+        data['aggregated_parts'],
+        data['aggregated_parts_sequence']
+    );
 
-    // THIS CAN BE FIXED IN ORDER TO LOAD AGGREGATIONS FROM THE FILE AS INITAL STATE, NEEDS TO ADD
-    // THE PARTS TO THE SCENE
-    aggregation.aggregated_parts = [];
-    //aggregation.graph = Graph.fromData(data['graph']);
-
-    //aggregation.reset_rules(aggregation.rules);
-    /*if (aggregation.field) {
-      aggregation.recompute_aggregation_queue();
-    }*/
+    aggregation.aggregated_parts = aggregatedPartsData.map(restorePart);
+    aggregation.aggregated_parts.forEach((part, index) => {
+        const serializedActiveConnections = aggregatedPartsData[index]['active_connections'];
+        part.resetPart(aggregation.rules);
+        if (Array.isArray(serializedActiveConnections)) {
+            part.active_connections = [...serializedActiveConnections];
+        }
+    });
+    aggregation._nextId = computeNextId(aggregation.aggregated_parts);
 
     return aggregation;
   }
+
+    /**
+     * Serialize the aggregation into a JSON-friendly WASP-compatible structure.
+     */
+    toData() {
+        const aggregated_parts = {};
+        const aggregated_parts_sequence = [];
+
+        this.aggregated_parts.forEach(part => {
+            aggregated_parts[String(part.id)] = part.toData();
+            aggregated_parts_sequence.push(part.id);
+        });
+
+        return {
+            object_type: 'Aggregation',
+            name: this.name,
+            parts: Object.values(this.parts).map(part => part.toData()),
+            rules: this.rules.map(rule => rule.toData()),
+            rnd_seed: this.rnd_seed,
+            global_constraints: [],
+            catalog: null,
+            mode: 0,
+            coll_check: true,
+            field: null,
+            graph: {},
+            include_aggr_geo: true,
+            aggregated_parts,
+            aggregated_parts_sequence
+        };
+    }
 
     getParts() {
         return this.aggregated_parts

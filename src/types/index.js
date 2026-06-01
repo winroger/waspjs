@@ -57,7 +57,7 @@
  * @property {'Part'} class_type
  * @property {string} name
  * @property {number|string} id
- * @property {import('three').Mesh} geometry
+ * @property {import('three').Mesh} [geometry]
  * @property {ConnectionData[]} connections
  * @property {number[]} active_connections
  * @property {ColliderData} collider
@@ -72,12 +72,20 @@
 
 /**
  * @typedef {Object} AggregationData
+ * @property {'Aggregation'} [object_type]
  * @property {string} name
  * @property {PartData[]} parts
  * @property {RuleData[]} rules
  * @property {number|null} rnd_seed
+ * @property {0} [mode]
+ * @property {boolean} [coll_check]
+ * @property {null} [field]
+ * @property {Object} [graph]
+ * @property {boolean} [include_aggr_geo]
+ * @property {Record<string, PartData>|PartData[]} [aggregated_parts]
+ * @property {Array<number|string>} [aggregated_parts_sequence]
  * @property {Array<Object>} [global_constraints]
- * @property {Object} [catalog]
+ * @property {null|Object} [catalog]
  */
 
 export const types = {};

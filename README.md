@@ -16,14 +16,17 @@ npm install webwaspjs three
 import { createAggregationFromData } from 'webwaspjs';
 
 const aggregation = createAggregationFromData(aggregationData);
+const exported = aggregation.toData();
 
 console.log(Object.keys(aggregation.parts));
 console.log(aggregation.rules.length);
+console.log(JSON.stringify(exported));
 ```
 
 Main entry points:
 
 - `createAggregationFromData(data)` to rebuild an aggregation from serialized data
+- `aggregation.toData()` to export the full current aggregation state as JSON-friendly data
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
 
@@ -52,7 +55,7 @@ dist/       build output
 
 ## Related repositories
 
-- [Wasp Atas Website](https://github.com/Wasp-Framework/Wasp-Atas-Explorer)
+- [Wasp Atas Explorer with demo showcases](https://github.com/Wasp-Framework/Wasp-Atas-Explorer)
 - [Growing Collection of Wasp Datasets](https://github.com/Wasp-Framework/Wasp-Atlas)
 
 ## Credits
