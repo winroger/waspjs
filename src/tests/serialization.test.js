@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import * as THREE from 'three';
-import { meshToData, meshFromData, transformToData, transformFromData } from '../src/core/utilities.js';
-import { Rule } from '../src/core/rule.js';
-import { Part } from '../src/core/part.js';
-import { Plane } from '../src/core/plane.js';
-import { Connection } from '../src/core/connection.js';
-import { Collider } from '../src/core/collider.js';
-import { Aggregation } from '../src/core/aggregation.js';
+import { meshToData, meshFromData, transformToData, transformFromData } from '../core/utilities.js';
+import { Rule } from '../core/rule.js';
+import { Part } from '../core/part.js';
+import { Plane } from '../core/plane.js';
+import { Connection } from '../core/connection.js';
+import { Collider } from '../core/collider.js';
+import { Aggregation } from '../core/aggregation.js';
 
 function makeBoxMesh() {
   const geometry = new THREE.BoxGeometry(1, 2, 3);

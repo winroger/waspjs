@@ -5,8 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, '..');
-const examplesRoot = path.join(repoRoot, 'examples');
+const examplesRoot = path.join(__dirname, 'fixtures', 'examples');
 
 describe('package example fixtures', () => {
   it('all referenced files exist and parse as JSON', () => {

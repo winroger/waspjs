@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import * as webwaspjs from '../src/index.js';
+import * as webwaspjs from '../index.js';
 
 describe('package exports', () => {
   it('loads the public package entry point', () => {

@@ -18,7 +18,7 @@
     "build": "tsup",
     "test": "vitest --run",
     "test:watch": "vitest watch",
-    "lint": "eslint \"src/**/*.js\" \"tests/**/*.js\"",
+    "lint": "eslint \"src/**/*.js\"",
     "format": "prettier -w ."
   },
   "repository": {
@@ -59,7 +59,7 @@
     "vitest": "^1.6.1"
   },
   "directories": {
-    "test": "tests"
+    "test": "src/tests"
   },
   "bugs": {
     "url": "https://github.com/winroger/waspjs/issues"

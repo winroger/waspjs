@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as THREE from 'three';
-import { generateRules, transformToData, transformFromData } from '../src/core/utilities.js';
-import { Rule } from '../src/core/rule.js';
-import { Collider } from '../src/core/collider.js';
+import { generateRules, transformToData, transformFromData } from '../core/utilities.js';
+import { Rule } from '../core/rule.js';
+import { Collider } from '../core/collider.js';
 
 describe('transform helpers', () => {
   it('round-trips a matrix with transformToData/transformFromData', () => {

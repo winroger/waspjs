@@ -1,5 +1,20 @@
 # webwaspjs
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/webwaspjs">
+    <img src="https://img.shields.io/npm/v/webwaspjs.svg" alt="npm version">
+  </a>
+  <a href="https://www.npmjs.com/package/webwaspjs">
+    <img src="https://img.shields.io/npm/dm/webwaspjs.svg" alt="npm downloads">
+  </a>
+  <a href="https://github.com/winroger/waspjs/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/winroger/waspjs/ci.yml?branch=main" alt="CI status">
+  </a>
+  <a href="https://github.com/winroger/waspjs/blob/main/LICENSE.txt">
+    <img src="https://img.shields.io/github/license/winroger/waspjs.svg" alt="license">
+  </a>
+</p>
+
 `webwaspjs` is a JavaScript library for loading and growing discrete aggregation systems in the browser.
 
 ## Install
@@ -47,10 +62,10 @@ Commands:
 ## Project layout
 
 ```text
-src/        library source
-tests/      vitest suite
-examples/   JSON fixtures used by tests
-dist/       build output
+src/                    library source
+src/tests/              vitest suite
+src/tests/fixtures/     JSON fixtures used by tests
+dist/                   build output
 ```
 
 ## Related repositories
