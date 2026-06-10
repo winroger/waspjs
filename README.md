@@ -31,17 +31,20 @@ npm install webwaspjs three
 import { createAggregationFromData } from 'webwaspjs';
 
 const aggregation = createAggregationFromData(aggregationData);
-const exported = aggregation.toData();
+const roundtripExport = aggregation.toData();
+const fileExport = aggregation.toFileData();
 
 console.log(Object.keys(aggregation.parts));
 console.log(aggregation.rules.length);
-console.log(JSON.stringify(exported));
+console.log(JSON.stringify(roundtripExport));
+console.log(JSON.stringify(fileExport));
 ```
 
 Main entry points:
 
 - `createAggregationFromData(data)` to rebuild an aggregation from serialized data
-- `aggregation.toData()` to export the full current aggregation state as JSON-friendly data
+- `aggregation.toData()` to export the full roundtrip/core aggregation data
+- `aggregation.toFileData()` to export the compact placed-parts file format
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
 

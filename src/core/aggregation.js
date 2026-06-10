@@ -1,4 +1,4 @@
-import { PlaneToPlane, checkMeshesIntersection } from './utilities';
+import { PlaneToPlane, checkMeshesIntersection, transformToData } from './utilities';
 import { Part } from './part';
 import { Rule } from './rule';
 
@@ -150,6 +150,29 @@ export class Aggregation {
             include_aggr_geo: true,
             aggregated_parts,
             aggregated_parts_sequence
+        };
+    }
+
+    /**
+     * Serialize the placed aggregation state in the compact WASP "Save Aggregation to File" shape.
+     */
+    toFileData() {
+        const parts = {};
+
+        this.aggregated_parts.forEach(part => {
+            parts[String(part.id)] = {
+                name: part.name,
+                active_connections: [...part.active_connections],
+                parent: part.parent,
+                children: [...part.children],
+                transform: transformToData(part.transformation),
+                is_constrained: part.is_constrained
+            };
+        });
+
+        return {
+            aggregation_name: this.name,
+            parts
         };
     }
 

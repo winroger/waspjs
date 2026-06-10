@@ -183,4 +183,35 @@ describe('serialization', () => {
     expect(result.part.id).toBe(2);
     expect(restored.aggregated_parts.map(part => part.id)).toEqual([0, 1, 2]);
   });
+
+  it('exports the compact placed-parts file format separately from roundtrip toData', () => {
+    const aggregation = placeChain(makeAggregation(['A']));
+    const serialized = aggregation.toFileData();
+
+    expect(serialized).toEqual({
+      aggregation_name: 'roundtrip',
+      parts: {
+        '0': {
+          name: 'A',
+          active_connections: [1],
+          parent: null,
+          children: [1],
+          transform: transformToData(aggregation.aggregated_parts[0].transformation),
+          is_constrained: false,
+        },
+        '1': {
+          name: 'A',
+          active_connections: [0],
+          parent: 0,
+          children: [],
+          transform: transformToData(aggregation.aggregated_parts[1].transformation),
+          is_constrained: false,
+        },
+      },
+    });
+
+    expect(serialized.parts['0'].geometry).toBeUndefined();
+    expect(serialized.parts['0'].connections).toBeUndefined();
+    expect(serialized.parts['0'].collider).toBeUndefined();
+  });
 });

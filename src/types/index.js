@@ -88,4 +88,20 @@
  * @property {null|Object} [catalog]
  */
 
+/**
+ * @typedef {Object} AggregationFilePartData
+ * @property {string} name
+ * @property {number[]} active_connections
+ * @property {number|string|null} parent
+ * @property {Array<number|string>} children
+ * @property {TransformData} transform
+ * @property {boolean} is_constrained
+ */
+
+/**
+ * @typedef {Object} AggregationFileData
+ * @property {string} aggregation_name
+ * @property {Record<string, AggregationFilePartData>} parts
+ */
+
 export const types = {};
