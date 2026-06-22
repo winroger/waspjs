@@ -29,9 +29,9 @@ function normalizeAggregatedParts(value, sequence = []) {
     return [];
 }
 
-function restorePart(partData) {
+function restorePart(partData, base_part = null) {
     if (partData['class_type'] === 'Part') {
-        return Part.fromData(partData);
+        return Part.fromData(partData, base_part);
     }
 
     throw new Error(`Unsupported part class_type: ${partData['class_type']}`);
@@ -110,9 +110,36 @@ export class Aggregation {
         data['aggregated_parts_sequence']
     );
 
-    aggregation.aggregated_parts = aggregatedPartsData.map(restorePart);
+    const d_aggregated_parts = [];
+    const d_aggregated_parts_data = [];
+    for (const aggr_part_data of aggregatedPartsData) {
+        let aggr_part = null;
+
+        if (Object.prototype.hasOwnProperty.call(aggr_part_data, 'geometry')) {
+            aggr_part = restorePart(aggr_part_data);
+        } else {
+            let base_part = null;
+            for (const part of d_parts) {
+                if (part.name === aggr_part_data['name']) {
+                    base_part = part;
+                    break;
+                }
+            }
+
+            if (base_part !== null) {
+                aggr_part = restorePart(aggr_part_data, base_part);
+            }
+        }
+
+        if (aggr_part !== null) {
+            d_aggregated_parts.push(aggr_part);
+            d_aggregated_parts_data.push(aggr_part_data);
+        }
+    }
+
+    aggregation.aggregated_parts = d_aggregated_parts;
     aggregation.aggregated_parts.forEach((part, index) => {
-        const serializedActiveConnections = aggregatedPartsData[index]['active_connections'];
+        const serializedActiveConnections = d_aggregated_parts_data[index]['active_connections'];
         part.resetPart(aggregation.rules);
         if (Array.isArray(serializedActiveConnections)) {
             part.active_connections = [...serializedActiveConnections];
@@ -126,12 +153,12 @@ export class Aggregation {
     /**
      * Serialize the aggregation into a JSON-friendly WASP-compatible structure.
      */
-    toData() {
+    toData(include_aggr_geo = true) {
         const aggregated_parts = {};
         const aggregated_parts_sequence = [];
 
         this.aggregated_parts.forEach(part => {
-            aggregated_parts[String(part.id)] = part.toData();
+            aggregated_parts[String(part.id)] = part.toData(include_aggr_geo);
             aggregated_parts_sequence.push(part.id);
         });
 
@@ -147,7 +174,7 @@ export class Aggregation {
             coll_check: true,
             field: null,
             graph: {},
-            include_aggr_geo: true,
+            include_aggr_geo,
             aggregated_parts,
             aggregated_parts_sequence
         };

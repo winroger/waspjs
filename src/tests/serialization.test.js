@@ -171,6 +171,31 @@ describe('serialization', () => {
     expect(reserialized.aggregated_parts['1'].transform).toEqual(serialized.aggregated_parts['1'].transform);
   });
 
+  it('round-trips placed aggregated parts without aggregated geometry using base parts and transforms', () => {
+    const aggregation = placeChain(makeAggregation(['A']));
+    const serialized = aggregation.toData(false);
+    const restored = Aggregation.fromData(serialized);
+    const reserialized = restored.toData(false);
+
+    expect(serialized.include_aggr_geo).toBe(false);
+    expect(serialized.parts[0].geometry).toBeDefined();
+    expect(serialized.aggregated_parts['0'].geometry).toBeUndefined();
+    expect(serialized.aggregated_parts['1'].geometry).toBeUndefined();
+    expect(restored.aggregated_parts).toHaveLength(2);
+    expect(restored.aggregated_parts.map(part => part.id)).toEqual([0, 1]);
+    expect(restored.aggregated_parts[0].children).toEqual([1]);
+    expect(restored.aggregated_parts[1].parent).toBe(0);
+    expect(restored.aggregated_parts[1].conn_on_parent).toBe(0);
+    expect(restored.aggregated_parts[1].conn_to_parent).toBe(1);
+    expect(restored.aggregated_parts[0].active_connections).toEqual([1]);
+    expect(restored.aggregated_parts[1].active_connections).toEqual([0]);
+    expect(restored.aggregated_parts[0].geo).toBeDefined();
+    expect(restored.aggregated_parts[1].geo).toBeDefined();
+    expect(reserialized.include_aggr_geo).toBe(false);
+    expect(reserialized.aggregated_parts['1'].geometry).toBeUndefined();
+    expect(reserialized.aggregated_parts['1'].transform).toEqual(serialized.aggregated_parts['1'].transform);
+  });
+
   it('continues assigning stable ids after re-importing an aggregation', () => {
     const aggregation = placeChain(makeAggregation(['A']));
     const restored = Aggregation.fromData(aggregation.toData());

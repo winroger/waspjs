@@ -70,9 +70,18 @@ export class Part {
     }
 
     // create class from data dictionary
-    static fromData(data) {
+    static fromData(data, base_part = null) {
         let p_name = data['name'];
-        let p_geometry = meshFromData(data['geometry'])
+        let p_geometry = null;
+        if (Object.prototype.hasOwnProperty.call(data, 'geometry')) {
+            p_geometry = meshFromData(data['geometry']);
+        } else if (base_part !== null) {
+            p_geometry = base_part.geo.clone();
+            const p_transform = transformFromData(data['transform']);
+            p_geometry.applyMatrix4(p_transform);
+        } else {
+            return null;
+        }
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
         let p_collider = Collider.fromData(data['collider']);
         let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
@@ -100,12 +109,11 @@ export class Part {
     }
 
     // return the data dictionary representing the part
-    toData() {
-        return {
+    toData(include_geo = true) {
+        const data = {
             'class_type': 'Part',
             'name': this.name,
             'id': this.id,
-            'geometry': meshToData(this.geo),
             'field': this.field,
             'connections': this.connections.map(conn => conn.toData()),
             'active_connections': this.active_connections,
@@ -117,6 +125,12 @@ export class Part {
             'conn_to_parent': this.conn_to_parent,
             'children': this.children
         };
+
+        if (include_geo) {
+            data['geometry'] = meshToData(this.geo);
+        }
+
+        return data;
     }
 
     // reset the part and connections according to new provided aggregation rules
