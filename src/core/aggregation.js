@@ -158,7 +158,7 @@ export class Aggregation {
         const aggregated_parts_sequence = [];
 
         this.aggregated_parts.forEach(part => {
-            aggregated_parts[String(part.id)] = part.toData(include_aggr_geo);
+            aggregated_parts[String(part.id)] = part.toData(include_aggr_geo, include_aggr_geo);
             aggregated_parts_sequence.push(part.id);
         });
 

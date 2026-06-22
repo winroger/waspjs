@@ -60,7 +60,7 @@
  * @property {import('three').Mesh} [geometry]
  * @property {ConnectionData[]} connections
  * @property {number[]} active_connections
- * @property {ColliderData} collider
+ * @property {ColliderData} [collider]
  * @property {TransformData} transform
  * @property {number} dim
  * @property {number|string|null} parent

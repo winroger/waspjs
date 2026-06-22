@@ -179,8 +179,11 @@ describe('serialization', () => {
 
     expect(serialized.include_aggr_geo).toBe(false);
     expect(serialized.parts[0].geometry).toBeDefined();
+    expect(serialized.parts[0].collider).toBeDefined();
     expect(serialized.aggregated_parts['0'].geometry).toBeUndefined();
+    expect(serialized.aggregated_parts['0'].collider).toBeUndefined();
     expect(serialized.aggregated_parts['1'].geometry).toBeUndefined();
+    expect(serialized.aggregated_parts['1'].collider).toBeUndefined();
     expect(restored.aggregated_parts).toHaveLength(2);
     expect(restored.aggregated_parts.map(part => part.id)).toEqual([0, 1]);
     expect(restored.aggregated_parts[0].children).toEqual([1]);
@@ -191,8 +194,11 @@ describe('serialization', () => {
     expect(restored.aggregated_parts[1].active_connections).toEqual([0]);
     expect(restored.aggregated_parts[0].geo).toBeDefined();
     expect(restored.aggregated_parts[1].geo).toBeDefined();
+    expect(restored.aggregated_parts[0].collider).toBeDefined();
+    expect(restored.aggregated_parts[1].collider).toBeDefined();
     expect(reserialized.include_aggr_geo).toBe(false);
     expect(reserialized.aggregated_parts['1'].geometry).toBeUndefined();
+    expect(reserialized.aggregated_parts['1'].collider).toBeUndefined();
     expect(reserialized.aggregated_parts['1'].transform).toEqual(serialized.aggregated_parts['1'].transform);
   });
 

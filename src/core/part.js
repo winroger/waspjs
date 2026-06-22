@@ -72,18 +72,27 @@ export class Part {
     // create class from data dictionary
     static fromData(data, base_part = null) {
         let p_name = data['name'];
+        let p_transform = data['transform']
+            ? transformFromData(data['transform'])
+            : new THREE.Matrix4().identity();
         let p_geometry = null;
         if (Object.prototype.hasOwnProperty.call(data, 'geometry')) {
             p_geometry = meshFromData(data['geometry']);
         } else if (base_part !== null) {
             p_geometry = base_part.geo.clone();
-            const p_transform = transformFromData(data['transform']);
             p_geometry.applyMatrix4(p_transform);
         } else {
             return null;
         }
         let p_connections = data['connections'].map(c_data => Connection.fromData(c_data));
-        let p_collider = Collider.fromData(data['collider']);
+        let p_collider = null;
+        if (Object.prototype.hasOwnProperty.call(data, 'collider') && data['collider']) {
+            p_collider = Collider.fromData(data['collider']);
+        } else if (base_part !== null && base_part.collider !== null) {
+            p_collider = base_part.collider.transform(p_transform);
+        } else {
+            p_collider = new Collider([], false, false, [], []);
+        }
         let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
         let p_dim = parseFloat(data['dim']);
 
@@ -91,9 +100,7 @@ export class Part {
         let p_field = data['field'];
 
         let part = new Part(p_name, p_geometry, p_connections, p_collider,  p_attributes, p_dim, p_id, p_field);
-        part.transformation = data['transform']
-            ? transformFromData(data['transform'])
-            : new THREE.Matrix4().identity();
+        part.transformation = p_transform;
         part.parent = parsePossiblyNumericId(data['parent']);
         part.conn_on_parent = parsePossiblyNumericId(data['conn_on_parent']);
         part.conn_to_parent = parsePossiblyNumericId(data['conn_to_parent']);
@@ -109,7 +116,7 @@ export class Part {
     }
 
     // return the data dictionary representing the part
-    toData(include_geo = true) {
+    toData(include_geo = true, include_collider = true) {
         const data = {
             'class_type': 'Part',
             'name': this.name,
@@ -117,7 +124,6 @@ export class Part {
             'field': this.field,
             'connections': this.connections.map(conn => conn.toData()),
             'active_connections': this.active_connections,
-            'collider': this.collider.toData(),
             'transform': transformToData(this.transformation),
             'dim': this.dim,
             'parent': this.parent,
@@ -128,6 +134,9 @@ export class Part {
 
         if (include_geo) {
             data['geometry'] = meshToData(this.geo);
+        }
+        if (include_collider) {
+            data['collider'] = this.collider.toData();
         }
 
         return data;

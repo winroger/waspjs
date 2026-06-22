@@ -32,11 +32,13 @@ import { createAggregationFromData } from 'webwaspjs';
 
 const aggregation = createAggregationFromData(aggregationData);
 const roundtripExport = aggregation.toData();
+const lightweightRoundtripExport = aggregation.toData(false);
 const fileExport = aggregation.toFileData();
 
 console.log(Object.keys(aggregation.parts));
 console.log(aggregation.rules.length);
 console.log(JSON.stringify(roundtripExport));
+console.log(JSON.stringify(lightweightRoundtripExport));
 console.log(JSON.stringify(fileExport));
 ```
 
@@ -44,6 +46,7 @@ Main entry points:
 
 - `createAggregationFromData(data)` to rebuild an aggregation from serialized data
 - `aggregation.toData()` to export the full roundtrip/core aggregation data
+- `aggregation.toData(false)` to export roundtrip/core data without per-instance aggregated geometry or colliders
 - `aggregation.toFileData()` to export the compact placed-parts file format
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
