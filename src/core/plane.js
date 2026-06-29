@@ -46,14 +46,28 @@ export class Plane {
     }
 
     /**
-     * Build a plane from serialized data (supports legacy zaxis via yaxis fallback).
+     * Build a plane from serialized data.
+     *
+     * Legacy payloads may provide xaxis + yaxis (without zaxis). In that case,
+     * reconstruct zaxis so that the constructor recomputes the original yaxis.
      */
     static fromData(data) {
         const origin = new THREE.Vector3(data.origin[0], data.origin[1], data.origin[2]);
         const xaxis = new THREE.Vector3(data.xaxis[0], data.xaxis[1], data.xaxis[2]);
-        // Keep backward compatibility: fall back to legacy "yaxis" slot if zaxis is missing
-        const zAxisSource = data.zaxis ?? data.yaxis;
-        const zaxis = new THREE.Vector3(zAxisSource[0], zAxisSource[1], zAxisSource[2]);
+
+        let zaxis;
+        if (Array.isArray(data.zaxis)) {
+            zaxis = new THREE.Vector3(data.zaxis[0], data.zaxis[1], data.zaxis[2]);
+        } else if (Array.isArray(data.yaxis)) {
+            const legacyYaxis = new THREE.Vector3(data.yaxis[0], data.yaxis[1], data.yaxis[2]);
+            // Choose z so that x x z reproduces the legacy y.
+            zaxis = new THREE.Vector3().crossVectors(legacyYaxis, xaxis);
+            if (zaxis.lengthSq() === 0) {
+                throw new Error('Invalid plane data: xaxis and yaxis are collinear');
+            }
+        } else {
+            throw new Error('Invalid plane data: expected zaxis or yaxis');
+        }
         
         return new Plane(origin, xaxis, zaxis);
     }

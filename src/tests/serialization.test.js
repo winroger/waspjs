@@ -215,6 +215,34 @@ describe('serialization', () => {
     expect(restored.aggregated_parts.map(part => part.id)).toEqual([0, 1, 2]);
   });
 
+  it('preserves legacy yaxis-only connection planes after import/export roundtrip', () => {
+    const aggregation = makeAggregation(['A']);
+    const serialized = aggregation.toData();
+
+    const legacyPlane = serialized.parts[0].connections[0].plane;
+    const expectedYaxis = [...legacyPlane.yaxis];
+    const expectedXaxis = [...legacyPlane.xaxis];
+    serialized.parts[0].connections[0].plane = {
+      origin: [...legacyPlane.origin],
+      xaxis: expectedXaxis,
+      yaxis: expectedYaxis,
+    };
+
+    const restored = Aggregation.fromData(serialized);
+    const reserializedPlane = restored.toData().parts[0].connections[0].plane;
+
+    const expectedZaxis = new THREE.Vector3().fromArray(expectedYaxis)
+      .cross(new THREE.Vector3().fromArray(expectedXaxis))
+      .normalize();
+
+    reserializedPlane.yaxis.forEach((value, index) => {
+      expect(value).toBeCloseTo(expectedYaxis[index], 10);
+    });
+    reserializedPlane.zaxis.forEach((value, index) => {
+      expect(value).toBeCloseTo(expectedZaxis.getComponent(index), 10);
+    });
+  });
+
   it('exports the compact placed-parts file format separately from roundtrip toData', () => {
     const aggregation = placeChain(makeAggregation(['A']));
     const serialized = aggregation.toFileData();
