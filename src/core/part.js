@@ -20,6 +20,10 @@ function parsePossiblyNumericId(value) {
     return value;
 }
 
+function copyAttributes(attributes) {
+    return globalThis.structuredClone(attributes ?? []);
+}
+
 // Base Part
 /**
  * Represents a single placeable part with geometry, connections, and collider.
@@ -30,7 +34,7 @@ export class Part {
      * @param {THREE.Mesh} geometry
      * @param {Connection[]} connections
      * @param {Collider} collider
-     * @param {Array} attributes
+     * @param {Array<unknown>} [attributes] JSON values associated with the part
      * @param {number|null} dim
      * @param {number|string|null} id
      * @param {unknown} field
@@ -64,7 +68,7 @@ export class Part {
         this.conn_to_parent = null;
         this.children = [];
 
-        this.attributes = [] // not implemented, ORIGINAL: attributes.length > 0 ? attributes : [];
+        this.attributes = copyAttributes(attributes);
 
         this.is_constrained = false;
     }
@@ -93,7 +97,7 @@ export class Part {
         } else {
             p_collider = new Collider([], false, false, [], []);
         }
-        let p_attributes = []; // ATTRIBUTES NOT IMPLEMENTED
+        let p_attributes = data['attributes'] ?? base_part?.attributes ?? [];
         let p_dim = parseFloat(data['dim']);
 
         let p_id = parsePossiblyNumericId(data['id']);
@@ -132,6 +136,8 @@ export class Part {
             'children': this.children
         };
 
+        data['attributes'] = copyAttributes(this.attributes);
+
         if (include_geo) {
             data['geometry'] = meshToData(this.geo);
         }
@@ -165,7 +171,7 @@ export class Part {
             'center': this.center,
             'parent': this.parent,
             'children': this.children,
-            'attributes': this.attributes
+            'attributes': copyAttributes(this.attributes)
         };
     }
 
@@ -182,12 +188,7 @@ export class Part {
             connections_trans.push(conn_trans)
         }
 
-        let attributes_trans = [];
-        if (this.attributes.length > 0) {
-            attributes_trans = this.attributes.map(attr => attr.transform(trans));
-        }
-
-        let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, attributes_trans, this.dim, this.id, this.field)
+        let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, this.attributes, this.dim, this.id, this.field)
         
         part_trans.transformation.copy(this.transformation).multiply(trans)
 
@@ -208,12 +209,7 @@ export class Part {
 
         let connections_copy = this.connections.map(conn => conn.copy());
 
-        let attributes_copy = [];
-        if (this.attributes.length > 0) {
-            attributes_copy = this.attributes.map(attr => attr.copy());
-        }
-
-        let part_copy = new Part(this.name, geo_copy, connections_copy, collider_copy, attributes_copy, this.dim, this.id, this.field);
+        let part_copy = new Part(this.name, geo_copy, connections_copy, collider_copy, this.attributes, this.dim, this.id, this.field);
         part_copy.transformation.copy(this.transformation);
 
         if (maintain_parenting) {

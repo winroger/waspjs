@@ -14,6 +14,14 @@ function makeBoxMesh() {
   return new THREE.Mesh(geometry, material);
 }
 
+const partAttributes = [
+  { label: 'beam', details: { sizes: [1, null, true, { depth: 2 }] } },
+  'plain text',
+  0,
+  false,
+  null,
+];
+
 function makeAggregationPart(name) {
   const geometry = new THREE.BoxGeometry(2, 1, 1);
   const material = new THREE.MeshStandardMaterial();
@@ -138,6 +146,44 @@ describe('serialization', () => {
     expect(restored.active_connections).toEqual([1]);
   });
 
+  it('deep-copies JSON attributes through construction and serialization', () => {
+    const input = globalThis.structuredClone(partAttributes);
+    const part = new Part('A', makeBoxMesh(), [], new Collider([], false, false, [], []), input);
+    input[0].details.sizes[3].depth = 9;
+
+    expect(part.attributes).toEqual(partAttributes);
+    const data = part.toData();
+    expect(data.attributes).toEqual(partAttributes);
+    data.attributes[0].details.sizes[3].depth = 8;
+    expect(part.attributes).toEqual(partAttributes);
+
+    const restored = Part.fromData(part.toData());
+    expect(restored.attributes).toEqual(partAttributes);
+    restored.attributes[0].details.sizes[3].depth = 7;
+    expect(part.attributes).toEqual(partAttributes);
+  });
+
+  it('deep-copies JSON attributes when copying and transforming parts', () => {
+    const part = new Part('A', makeBoxMesh(), [], new Collider([], false, false, [], []), partAttributes);
+    const copied = part.copy();
+    const transformed = part.transform(new THREE.Matrix4().makeTranslation(1, 2, 3));
+
+    expect(copied.attributes).toEqual(partAttributes);
+    expect(transformed.attributes).toEqual(partAttributes);
+    copied.attributes[0].details.sizes[3].depth = 8;
+    transformed.attributes[0].details.sizes[3].depth = 9;
+    expect(part.attributes).toEqual(partAttributes);
+  });
+
+  it('defaults missing attributes to an empty array for legacy part data', () => {
+    const part = new Part('A', makeBoxMesh(), [], new Collider([], false, false, [], []));
+    const data = part.toData();
+    delete data.attributes;
+
+    expect(part.attributes).toEqual([]);
+    expect(Part.fromData(data).attributes).toEqual([]);
+  });
+
   it('round-trips an empty aggregation definition via Aggregation.toData/fromData', () => {
     const aggregation = makeAggregation(['A']);
     const serialized = aggregation.toData();
@@ -200,6 +246,43 @@ describe('serialization', () => {
     expect(reserialized.aggregated_parts['1'].geometry).toBeUndefined();
     expect(reserialized.aggregated_parts['1'].collider).toBeUndefined();
     expect(reserialized.aggregated_parts['1'].transform).toEqual(serialized.aggregated_parts['1'].transform);
+  });
+
+  it.each([true, false])('preserves attributes on placed parts when include_aggr_geo is %s', includeGeometry => {
+    const aggregation = makeAggregation(['A']);
+    aggregation.parts.A.attributes = globalThis.structuredClone(partAttributes);
+    placeChain(aggregation);
+    aggregation.aggregated_parts[1].attributes[0].details.sizes[3].depth = 5;
+
+    expect(aggregation.aggregated_parts[0].attributes).toEqual(partAttributes);
+    expect(aggregation.parts.A.attributes).toEqual(partAttributes);
+
+    const data = aggregation.toData(includeGeometry);
+    expect(data.parts[0].attributes).toEqual(partAttributes);
+    expect(data.aggregated_parts['0'].attributes).toEqual(partAttributes);
+    expect(data.aggregated_parts['1'].attributes[0].details.sizes[3].depth).toBe(5);
+
+    const restored = Aggregation.fromData(data);
+    expect(restored.parts.A.attributes).toEqual(partAttributes);
+    expect(restored.aggregated_parts[0].attributes).toEqual(partAttributes);
+    expect(restored.aggregated_parts[1].attributes[0].details.sizes[3].depth).toBe(5);
+    restored.aggregated_parts[1].attributes[0].details.sizes[3].depth = 6;
+    expect(data.aggregated_parts['1'].attributes[0].details.sizes[3].depth).toBe(5);
+  });
+
+  it('inherits base attributes for legacy compact placed parts without attributes', () => {
+    const aggregation = makeAggregation(['A']);
+    aggregation.parts.A.attributes = globalThis.structuredClone(partAttributes);
+    placeChain(aggregation);
+    const data = aggregation.toData(false);
+    delete data.aggregated_parts['0'].attributes;
+    delete data.aggregated_parts['1'].attributes;
+
+    const restored = Aggregation.fromData(data);
+    expect(restored.aggregated_parts.map(part => part.attributes)).toEqual([partAttributes, partAttributes]);
+    restored.aggregated_parts[0].attributes[0].details.sizes[3].depth = 6;
+    expect(restored.aggregated_parts[1].attributes).toEqual(partAttributes);
+    expect(restored.parts.A.attributes).toEqual(partAttributes);
   });
 
   it('continues assigning stable ids after re-importing an aggregation', () => {
