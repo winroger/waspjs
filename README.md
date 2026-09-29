@@ -51,6 +51,12 @@ Main entry points:
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
 
+### Part attributes
+
+`Part.attributes` is an optional array of JSON values. The array and its nested values are copied when a part is constructed, copied, transformed, serialized, or deserialized. Placed parts retain their own attributes in both full and lightweight `Aggregation.toData()` exports. Older data without an `attributes` field loads with an empty array; a lightweight placed part can inherit attributes from its base part.
+
+The original Python [Wasp Part implementation](https://github.com/ar0551/Wasp/blob/main/src/wasp/core/parts.py) omits attributes from `to_data()` and ignores them in `from_data()`. It can read the additional field in a `webwaspjs` export, but importing and exporting through Python Wasp will discard those attributes. Python Wasp attribute objects that contain Rhino geometry are outside this JSON data format.
+
 ## Development
 
 Requirements:

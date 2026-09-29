@@ -15,7 +15,7 @@ function makeBoxMesh() {
 }
 
 const partAttributes = [
-  { label: 'beam', details: { sizes: [1, null, true, { depth: 2 }] } },
+  { label: 'beam', copy: 'metadata', transform: 'metadata', details: { sizes: [1, null, true, { depth: 2 }] } },
   'plain text',
   0,
   false,
@@ -157,7 +157,7 @@ describe('serialization', () => {
     data.attributes[0].details.sizes[3].depth = 8;
     expect(part.attributes).toEqual(partAttributes);
 
-    const restored = Part.fromData(part.toData());
+    const restored = Part.fromData(JSON.parse(JSON.stringify(part.toData())));
     expect(restored.attributes).toEqual(partAttributes);
     restored.attributes[0].details.sizes[3].depth = 7;
     expect(part.attributes).toEqual(partAttributes);
@@ -182,6 +182,7 @@ describe('serialization', () => {
 
     expect(part.attributes).toEqual([]);
     expect(Part.fromData(data).attributes).toEqual([]);
+    expect(Part.fromData(data).toData().attributes).toEqual([]);
   });
 
   it('round-trips an empty aggregation definition via Aggregation.toData/fromData', () => {
