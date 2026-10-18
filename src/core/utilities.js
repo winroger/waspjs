@@ -26,17 +26,24 @@ export function checkMeshesIntersection(mesh1, mesh2) {
   }
 
 /**
- * Convert a mesh to plain vertex/face data (supports BufferGeometry).
+ * Convert a mesh to plain vertex/face data with its local placement baked in.
+ * Scene-parent transforms are presentation state, not part of the WASP data.
  */
 export function meshToData(mesh) {
   const geom = mesh.geometry;
   const data = { vertices: [], faces: [] };
+  // Compose pending TRS without updating/mutating the mesh or its shared geometry.
+  // Already placed inline geometry has an identity mesh matrix on import.
+  const transform = mesh.matrixAutoUpdate
+    ? new THREE.Matrix4().compose(mesh.position, mesh.quaternion, mesh.scale)
+    : mesh.matrix;
+  const vertex = new THREE.Vector3();
 
   if (geom.isBufferGeometry) {
     const pos = geom.getAttribute('position');
     const index = geom.getIndex();
     for (let i = 0; i < pos.count; i++) {
-      data.vertices.push([pos.getX(i), pos.getY(i), pos.getZ(i)]);
+      data.vertices.push(vertex.fromBufferAttribute(pos, i).applyMatrix4(transform).toArray());
     }
     if (index) {
       for (let i = 0; i < index.count; i += 3) {
@@ -51,7 +58,7 @@ export function meshToData(mesh) {
   }
 
   // Legacy Geometry path
-  geom.vertices.forEach(v => data.vertices.push([v.x, v.y, v.z]));
+  geom.vertices.forEach(v => data.vertices.push(vertex.copy(v).applyMatrix4(transform).toArray()));
   geom.faces.forEach(f => {
     const face = [f.a, f.b, f.c];
     if (f.d !== undefined) face.push(f.d);

@@ -1,0 +1,117 @@
+{
+  "class_type": "Part",
+  "name": "A",
+  "id": null,
+  "geometry": {
+    "vertices": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0
+      ]
+    ],
+    "faces": [
+      [
+        0,
+        1,
+        2
+      ]
+    ]
+  },
+  "field": null,
+  "connections": [
+    {
+      "plane": {
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "xaxis": [
+          1,
+          0,
+          0
+        ],
+        "yaxis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "type": "default",
+      "part": "A",
+      "id": 0
+    }
+  ],
+  "active_connections": [
+    0
+  ],
+  "collider": {
+    "geometry": [
+      {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ]
+        ]
+      }
+    ],
+    "multiple": false,
+    "check_all": false,
+    "connections": [],
+    "valid_connections": []
+  },
+  "transform": {
+    "M00": 1,
+    "M01": 0,
+    "M02": 0,
+    "M03": 0,
+    "M10": 0,
+    "M11": 1,
+    "M12": 0,
+    "M13": 0,
+    "M20": 0,
+    "M21": 0,
+    "M22": 1,
+    "M23": 0,
+    "M30": 0,
+    "M31": 0,
+    "M32": 0,
+    "M33": 1
+  },
+  "dim": 1.0,
+  "parent": null,
+  "conn_on_parent": null,
+  "conn_to_parent": null,
+  "children": [],
+  "attributes": []
+}

@@ -51,6 +51,16 @@ Main entry points:
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
 
+### Placed geometry
+
+`aggregation.toData()` includes placed instance geometry and colliders in assembly
+coordinates, matching Python Wasp's inline geometry convention. Their placement
+is baked into the exported vertices without changing the runtime meshes or base
+parts. Importing inline geometry does not apply the Part transform a second time.
+`aggregation.toData(false)` instead omits instance geometry and colliders; import
+reconstructs them from the base parts and placement transforms. Viewer scene-parent
+transforms are not included in these exports.
+
 ### Part attributes
 
 `Part.attributes` is an optional array of JSON values. The array and its nested values are copied when a part is constructed, copied, transformed, serialized, or deserialized. Placed parts retain their own attributes in both full and lightweight `Aggregation.toData()` exports. Older data without an `attributes` field loads with an empty array; a lightweight placed part can inherit attributes from its base part.
