@@ -61,6 +61,34 @@ parts. Importing inline geometry does not apply the Part transform a second time
 reconstructs them from the base parts and placement transforms. Viewer scene-parent
 transforms are not included in these exports.
 
+### Connection frames
+
+Connection planes use right-handed orthonormal axes: `X × Y = Z`. The public
+constructor remains `new Plane(origin, xaxis, zaxis)`, deriving `Y = Z × X`.
+`Plane.fromData()` reads GH `origin`/`xaxis`/`yaxis` data, with X/Y authoritative,
+or X/Z-only data. `Connection.flip_pln` preserves X and reverses Y and Z,
+matching GH-Wasp. Local Z is the connection normal; it can point in any direction.
+The viewer's Z-up camera setting does not convert or alter these axes.
+
+When X/Y/Z are present, a redundant Z parallel or opposite to `X × Y` is accepted.
+Old WaspJS exports used the opposite normal; import now normalizes that normal
+while preserving origin and the orthonormal X/Y frame. Input objects and stored
+files are not rewritten. An unrelated Z, zero/collinear axes, or non-finite
+coordinates throw an error. Unlike JS, GH's reader ignores redundant Z entirely.
+
+`Plane.toData()` retains its existing X/Y/Z fields and emits the corrected normal.
+**Older WaspJS readers can reverse Y when loading this corrected XYZ output.**
+Update the receiving reader before exchanging new XYZ exports with an older app.
+GH's X/Y reader accepts these exports. XY-only transport avoids that particular
+old-reader Y reversal, but does not fix the old runtime's opposite normal.
+No existing application or dependency is updated by this library change.
+
+Regression evidence covers planar, tilted and oblique frames, connection
+copy/flip, rigid transforms, docking, and mixed old/new construction paths in
+[planeCompatibility.test.js](src/tests/planeCompatibility.test.js). Reference
+results were executed using GH-Wasp 0.7.003 in Rhino; they do not establish parity
+for general affine transforms, reflections, or every aggregation workflow.
+
 ### Part attributes
 
 `Part.attributes` is an optional array of JSON values. The array and its nested values are copied when a part is constructed, copied, transformed, serialized, or deserialized. Placed parts retain their own attributes in both full and lightweight `Aggregation.toData()` exports. Older data without an `attributes` field loads with an empty array; a lightweight placed part can inherit attributes from its base part.

@@ -315,8 +315,8 @@ describe('serialization', () => {
     const restored = Aggregation.fromData(serialized);
     const reserializedPlane = restored.toData().parts[0].connections[0].plane;
 
-    const expectedZaxis = new THREE.Vector3().fromArray(expectedYaxis)
-      .cross(new THREE.Vector3().fromArray(expectedXaxis))
+    const expectedZaxis = new THREE.Vector3().fromArray(expectedXaxis)
+      .cross(new THREE.Vector3().fromArray(expectedYaxis))
       .normalize();
 
     reserializedPlane.yaxis.forEach((value, index) => {

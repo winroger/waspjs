@@ -1,0 +1,120 @@
+{
+  "provenance": {
+    "kind": "captured-pre-fix-waspjs-plane-exports",
+    "commit": "f61a66dfcb40a108e9c1b6bf20ae61ae27b5f83f"
+  },
+  "planes": {
+    "world_xy": {
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "xaxis": [
+        1,
+        0,
+        0
+      ],
+      "yaxis": [
+        0,
+        1,
+        0
+      ],
+      "zaxis": [
+        0,
+        0,
+        -1
+      ]
+    },
+    "tilted_yz": {
+      "origin": [
+        10,
+        20,
+        30
+      ],
+      "xaxis": [
+        0,
+        1,
+        0
+      ],
+      "yaxis": [
+        0,
+        0,
+        1
+      ],
+      "zaxis": [
+        -1,
+        0,
+        0
+      ]
+    },
+    "oblique": {
+      "origin": [
+        -3,
+        5,
+        7
+      ],
+      "xaxis": [
+        0.6,
+        0.8,
+        0
+      ],
+      "yaxis": [
+        -0.48,
+        0.36,
+        0.8
+      ],
+      "zaxis": [
+        -0.6400000000000001,
+        0.48,
+        -0.6
+      ]
+    }
+  },
+  "face_planes": {
+    "positive": {
+      "origin": [
+        1,
+        0,
+        0
+      ],
+      "xaxis": [
+        0,
+        1,
+        0
+      ],
+      "yaxis": [
+        0,
+        0,
+        1
+      ],
+      "zaxis": [
+        -1,
+        0,
+        0
+      ]
+    },
+    "negative": {
+      "origin": [
+        -1,
+        0,
+        0
+      ],
+      "xaxis": [
+        0,
+        1,
+        0
+      ],
+      "yaxis": [
+        0,
+        0,
+        -1
+      ],
+      "zaxis": [
+        1,
+        0,
+        0
+      ]
+    }
+  }
+}

@@ -14,6 +14,7 @@ export class Connection {
     constructor(_plane, _type, _part, _id) {
         this.pln = _plane.clone();
         const tempPlane = this.pln.clone();
+        // Preserve X and reverse Y/Z, matching GH's Plane(origin, X, -Y).
         this.flip_pln = new Plane(tempPlane.origin, tempPlane.xaxis, tempPlane.zaxis.clone().multiplyScalar(-1));
 
         this.type = _type;

@@ -24,11 +24,9 @@ const strict = process.env.WASP_STRICT_GH_COMPARISON === '1';
 // Each assertion tests one facet; unrelated setup errors fail the whole suite.
 const knownDifferences = {
     metadata: new Set(['constructor']),
-    normals: new Set(corpus.cases.map(item => item.id)),
     center: new Set(corpus.cases.map(item => item.id)),
 };
 const issueByFacet = {
-    normals: 'WASP-010',
     center: 'WASP-012', metadata: 'WASP-013',
 };
 

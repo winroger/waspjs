@@ -19,10 +19,12 @@
  */
 
 /**
+ * Serialized connection frame. X/Y is authoritative when present; alternatively
+ * X/Z-only input is accepted. At least one of yaxis and zaxis is required.
  * @typedef {Object} PlaneData
  * @property {number[]} origin
  * @property {number[]} xaxis
- * @property {number[]} yaxis
+ * @property {number[]} [yaxis]
  * @property {number[]} [zaxis]
  */
 
