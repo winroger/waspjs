@@ -28,6 +28,8 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   Das nächste beauftragte Feature beginnt wieder auf dem aktualisierten `main`.
   Ein Arbeitsauftrag allein ist noch keine Abnahme. Push, Veröffentlichung und
   App-Updates benötigen weiterhin eigene Anweisungen. GH-Wasp bleibt ausgenommen.
+- DisCo vollständig auslassen, einschließlich seiner Komponenten, Integrationen
+  und Import-/Exporttests; gemeinsame Core-Funktionen unabhängig davon angleichen.
 - Änderungen an diesem Paket aktualisieren nicht automatisch die Anwendungen.
   Atlas/Explorer und Pipe einschließlich Dependencies und Lockfiles nur nach
   gesondertem Auftrag ändern. Der frühe `wasp-spec`-Draft ist ergänzende Referenz.

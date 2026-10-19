@@ -13,8 +13,8 @@ function parsePossiblyNumericId(value) {
     }
 
     if (typeof value === 'string') {
-        const parsed = Number.parseInt(value, 10);
-        return Number.isNaN(parsed) ? value : parsed;
+        // As GH's int-or-original fallback: do not truncate IDs like "42-beam".
+        return /^[+-]?\d+$/.test(value) ? Number(value) : value;
     }
 
     return value;
@@ -130,13 +130,13 @@ export class Part {
             'id': this.id,
             'field': this.field,
             'connections': this.connections.map(conn => conn.toData()),
-            'active_connections': this.active_connections,
+            'active_connections': [...this.active_connections],
             'transform': transformToData(this.transformation),
             'dim': this.dim,
             'parent': this.parent,
             'conn_on_parent': this.conn_on_parent,
             'conn_to_parent': this.conn_to_parent,
-            'children': this.children
+            'children': [...this.children]
         };
 
         data['attributes'] = copyAttributes(this.attributes);

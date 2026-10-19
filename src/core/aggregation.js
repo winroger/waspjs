@@ -1,6 +1,11 @@
+/**
+ * WaspJS — aggregation growth, graph state and reconstruction.
+ * Upstream module: src/wasp/core/aggregation.py; intentional differences documented below.
+ */
 import { PlaneToPlane, checkMeshesIntersection, transformToData } from './utilities';
 import { Part } from './part';
 import { Rule } from './rule';
+import { Graph } from './graph.js';
 
 function normalizeList(value) {
     if (!value) return [];
@@ -11,22 +16,22 @@ function normalizeList(value) {
 
 function normalizeAggregatedParts(value, sequence = []) {
     if (!value) return [];
-
+    if (typeof value !== 'object') throw new Error('Invalid aggregated_parts');
     if (Array.isArray(value)) {
-        return value;
+        if (!sequence?.length) return value;
+        const keyed = Object.fromEntries(value.map(part => [part.id, part]));
+        if (Object.keys(keyed).length !== value.length) throw new Error('Duplicate part IDs');
+        return normalizeAggregatedParts(keyed, sequence);
     }
-
-    if (typeof value === 'object') {
-        if (Array.isArray(sequence) && sequence.length > 0) {
-            return sequence
-                .map(id => value[String(id)] ?? value[id])
-                .filter(Boolean);
+    if (Array.isArray(sequence) && sequence.length > 0) {
+        const keys = sequence.map(String);
+        if (new Set(keys).size !== keys.length || keys.length !== Object.keys(value).length
+            || keys.some(key => !Object.hasOwn(value, key))) {
+            throw new Error('Invalid aggregated_parts_sequence: missing or duplicate part');
         }
-
-        return Object.values(value);
+        return keys.map(key => value[key]);
     }
-
-    return [];
+    return Object.values(value);
 }
 
 function restorePart(partData, base_part = null) {
@@ -49,6 +54,76 @@ function computeNextId(parts) {
     return Math.max(...numericIds) + 1;
 }
 
+// GH __init__ builds this sequence graph when importing previous parts.
+function sequenceGraph(parts) {
+    const graph = new Graph();
+    for (const part of parts) {
+        graph.addNode(part.id);
+        if (part.parent !== null) graph.addEdge(part.parent, part.id, part.conn_on_parent, part.conn_to_parent);
+    }
+    return graph;
+}
+
+// JS-specific import boundary: reject incomplete state instead of losing parts.
+function validateState(aggregation) {
+    const parts = aggregation.aggregated_parts;
+    const byId = new Map();
+    for (const part of parts) {
+        if (!((typeof part.id === 'number' && Number.isSafeInteger(part.id))
+            || (typeof part.id === 'string' && part.id.length > 0)) || byId.has(String(part.id))) {
+            throw new Error('Missing, invalid or duplicate part ID');
+        }
+        byId.set(String(part.id), part);
+        if (new Set(part.active_connections).size !== part.active_connections.length
+            || part.active_connections.some(i => !Number.isInteger(i) || !part.connections[i])) {
+            throw new Error(`Invalid active_connections for ${part.id}`);
+        }
+    }
+    const occupied = new Set();
+    const graph = aggregation.graph.graph_dict;
+    for (const part of parts) {
+        if (!Object.hasOwn(graph, part.id)) throw new Error(`Graph missing part ${part.id}`);
+        if (new Set(part.children.map(String)).size !== part.children.length
+            || part.children.some(id => byId.get(String(id))?.parent !== part.id)) {
+            throw new Error(`Invalid children for ${part.id}`);
+        }
+        if (part.parent !== null) {
+            const parent = byId.get(String(part.parent));
+            const edge = graph[part.parent]?.[part.id];
+            if (!parent || !parent.children.includes(part.id)
+                || !Number.isInteger(part.conn_on_parent) || !parent.connections[part.conn_on_parent]
+                || !Number.isInteger(part.conn_to_parent) || !part.connections[part.conn_to_parent]
+                || !edge || edge.conn_start !== part.conn_on_parent || edge.conn_end !== part.conn_to_parent) {
+                throw new Error(`Invalid parent/connection/graph for ${part.id}`);
+            }
+            for (const key of [`${part.parent}:${part.conn_on_parent}`, `${part.id}:${part.conn_to_parent}`]) {
+                if (occupied.has(key)) throw new Error(`Connection occupied twice: ${key}`);
+                occupied.add(key);
+            }
+        }
+    }
+    const checked = new Set();
+    for (const part of parts) {
+        let current = part;
+        const path = new Set();
+        while (current && !checked.has(current.id)) {
+            if (path.has(current.id)) throw new Error('Cyclic part hierarchy');
+            path.add(current.id);
+            current = current.parent === null ? null : byId.get(String(current.parent));
+        }
+        for (const id of path) checked.add(id);
+    }
+    for (const [node, neighbours] of Object.entries(graph)) {
+        if (!byId.has(node)) throw new Error(`Graph references unknown part ${node}`);
+        for (const edge of Object.values(neighbours)) {
+            if (!byId.get(String(edge.end))?.connections[edge.conn_end]
+                || !byId.get(String(edge.start))?.connections[edge.conn_start]) {
+                throw new Error('Graph references unknown part or connection');
+            }
+        }
+    }
+}
+
 /**
  * Manages procedural aggregation of parts using connection rules and collision checks.
  */
@@ -69,6 +144,11 @@ export class Aggregation {
 
       this.rules = _rules;
       this.aggregated_parts = [];
+      this.graph = new Graph();
+      this.mode = 0;
+      this.coll_check = true;
+      this.removed_parts = [];
+      this._extraData = {};
 
       // not implemented or used yet
       this.aggregation_queue = [];
@@ -90,14 +170,22 @@ export class Aggregation {
      * Deserialize an aggregation from JSON-friendly data.
      */
     static fromData(data) {
+    if (data.aggregation_name !== undefined && data.name === undefined) {
+        throw new Error('Compact data requires loadAggregation with external base parts');
+    }
+    if (data.mode != null && Number(data.mode) !== 0) throw new Error('Only aggregation mode 0 is implemented');
+    if (data.field != null && (!Array.isArray(data.field) || data.field.length > 0)) {
+        throw new Error('Field deserialization is not implemented');
+    }
+    if (data.coll_check != null && typeof data.coll_check !== 'boolean') throw new Error('Invalid coll_check');
     const d_name = data['name'];
-        const d_parts = normalizeList(data['parts']).map(restorePart);
+        const d_parts = normalizeList(data['parts']).map(raw => restorePart(raw));
 
     const d_rules = normalizeList(data['rules']).map(rule => Rule.fromData(rule));
 
     const d_rnd_seed = data['rnd_seed'];
 
-    if (data['global_constraints'] && data['global_constraints'].length > 0) {
+    if (data.global_constraints != null && (!Array.isArray(data.global_constraints) || data.global_constraints.length > 0)) {
         throw new Error('Global constraints deserialization is not implemented');
     }
     if (data['catalog']) {
@@ -105,6 +193,12 @@ export class Aggregation {
     }
 
     const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed);
+    aggregation.coll_check = data.coll_check ?? true;
+    const known = new Set(['object_type', 'name', 'parts', 'rules', 'rnd_seed', 'global_constraints',
+        'catalog', 'mode', 'coll_check', 'field', 'graph', 'include_aggr_geo',
+        'aggregated_parts', 'aggregated_parts_sequence']);
+    aggregation._extraData = globalThis.structuredClone(Object.fromEntries(
+        Object.entries(data).filter(([key]) => !known.has(key))));
     const aggregatedPartsData = normalizeAggregatedParts(
         data['aggregated_parts'],
         data['aggregated_parts_sequence']
@@ -131,20 +225,34 @@ export class Aggregation {
             }
         }
 
-        if (aggr_part !== null) {
-            d_aggregated_parts.push(aggr_part);
-            d_aggregated_parts_data.push(aggr_part_data);
-        }
+        if (aggr_part === null) throw new Error(`Missing base part for ${aggr_part_data.name}`);
+        d_aggregated_parts.push(aggr_part);
+        d_aggregated_parts_data.push(aggr_part_data);
     }
 
     aggregation.aggregated_parts = d_aggregated_parts;
     aggregation.aggregated_parts.forEach((part, index) => {
-        const serializedActiveConnections = d_aggregated_parts_data[index]['active_connections'];
+        const serializedActiveConnections = Array.isArray(d_aggregated_parts_data[index].active_connections)
+            ? [...part.active_connections] : null;
         part.resetPart(aggregation.rules);
         if (Array.isArray(serializedActiveConnections)) {
             part.active_connections = [...serializedActiveConnections];
         }
     });
+    // GH-Wasp difference: preserve occupancy instead of resetting used connections.
+    const storedGraph = data.graph;
+    if (storedGraph != null && (typeof storedGraph !== 'object' || Array.isArray(storedGraph))) {
+        throw new Error('Graph must be an adjacency dictionary');
+    }
+    aggregation.graph = storedGraph && Object.keys(storedGraph).length
+        ? Graph.fromData(storedGraph) : sequenceGraph(aggregation.aggregated_parts);
+    validateState(aggregation);
+    for (const part of aggregation.aggregated_parts) {
+        if (part.parent === null) continue;
+        const parent = aggregation.aggregated_parts.find(p => p.id === part.parent);
+        parent.active_connections = parent.active_connections.filter(i => i !== part.conn_on_parent);
+        part.active_connections = part.active_connections.filter(i => i !== part.conn_to_parent);
+    }
     aggregation._nextId = computeNextId(aggregation.aggregated_parts);
 
     return aggregation;
@@ -154,15 +262,12 @@ export class Aggregation {
      * Serialize the aggregation into a JSON-friendly WASP-compatible structure.
      */
     toData(include_aggr_geo = true) {
-        const aggregated_parts = {};
-        const aggregated_parts_sequence = [];
-
-        this.aggregated_parts.forEach(part => {
-            aggregated_parts[String(part.id)] = part.toData(include_aggr_geo, include_aggr_geo);
-            aggregated_parts_sequence.push(part.id);
-        });
+        const aggregated_parts = Object.fromEntries(this.aggregated_parts.map(part =>
+            [String(part.id), part.toData(include_aggr_geo, include_aggr_geo)]));
+        const aggregated_parts_sequence = this.aggregated_parts.map(part => part.id);
 
         return {
+            ...globalThis.structuredClone(this._extraData),
             object_type: 'Aggregation',
             name: this.name,
             parts: Object.values(this.parts).map(part => part.toData()),
@@ -170,10 +275,12 @@ export class Aggregation {
             rnd_seed: this.rnd_seed,
             global_constraints: [],
             catalog: null,
-            mode: 0,
-            coll_check: true,
+            mode: this.mode,
+            coll_check: this.coll_check,
             field: null,
-            graph: {},
+            // Legacy callers can supply placed parts directly; recover their graph
+            // for export without mutating the aggregation during serialization.
+            graph: (this.graph.getNodes().length ? this.graph : sequenceGraph(this.aggregated_parts)).toData(),
             include_aggr_geo,
             aggregated_parts,
             aggregated_parts_sequence
@@ -184,18 +291,14 @@ export class Aggregation {
      * Serialize the placed aggregation state in the compact WASP "Save Aggregation to File" shape.
      */
     toFileData() {
-        const parts = {};
-
-        this.aggregated_parts.forEach(part => {
-            parts[String(part.id)] = {
-                name: part.name,
-                active_connections: [...part.active_connections],
-                parent: part.parent,
-                children: [...part.children],
-                transform: transformToData(part.transformation),
-                is_constrained: part.is_constrained
-            };
-        });
+        const parts = Object.fromEntries(this.aggregated_parts.map(part => [String(part.id), {
+            name: part.name,
+            active_connections: [...part.active_connections],
+            parent: part.parent,
+            children: [...part.children],
+            transform: transformToData(part.transformation),
+            is_constrained: part.is_constrained,
+        }]));
 
         return {
             aggregation_name: this.name,
@@ -275,7 +378,8 @@ addFirstPartToAggregation() {
             });
 
             first_part_trans.id = this._nextId++;
-            this.aggregated_parts.push(first_part_trans);  
+            this.aggregated_parts.push(first_part_trans);
+            this.graph.addNode(first_part_trans.id);
             return true;
     }
     return false;
@@ -284,8 +388,7 @@ addFirstPartToAggregation() {
 addPartToAggregation() {
 
     if (this.aggregated_parts.length === 0) {
-        this.addFirstPartToAggregation();
-        return true;
+        return this.addFirstPartToAggregation();
     } else {
         let next_rule = null;
         let part_01 = null;
@@ -356,7 +459,7 @@ addPartToAggregation() {
                 const next_part_trans_scale = next_part_trans.copy().geo;
                 next_part_trans_scale.scale.set(0.99, 0.99, 0.99);
 
-                for (let partToCheck of this.aggregated_parts) {
+                for (let partToCheck of this.coll_check ? this.aggregated_parts : []) {
                     let part1mesh = null
                     if (partToCheck.collider.geometry[0] != undefined) {
                         part1mesh = partToCheck.collider.geometry[0];
@@ -399,6 +502,8 @@ addPartToAggregation() {
 
                 // add part to aggregated_parts list
                 this.aggregated_parts.push(next_part_trans);
+                this.graph.addNode(next_part_trans.id);
+                this.graph.addEdge(part_01.id, next_part_trans.id, conn_01_id, next_rule.connectionB);
 
                 // remove connection from parent part's active connections
                 part_01.active_connections = part_01.active_connections.filter(conn => conn !== conn_01_id);
@@ -412,37 +517,36 @@ addPartToAggregation() {
     }
 }
 
+/**
+ * Remove a part and its dependent descendants, retaining unrelated branches.
+ * GH-Wasp difference: GH remove_elements trims a sequence and resets every part;
+ * this JS ID-based operation cleans parenting without reopening occupied slots.
+ * @param {number|string} part_id
+ * @returns {boolean} Whether the requested part existed. removed_parts lists results.
+ */
 removePartFromAggregation(part_id) {
-    const partIndex = this.aggregated_parts.findIndex(part => part.id === part_id);
-    if (partIndex !== -1) {
-        const partToRemove = this.aggregated_parts[partIndex];
-
-        // Remove part from parent's children
-        if (partToRemove.parent !== null) {
-            const parentPart = this.aggregated_parts.find(part => part.id === partToRemove.parent);
-            if (parentPart) {
-                parentPart.children = parentPart.children.filter(childId => childId !== partToRemove.id);
-                parentPart.active_connections.push(partToRemove.conn_on_parent);
-            }
+    const partToRemove = this.aggregated_parts.find(part => part.id === part_id);
+    if (!partToRemove) return false;
+    const removed = new Set([part_id]);
+    // Follow parent links rather than trusting caller-maintained children arrays.
+    let size;
+    do {
+        size = removed.size;
+        for (const part of this.aggregated_parts) if (removed.has(part.parent)) removed.add(part.id);
+    } while (size !== removed.size);
+    this.removed_parts = this.aggregated_parts.filter(part => removed.has(part.id));
+    for (const part of this.removed_parts) {
+        const parent = this.aggregated_parts.find(p => p.id === part.parent && !removed.has(p.id));
+        if (parent) {
+            parent.children = parent.children.filter(id => !removed.has(id));
+            if (!parent.active_connections.includes(part.conn_on_parent)) parent.active_connections.push(part.conn_on_parent);
         }
-
-        // Remove part from aggregated_parts list
-        this.aggregated_parts.splice(partIndex, 1);
-
-        // Remove part's connections from active connections
-        partToRemove.active_connections.forEach(conn_id => {
-            const conn = partToRemove.connections[conn_id];
-            const connectedPart = this.aggregated_parts.find(part => part.id === conn.connected_part_id);
-            if (connectedPart) {
-                connectedPart.active_connections = connectedPart.active_connections.filter(active_conn_id => active_conn_id !== conn.connected_conn_id);
-            }
-        });
-        return true;
-    } else {
-        console.error("Error: Part not found");
-        return false;
+        this.graph.removeNode(part.id);
     }
-    
+    for (let i = this.aggregated_parts.length - 1; i >= 0; i--) {
+        if (removed.has(this.aggregated_parts[i].id)) this.aggregated_parts.splice(i, 1);
+    }
+    return true;
 }
 
 /**
@@ -451,6 +555,7 @@ removePartFromAggregation(part_id) {
  * @returns {boolean}
  */
 _checkCollision(partTrans) {
+    if (!this.coll_check) return false;
     const colliderGeo = partTrans.copy().collider.geometry[0];
     const scaledGeo = partTrans.copy().geo;
     scaledGeo.scale.set(0.99, 0.99, 0.99);
@@ -488,6 +593,7 @@ placeFirstPart(partName) {
     partCopy.connections.forEach(conn => conn.generateRulesTable(this.rules));
     partCopy.id = this._nextId++;
     this.aggregated_parts.push(partCopy);
+    this.graph.addNode(partCopy.id);
     return { success: true, part: partCopy };
 }
 
@@ -538,6 +644,8 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
     partTrans.conn_to_parent = connectionBId;
 
     this.aggregated_parts.push(partTrans);
+    this.graph.addNode(partTrans.id);
+    this.graph.addEdge(parentPart.id, partTrans.id, connectionId, connectionBId);
     parentPart.active_connections = parentPart.active_connections.filter(c => c !== connectionId);
 
     return { success: true, part: partTrans };

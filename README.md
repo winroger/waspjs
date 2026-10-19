@@ -50,6 +50,8 @@ Main entry points:
 - `aggregation.toFileData()` to export the compact placed-parts file format
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
+- `Graph` for directed aggregation topology and geometric connection queries
+- `loadAggregation(data, baseParts, rules, seed)` for the separate compact Save/Load format
 
 ### Placed geometry
 
@@ -174,6 +176,83 @@ small rigid placements. It does not establish random-sequence, graph, constraint
 or general collision parity. Existing BVH construction can reorder collider
 triangles while building its cache, so geometry comparisons ignore face-list
 order while preserving vertices and triangle winding.
+
+### Aggregation state and graphs
+
+`aggregation.graph` is a `Graph`. Manual and random growth add nodes and directed
+edges carrying `start`, `end`, `conn_start` and `conn_end`, matching GH's sequence
+graph. It is preserved in full and lightweight core exports. Legacy data with a
+missing or empty graph reconstructs it from parenting; inconsistent nonempty
+graphs, duplicate IDs, missing parts, cycles and invalid references raise errors.
+`aggregated_parts_sequence` controls import order. Additional top-level JSON
+metadata and graph-edge metadata are copied through core roundtrips.
+
+`Graph.fromAggregation(aggregation)` computes a separate full graph by comparing
+connection origins, including additional contacts. The optional arguments are
+`fullGraph=true, tolerance=0.002, filterByRules=false, customRules=[]`. Tolerance
+uses model units and defaults to the measured GH global value; no unit conversion
+occurs. The GH algorithm uses `Part.center` and `dim` to find neighbours, compares
+origins without checking normals, and retains the first connection pair per
+directed part pair. Filtering uses directed rules; empty custom rules fall back
+to the aggregation's rules. This method does not replace the sequence graph.
+With `fullGraph=false`, it returns the existing live `aggregation.graph`.
+
+`Graph.fromData()` / `toData()` use GH's adjacency dictionary. `addNode`, `addEdge`,
+`removeNode`, `countEdges`, `getNodes`, `getEdges` and `getEdgesAttributes` provide
+the corresponding core operations. The last two queries support `flatten=false`
+for grouping by node. Import, export and edge-attribute queries copy JSON objects.
+Duplicate directed pairs keep the existing edge. Attribute-driven graph export
+is unimplemented upstream and raises an explicit error here.
+
+`removePartFromAggregation(id)` now removes the selected part and all dependent
+descendants. It retains unrelated branches, stable remaining IDs and the live
+parts-array reference, removes incident graph edges and restores only connections
+freed on surviving parents. It returns a boolean and exposes removed Parts in
+`aggregation.removed_parts`. IDs increase within the live instance; after core
+import the next ID is computed from the maximum surviving numeric ID. Deleted-ID
+history is not serialized. Whole integer-string IDs become numbers; identifiers
+such as `42-beam` retain their complete string value.
+
+Core loading preserves explicitly closed free connections and excludes occupied
+parent/child slots. Rule tables and `active_rules` are regenerated because the GH
+transport does not serialize their transient pruning. Mode `0` is supported;
+nonzero modes, nonempty Fields, global constraints and catalogs are rejected.
+The `coll_check` flag is retained and actually controls collision checks.
+
+**Known GH-reader differences:** the measured GH reader resets connection
+occupancy, duplicates Rule endpoints and leaves JSON graph keys as strings,
+which can make integer-ID deletion miss nodes. GH trimming also leaves stale
+child references. WaspJS retains consistent state instead of reproducing these
+defects. Geometry/graph exchange tests do not imply a complete native GH state
+roundtrip or identical behaviour after arbitrary edits.
+
+### Compact loading and random continuation
+
+The compact `toFileData()` format requires external base parts and rules:
+
+```js
+import { loadAggregation } from 'webwaspjs';
+const aggregation = loadAggregation(compactData, baseParts, rules, 42);
+```
+
+This operation corresponds to GH's Load Aggregation component without file/UI
+handling. Numeric IDs are sorted as GH does; string IDs are a JS extension and
+sort after them. The format has no connection-index fields, graph, instance
+attributes or RNG cursor. JS recovers unique parent/child connection indices from
+matching frames and then reconstructs the sequence graph. Missing or ambiguous
+connections raise errors. This initial operation supports positive rigid
+transforms and unconstrained Parts; reflected/scaled transforms are explicitly
+rejected. Full/light core import remains the path for explicit connection data.
+Passing compact data to `Aggregation.fromData()` raises an explanatory error.
+
+The existing Mulberry32 generator and unsigned 32-bit seed mapping are unchanged.
+The seed is serialized; the random cursor and JS-only part-type filter are not.
+Import restarts that seed and does not resume its previous draw position.
+Deterministic placement can continue from imported state. Equal seeds do not
+promise equal GH/JS assemblies or identical random continuation across import.
+
+See [aggregationState.test.js](src/tests/aggregationState.test.js) for the measured
+GH comparisons and JS invariants. DisCo integrations and formats are excluded.
 
 ## Development
 

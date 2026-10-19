@@ -73,6 +73,14 @@
  */
 
 /**
+ * @typedef {Object} GraphEdgeData
+ * @property {number|string} start
+ * @property {number|string} end
+ * @property {number} conn_start
+ * @property {number} conn_end
+ */
+
+/**
  * @typedef {Object} AggregationData
  * @property {'Aggregation'} [object_type]
  * @property {string} name
@@ -82,7 +90,7 @@
  * @property {0} [mode]
  * @property {boolean} [coll_check]
  * @property {null} [field]
- * @property {Object} [graph]
+ * @property {Record<string, Record<string, GraphEdgeData>>} [graph]
  * @property {boolean} [include_aggr_geo]
  * @property {Record<string, PartData>|PartData[]} [aggregated_parts]
  * @property {Array<number|string>} [aggregated_parts_sequence]

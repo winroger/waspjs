@@ -4,7 +4,9 @@ export {
     transformToData, transformFromData, PlaneToPlane,
 } from './core/utilities.js';
 export { generateRules } from './operations/generateRules.js';
+export { loadAggregation } from './operations/loadAggregation.js';
 export { Aggregation } from './core/aggregation.js';
+export { Graph } from './core/graph.js';
 export { Collider } from './core/collider.js';
 export { Connection } from './core/connection.js';
 export { Part } from './core/part.js';
