@@ -287,3 +287,38 @@ export function copyMesh(mesh) {
     copy.geometry = mesh.geometry.clone();
     return copy;
 }
+
+/**
+ * Compute the area-weighted centroid of a BufferGeometry mesh's triangles.
+ * JS host-API adapter: Rhino AreaMassProperties.Compute(mesh).Centroid, used by
+ * src/wasp/core/parts.py. This is a centroid calculation, not an AreaMass port.
+ * Uses local mesh placement, excluding scene parents, as meshToData does.
+ * Areas are measured after placement so nonuniform scale reweights faces.
+ * Zero-area meshes return the origin, matching the measured Rhino cases.
+ * @internal Not exported from the package entry point.
+ * @param {THREE.Mesh} mesh
+ * @returns {THREE.Vector3}
+ */
+export function meshAreaCentroid(mesh) {
+    const position = mesh.geometry.getAttribute('position');
+    const index = mesh.geometry.getIndex();
+    const centroid = new THREE.Vector3();
+    if (!position) return centroid;
+    const transform = mesh.matrixAutoUpdate
+        ? new THREE.Matrix4().compose(mesh.position, mesh.quaternion, mesh.scale)
+        : mesh.matrix;
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+    const ab = new THREE.Vector3(), ac = new THREE.Vector3();
+    const count = index ? index.count : position.count;
+    let totalArea = 0;
+    for (let i = 0; i + 2 < count; i += 3) {
+        a.fromBufferAttribute(position, index ? index.getX(i) : i).applyMatrix4(transform);
+        b.fromBufferAttribute(position, index ? index.getX(i + 1) : i + 1).applyMatrix4(transform);
+        c.fromBufferAttribute(position, index ? index.getX(i + 2) : i + 2).applyMatrix4(transform);
+        const area = ab.subVectors(b, a).cross(ac.subVectors(c, a)).length();
+        centroid.addScaledVector(a, area).addScaledVector(b, area).addScaledVector(c, area);
+        totalArea += area;
+    }
+    // Twice-area weights cancel; each triangle's centroid is (a + b + c) / 3.
+    return totalArea > 0 ? centroid.divideScalar(3 * totalArea) : centroid.set(0, 0, 0);
+}

@@ -1,4 +1,4 @@
-import { copyMesh, meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
+import { copyMesh, meshAreaCentroid, meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
 import { Connection } from "./connection"; 
 import { Collider } from "./collider"; 
 import * as THREE from 'three';
@@ -255,7 +255,7 @@ export class Part {
     }
 }
 
-// Derive a rough center and size from the mesh geometry while handling missing data gracefully.
+// Use the GH-style surface centroid while retaining the existing size calculation.
 function computeCenterAndDim(mesh, collider) {
     const defaultResult = { center: new THREE.Vector3(), dim: 1 };
     if (!mesh || !mesh.geometry) {
@@ -274,8 +274,7 @@ function computeCenterAndDim(mesh, collider) {
         geom.computeBoundingSphere();
     }
 
-    const center = geom.boundingBox ? geom.boundingBox.getCenter(new THREE.Vector3()) : defaultResult.center.clone();
-    center.applyMatrix4(mesh.matrix);
+    const center = meshAreaCentroid(mesh);
 
     const radius = geom.boundingSphere ? geom.boundingSphere.radius * Math.max(mesh.scale.x, mesh.scale.y, mesh.scale.z) : null;
     const boxSize = geom.boundingBox ? geom.boundingBox.getSize(new THREE.Vector3()).length() / 2 : null;

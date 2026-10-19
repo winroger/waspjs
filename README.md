@@ -61,6 +61,17 @@ parts. Importing inline geometry does not apply the Part transform a second time
 reconstructs them from the base parts and placement transforms. Viewer scene-parent
 transforms are not included in these exports.
 
+### Part center
+
+`Part.center` is the area-weighted centroid of the mesh surface, matching the
+measured GH-Wasp cases. It is not a volume or physical mass centroid. Indexed and
+non-indexed triangles include the local mesh placement and exclude scene-parent
+transforms; nonuniform scale changes the surface-area weights. Quad JSON uses the
+existing triangle split in `meshFromData`; planar quads are covered by the tests.
+Empty and zero-area triangle meshes return the origin, as in the measured Rhino
+cases. This change preserves the existing `dim` behavior and adds no dependency.
+The calculation makes one pass over triangles whenever a Part is constructed.
+
 ### Connection assignment
 
 Constructing a `Part` assigns its name to every supplied Connection's `part` field

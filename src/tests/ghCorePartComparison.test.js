@@ -17,17 +17,7 @@ import minimalPart from './fixtures/minimal-part.json';
 
 const clone = value => globalThis.structuredClone(value);
 const fixture = { ...clone(minimalPart), attributes: clone(corpus.attributes), id: 0 };
-const strict = process.env.WASP_STRICT_GH_COMPARISON === '1';
-
-// GH-Wasp difference: these assertions remain expected failures until separately
-// authorized fixes land. Strict mode exposes them as ordinary failing tests.
-// Each assertion tests one facet; unrelated setup errors fail the whole suite.
-const knownDifferences = {
-    center: new Set(corpus.cases.map(item => item.id)),
-};
-const issueByFacet = {
-    center: 'WASP-012',
-};
+// All measured facets in this corpus are ordinary assertions; no expected failures.
 
 // ==================== Observation helpers ====================
 
@@ -166,10 +156,7 @@ describe('GH-Wasp 0.7.003 Part comparison', () => {
 
     for (const spec of corpus.cases) {
         for (const [name, select] of Object.entries(facets)) {
-            const known = knownDifferences[name]?.has(spec.id);
-            const test = known && !strict ? it.fails : it;
-            const label = `${spec.id}: ${name}${known ? ` [${issueByFacet[name]}: known GH-Wasp difference]` : ''}`;
-            test(label, () => {
+            it(`${spec.id}: ${name}`, () => {
                 expectNumeric(select(observations.cases[spec.id]), select(reference.cases[spec.id]));
             });
         }

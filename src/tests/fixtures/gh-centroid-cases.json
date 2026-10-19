@@ -1,0 +1,324 @@
+{
+  "description": "Area centroid cases; compare to executed Rhino, not implementation-derived golden values. Mesh-local transforms exclude scene parents.",
+  "rigid_transform": [
+    [
+      0,
+      -1,
+      0,
+      10
+    ],
+    [
+      1,
+      0,
+      0,
+      20
+    ],
+    [
+      0,
+      0,
+      1,
+      30
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "nonuniform_transform": [
+    [
+      2,
+      0,
+      0,
+      10
+    ],
+    [
+      0,
+      3,
+      0,
+      20
+    ],
+    [
+      0,
+      0,
+      4,
+      30
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "cases": [
+    {
+      "id": "triangle",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "id": "unequal_areas",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            6,
+            1,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "id": "opposite_winding",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            6,
+            1,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            5,
+            4,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "id": "different_face_planes",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            1
+          ],
+          [
+            6,
+            2,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "id": "planar_quad",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            3,
+            1,
+            0
+          ],
+          [
+            0,
+            2,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2,
+            3
+          ]
+        ]
+      }
+    }
+  ],
+  "degenerate_cases": [
+    {
+      "id": "empty",
+      "geometry": {
+        "vertices": [],
+        "faces": []
+      }
+    },
+    {
+      "id": "no_faces",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        "faces": []
+      }
+    },
+    {
+      "id": "collinear",
+      "geometry": {
+        "vertices": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        "faces": [
+          [
+            0,
+            1,
+            2
+          ]
+        ]
+      }
+    }
+  ]
+}

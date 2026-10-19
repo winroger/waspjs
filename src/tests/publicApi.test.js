@@ -23,7 +23,7 @@ function makePart(name) {
 }
 
 describe('public api', () => {
-  it('preserves public utilities and keeps mesh duplication internal', () => {
+  it('preserves public utilities and keeps mesh adapters internal', () => {
     expect(packageApi).toMatchObject({
       checkMeshesIntersection: utilities.checkMeshesIntersection,
       meshToData: utilities.meshToData,
@@ -34,6 +34,7 @@ describe('public api', () => {
       generateRules: utilities.generateRules,
     });
     expect(packageApi).not.toHaveProperty('copyMesh');
+    expect(packageApi).not.toHaveProperty('meshAreaCentroid');
   });
 
   it('creates an aggregation directly from serialized data', () => {
