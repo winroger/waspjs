@@ -55,6 +55,11 @@ export class Connection {
         return new Connection(pln_copy, this.type, this.part, this.id);
     }
 
+    /**
+     * Match GH Connection.generate_rules_table: retain matching rules in order.
+     * Rule.active is stored metadata here; active_rules holds usable table indices.
+     * @param {import('./rule.js').Rule[]} rules
+     */
     generateRulesTable(rules) {
         let count = 0;
         this.rules_table = [];

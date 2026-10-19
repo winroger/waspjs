@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as THREE from 'three';
-import { generateRules, transformToData, transformFromData } from '../core/utilities.js';
+import { transformToData, transformFromData } from '../core/utilities.js';
+import { generateRules } from '../operations/generateRules.js';
 import { Rule } from '../core/rule.js';
 import { Collider } from '../core/collider.js';
 
@@ -39,8 +40,8 @@ describe('generateRules', () => {
   ];
 
   it('generates type-aware rules when useTypes is true', () => {
-    const rules = generateRules(parts, true, false, true);
-    expect(rules.length).toBe(4);
+    const rules = generateRules(parts, true, true, true);
+    expect(rules.length).toBe(8);
     rules.forEach(rule => expect(rule).toBeInstanceOf(Rule));
   });
 });

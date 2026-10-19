@@ -493,6 +493,7 @@ placeFirstPart(partName) {
 
 /**
  * Place a specific part at a specific connection (deterministic, for manual mode).
+ * Selects usable rules through active_rules, as GH aggregate_rnd does.
  * @param {number} parentPartId
  * @param {number} connectionId
  * @param {string} partName
@@ -510,8 +511,8 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
     const catalogPart = this.parts[partName];
     if (!catalogPart) return { success: false, error: `Part "${partName}" not found in catalog` };
 
-    const rule = conn.rules_table.find(
-        r => r.partB === partName && r.connectionB === connectionBId
+    const rule = conn.active_rules.map(i => conn.rules_table[i]).find(
+        r => r && r.partB === partName && r.connectionB === connectionBId
     );
     if (!rule) return { success: false, error: 'No matching rule for this placement' };
 
@@ -544,6 +545,7 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
 
 /**
  * Return all open (unused) connections across aggregated parts.
+ * Each rules array contains usable entries selected by active_rules.
  * @returns {Array<{partId: number, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
  */
 getOpenConnections() {
@@ -556,7 +558,7 @@ getOpenConnections() {
                 connectionId: connIdx,
                 plane: conn.pln,
                 type: conn.type,
-                rules: conn.rules_table,
+                rules: conn.active_rules.map(i => conn.rules_table[i]).filter(Boolean),
             });
         }
     }
@@ -566,6 +568,7 @@ getOpenConnections() {
 /**
  * Compute all valid placements for a given part type.
  * Returns positions where the part can be placed without collision.
+ * Uses active_rules indices; ruleIndex refers to the complete rules_table.
  * @param {string} partName
  * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
@@ -574,33 +577,33 @@ getValidPlacementsForPart(partName) {
     if (!catalogPart) return [];
 
     const placements = [];
-    const openConns = this.getOpenConnections();
+    for (const parentPart of this.aggregated_parts) {
+        for (const connIdx of parentPart.active_connections) {
+            const conn = parentPart.connections[connIdx];
+            for (const ruleIdx of conn.active_rules) {
+                const rule = conn.rules_table[ruleIdx];
+                if (!rule || rule.partB !== partName) continue;
 
-    for (const openConn of openConns) {
-        for (let ruleIdx = 0; ruleIdx < openConn.rules.length; ruleIdx++) {
-            const rule = openConn.rules[ruleIdx];
-            if (rule.partB !== partName) continue;
+                const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
+                if (!startingPlane) continue;
 
-            const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
-            if (!startingPlane) continue;
+                const orientTransform = PlaneToPlane(startingPlane, conn.pln);
+                if (!orientTransform) continue;
 
-            const targetPlane = openConn.plane;
-            const orientTransform = PlaneToPlane(startingPlane, targetPlane);
-            if (!orientTransform) continue;
+                const partTrans = catalogPart.transform(orientTransform);
+                if (!partTrans) continue;
 
-            const partTrans = catalogPart.transform(orientTransform);
-            if (!partTrans) continue;
-
-            if (!this._checkCollision(partTrans)) {
-                placements.push({
-                    parentPartId: openConn.partId,
-                    connectionId: openConn.connectionId,
-                    partName,
-                    connectionBId: rule.connectionB,
-                    ruleIndex: ruleIdx,
-                    transform: orientTransform,
-                    transformedPart: partTrans,
-                });
+                if (!this._checkCollision(partTrans)) {
+                    placements.push({
+                        parentPartId: parentPart.id,
+                        connectionId: connIdx,
+                        partName,
+                        connectionBId: rule.connectionB,
+                        ruleIndex: ruleIdx,
+                        transform: orientTransform,
+                        transformedPart: partTrans,
+                    });
+                }
             }
         }
     }
@@ -625,9 +628,9 @@ getValidPlacementsAtParent(partName, parentPartId) {
     const placements = [];
     for (const connIdx of parentPart.active_connections) {
         const conn = parentPart.connections[connIdx];
-        for (let ruleIdx = 0; ruleIdx < conn.rules_table.length; ruleIdx++) {
+        for (const ruleIdx of conn.active_rules) {
             const rule = conn.rules_table[ruleIdx];
-            if (rule.partB !== partName) continue;
+            if (!rule || rule.partB !== partName) continue;
 
             const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
             if (!startingPlane) continue;
@@ -674,9 +677,9 @@ getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
     if (!conn) return [];
 
     const placements = [];
-    for (let ruleIdx = 0; ruleIdx < conn.rules_table.length; ruleIdx++) {
+    for (const ruleIdx of conn.active_rules) {
         const rule = conn.rules_table[ruleIdx];
-        if (rule.partB !== partName) continue;
+        if (!rule || rule.partB !== partName) continue;
 
         const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
         if (!startingPlane) continue;

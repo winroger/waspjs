@@ -1,8 +1,9 @@
 // Keep internal Three.js adapters out of the public package API.
 export {
     checkMeshesIntersection, meshToData, meshFromData,
-    transformToData, transformFromData, PlaneToPlane, generateRules,
+    transformToData, transformFromData, PlaneToPlane,
 } from './core/utilities.js';
+export { generateRules } from './operations/generateRules.js';
 export { Aggregation } from './core/aggregation.js';
 export { Collider } from './core/collider.js';
 export { Connection } from './core/connection.js';

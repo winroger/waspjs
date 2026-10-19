@@ -9,6 +9,7 @@ import { Aggregation } from '../core/aggregation.js';
 import { createAggregationFromData } from '../core/publicApi.js';
 import * as packageApi from '../index.js';
 import * as utilities from '../core/utilities.js';
+import { generateRules } from '../operations/generateRules.js';
 
 function makePart(name) {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -23,7 +24,7 @@ function makePart(name) {
 }
 
 describe('public api', () => {
-  it('preserves public utilities and keeps mesh adapters internal', () => {
+  it('preserves public utilities and operations while keeping mesh adapters internal', () => {
     expect(packageApi).toMatchObject({
       checkMeshesIntersection: utilities.checkMeshesIntersection,
       meshToData: utilities.meshToData,
@@ -31,8 +32,9 @@ describe('public api', () => {
       transformToData: utilities.transformToData,
       transformFromData: utilities.transformFromData,
       PlaneToPlane: utilities.PlaneToPlane,
-      generateRules: utilities.generateRules,
+      generateRules,
     });
+    expect(utilities.generateRules).toBe(generateRules);
     expect(packageApi).not.toHaveProperty('copyMesh');
     expect(packageApi).not.toHaveProperty('meshAreaCentroid');
   });

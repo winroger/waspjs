@@ -3,7 +3,6 @@
  *
  * Provenance labels below distinguish:
  * - GH-Wasp utility counterpart: named function in src/wasp/utilities/utilities.py.
- * - GH-Wasp component counterpart: logic exposed by a Grasshopper component.
  * - JS host-API adapter: replaces a Rhino operation used by the GH core.
  * - JS-specific helper: implementation supplied by WaspJS, not a GH utility port.
  * A counterpart identifies the source of the behavior, not complete parity.
@@ -11,8 +10,10 @@
  * this module is not a complete port of the Python utilities module.
  */
 import * as THREE from 'three';
-import { Rule } from './rule';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
+
+// Compatibility re-export for existing source imports; implementation lives in operations.
+export { generateRules } from '../operations/generateRules.js';
 
 
 // JS-specific setup for Three.js raycasting; no GH-Wasp utility counterpart.
@@ -189,84 +190,6 @@ export function PlaneToPlane(sourcePlane, targetPlane) {
     return transformMatrix;
 }
 
-
-/**
- * Generate connection rules for a set of parts when none are provided.
- * GH-Wasp component counterpart: src/ghComp/Wasp_Rules Generator.py::main,
- * not a function in the GH core utilities module. Grasshopper UI is omitted.
- * GH-Wasp difference: selfConnection defaults to false here (GH: true), and in
- * the no-grammar branch equal IDs are excluded only within the same part here
- * (GH excludes equal IDs across parts too). Kept unchanged; Rules parity is
- * pending in WASP-003. This provenance mapping does not endorse either behavior.
- */
-export function generateRules(parts, selfPart = true, selfConnection = false, useTypes = false, grammar = []) {
-    const rules = [];
-  
-    if (grammar.length === 0) {
-      for (const part of parts) {
-        for (const conn of part.connections) {
-          for (const otherPart of parts) {
-            let skipPart = false;
-            if (!selfPart && part.name === otherPart.name) {
-              skipPart = true;
-            }
-  
-            if (!skipPart) {
-              for (const otherConn of otherPart.connections) {
-                let skipConn = false;
-                if (!selfConnection && part.name === otherPart.name && conn.id === otherConn.id) {
-                  skipConn = true;
-                }
-  
-                if (!skipConn) {
-                  if (useTypes) {
-                    if (conn.type === otherConn.type) {
-                      rules.push(new Rule(part.name, conn.id, otherPart.name, otherConn.id));
-                    }
-                  } else {
-                    rules.push(new Rule(part.name, conn.id, otherPart.name, otherConn.id));
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    } else {
-      for (const gr_rule of grammar) {
-        const [startType, endType] = gr_rule.split(">");
-        for (const part of parts) {
-          for (const conn of part.connections) {
-            if (conn.type === startType) {
-              for (const otherPart of parts) {
-                let skipPart = false;
-                if (!selfPart && part.name === otherPart.name) {
-                  skipPart = true;
-                }
-  
-                if (!skipPart) {
-                  for (const otherConn of otherPart.connections) {
-                    if (otherConn.type === endType) {
-                      let skipConn = false;
-                      if (!selfConnection && conn.id === otherConn.id) {
-                        skipConn = true;
-                      }
-  
-                      if (!skipConn) {
-                        rules.push(new Rule(part.name, conn.id, otherPart.name, otherConn.id));
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  
-    return rules;
-  }
 
 // ==================== Internal JS host-API adapters ====================
 

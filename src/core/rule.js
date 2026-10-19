@@ -1,4 +1,8 @@
 /**
+ * WaspJS — directed Rule data.
+ * Upstream: src/wasp/core/rules.py; reader defect is intentionally not reproduced.
+ */
+/**
  * Represents a connection rule between two parts and their connection indices.
  */
 export class Rule {
@@ -7,13 +11,14 @@ export class Rule {
      * @param {number} connectionA
      * @param {string} partB
      * @param {number} connectionB
+     * @param {boolean} [active=true] Stored rule flag, as in GH-Wasp
      */
-    constructor(partA, connectionA, partB, connectionB) {
+    constructor(partA, connectionA, partB, connectionB, active = true) {
       this.partA = partA;
       this.connectionA = connectionA;
       this.partB = partB;
       this.connectionB = connectionB;
-      this.active = true;
+      this.active = active;
     }
 
     /**
@@ -22,7 +27,9 @@ export class Rule {
      * @returns {Rule}
      */
     static fromData(data) {
-      const rule = new Rule(data.part1, data.conn1, data.part2, data.conn2);
+      // GH-Wasp difference: its pinned reader duplicates part1/conn1 at both ends.
+      // Preserve the intended second endpoint; normalize valid integer IDs as GH does.
+      const rule = new Rule(data.part1, parseInt(data.conn1, 10), data.part2, parseInt(data.conn2, 10));
       rule.active = data.active;
       return rule;
     }

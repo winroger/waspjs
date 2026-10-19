@@ -44,13 +44,29 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   Dort können Standardwerte, Eingabeprüfung und weitere Fachlogik liegen.
   Grasshopper-spezifische UI-, Datei- und Komponenten-Zustandsverwaltung getrennt
   vom JS-Core behandeln.
+- `src/core/` enthält das Datenmodell und dessen Klassenverhalten.
+  `src/operations/` bildet die funktionsorientierte Fachschicht: dort eigenständige
+  Abläufe ablegen, die Core-Objekte erzeugen oder verarbeiten, einschließlich
+  zusätzlicher Fachlogik aus GH-Komponenten. `generateRules.js` ist das erste
+  Beispiel. Operations sind unabhängig von Grasshopper und Viewer/UI; vorhandene
+  Core-Methoden verwenden und deren Logik nicht nochmals implementieren.
+- Nicht jede GH-Komponente benötigt eine eigene Operation oder Datei. Ein reiner
+  Aufruf einer vorhandenen Core-Methode begründet keinen zusätzlichen Wrapper.
+  Die Schicht im beauftragten Umfang schrittweise ausbauen; keine ungefragte
+  Massenmigration vorhandener Funktionen oder Komponenten-API einführen.
+- Öffentliche Klassen und Operations über `src/index.js` bereitstellen. Ordner
+  bestimmen die Zuständigkeit, nicht automatisch die öffentliche API. Bei einer
+  Verschiebung bestehende Paketnamen und Signaturen erhalten; notwendige bisherige
+  Modul-Exporte als Re-Export derselben Implementierung erhalten. Das bestehende
+  `src/core/publicApi.js` bleibt zunächst unverändert; keine zweite Fachlogik dort.
 - Abweichungen vom Python-Verhalten ausdrücklich begründen und prüfen. Bekannte
   Upstream-Fehler nicht stillschweigend als gewünschtes Verhalten übernehmen.
 - Bestehende Dateien bei fachlichen Änderungen schrittweise an diesen Stil
   anpassen. Keine ungefragte Massenformatierung, Umordnung oder Verhaltensänderung
   allein zur Vereinheitlichung der Kommentare.
 - Gemeinsame Host-/Three.js-Helfer nach Möglichkeit in `src/core/utilities.js`
-  halten. Dort pro Funktion die Herkunft mit Quellpfad kennzeichnen:
+  halten; eigenständige Fachabläufe gehören in `src/operations/`.
+  In Utilities und Operations pro Funktion die Herkunft mit Quellpfad kennzeichnen:
   `GH-Wasp utility counterpart`, `GH-Wasp component counterpart`,
   `JS host-API adapter` oder `JS-specific helper`. Einen Rhino-API-Ersatz nicht
   als ursprüngliche Python-Utility ausgeben; bekannte Unterschiede ergänzen.
@@ -62,7 +78,7 @@ Header und Kommentare werden hier maßgeblich gepflegt.
 
 - Kommentare und API-Dokumentation auf Englisch schreiben. Die fachliche
   Gliederung von GH-Wasp übernehmen und mit JavaScript-Kommentaren ausdrücken.
-- Neue Core-Dateien mit einem kurzen `/** ... */`-Dateikopf beginnen: Projekt,
+- Neue Core- und Operations-Dateien mit einem kurzen `/** ... */`-Dateikopf beginnen: Projekt,
   Modulzweck und gegebenenfalls Pfad des Python-Gegenstücks. Vorhandene
   Herkunfts-, Copyright- und Lizenzhinweise erhalten.
 - Copyright, Autor, Jahreszahlen und Lizenzangaben nicht pauschal aus einer

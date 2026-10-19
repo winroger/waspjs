@@ -96,7 +96,7 @@ meshes. This increases memory and copy work relative to shared geometry; no spee
 or memory-neutrality guarantee is implied. Tests are in
 [meshOwnership.test.js](src/tests/meshOwnership.test.js).
 
-The comments in [utilities.js](src/core/utilities.js) identify each function's
+The comments in utilities and operations identify each function's
 GH utility/component counterpart or JavaScript-specific role, including Rhino
 API adapters and known differences. Internal helpers are excluded from the
 public package entry point.
@@ -135,6 +135,46 @@ for general affine transforms, reflections, or every aggregation workflow.
 
 The original Python [Wasp Part implementation](https://github.com/ar0551/Wasp/blob/main/src/wasp/core/parts.py) omits attributes from `to_data()` and ignores them in `from_data()`. It can read the additional field in a `webwaspjs` export, but importing and exporting through Python Wasp will discard those attributes. Python Wasp attribute objects that contain Rhino geometry are outside this JSON data format.
 
+### Rules and manual placement
+
+The implementation of `generateRules` lives in
+[operations/generateRules.js](src/operations/generateRules.js), reflecting its
+GH-component origin. The public import remains `import { generateRules } from
+'webwaspjs'`. The previous utilities-module export forwards to this same function.
+
+`generateRules(parts, selfPart = true, selfConnection = true, useTypes = false,
+grammar = [])` follows the measured GH-Wasp Rules Generator component. Explicit
+`null` flags use those defaults too. **The previous `selfConnection` default was
+`false`; pass it explicitly to retain that choice.** With `selfConnection=false`,
+equal connection IDs are excluded even between differently named parts. Type
+grammar entries such as `x>y` are directed; input order and duplicate entries are
+retained. Only valid grammar inputs are covered by the comparison.
+
+`new Rule(partA, connectionA, partB, connectionB, active = true)` accepts an optional
+fifth flag; four-argument calls keep their behavior. `Rule.fromData()` retains both
+directed endpoints and converts valid integer connection IDs, including numeric
+strings, to numbers. Invalid-input validation is outside this contract.
+
+As in the measured GH core, `Rule.active` is stored metadata: setting it to
+`false` does **not** disable the rule. `Connection.active_rules` lists usable
+indices into `rules_table`. Manual placement and its candidate queries now honor
+that list, matching the existing random-growth selection. Candidate `ruleIndex`
+values refer to the complete table. `getOpenConnections().rules` returns a new
+array containing only usable entries; edit `active_rules` to control availability.
+
+The pinned GH-Wasp 0.7.003 `Rule.from_data()` incorrectly reads both endpoints from
+the first endpoint. WaspJS deliberately keeps the second endpoint correct.
+Consequently, Rule JSON imported through that GH reader can lose its direction;
+these tests do not establish bidirectional Rule-JSON interoperability.
+
+[ghRulesComparison.test.js](src/tests/ghRulesComparison.test.js) compares generator
+output and forced placements against results executed in Rhino. The measured
+scope covers connection frames, meshes/colliders and parent/connection state for
+small rigid placements. It does not establish random-sequence, graph, constraint
+or general collision parity. Existing BVH construction can reorder collider
+triangles while building its cache, so geometry comparisons ignore face-list
+order while preserving vertices and triangle winding.
+
 ## Development
 
 Requirements:
@@ -153,10 +193,20 @@ Commands:
 
 ```text
 src/                    library source
+src/core/               domain classes, utilities and host adapters
+src/operations/         host-independent domain operations
 src/tests/              vitest suite
 src/tests/fixtures/     JSON fixtures used by tests
 dist/                   build output
 ```
+
+Core classes and operations form the public API through `src/index.js`.
+Operations implement domain workflows and reuse core behavior; additional domain
+logic from GH components belongs here, with its source documented in comments.
+A component that only calls an existing core method does not need a new operation.
+Utilities provide shared technical helpers and host adapters. The existing
+`src/core/publicApi.js` convenience wrappers retain their current location.
+Future changes follow the repository's [instructions](AGENTS.md).
 
 ## Related repositories
 
