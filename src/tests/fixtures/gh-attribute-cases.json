@@ -1,0 +1,317 @@
+{
+  "attributes": [
+    {
+      "id": "static",
+      "data": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "value": "label",
+            "valid": true
+          },
+          {
+            "type": "Boolean",
+            "value": false,
+            "valid": true
+          },
+          {
+            "type": "Number",
+            "value": 7.5,
+            "valid": true
+          },
+          {
+            "type": "Dictionary",
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            },
+            "valid": true
+          },
+          {
+            "type": "Color",
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ],
+            "valid": true
+          },
+          {
+            "type": "Unknown",
+            "value": [
+              1,
+              "opaque",
+              null
+            ],
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "point",
+      "data": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "value": [
+              1,
+              2,
+              3
+            ],
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "line",
+      "data": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "value": {
+              "from": [
+                1,
+                2,
+                3
+              ],
+              "to": [
+                4,
+                5,
+                6
+              ]
+            },
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "plane",
+      "data": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "value": {
+              "origin": [
+                2,
+                3,
+                4
+              ],
+              "xaxis": [
+                1,
+                0,
+                0
+              ],
+              "yaxis": [
+                0,
+                1,
+                0
+              ]
+            },
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "mesh",
+      "data": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "value": {
+              "vertices": [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ]
+            },
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "mixed",
+      "data": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "value": [
+              1,
+              2,
+              3
+            ],
+            "valid": true
+          },
+          {
+            "type": "Line",
+            "value": {
+              "from": [
+                1,
+                2,
+                3
+              ],
+              "to": [
+                4,
+                5,
+                6
+              ]
+            },
+            "valid": true
+          },
+          {
+            "type": "Plane",
+            "value": {
+              "origin": [
+                2,
+                3,
+                4
+              ],
+              "xaxis": [
+                1,
+                0,
+                0
+              ],
+              "yaxis": [
+                0,
+                1,
+                0
+              ]
+            },
+            "valid": true
+          },
+          {
+            "type": "Mesh",
+            "value": {
+              "vertices": [
+                [
+                  0,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ],
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ]
+            },
+            "valid": true
+          }
+        ]
+      }
+    }
+  ],
+  "transforms": [
+    [
+      [
+        0,
+        -1,
+        0,
+        10
+      ],
+      [
+        1,
+        0,
+        0,
+        20
+      ],
+      [
+        0,
+        0,
+        1,
+        30
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        0,
+        0,
+        -4
+      ],
+      [
+        0,
+        0,
+        -1,
+        2
+      ],
+      [
+        0,
+        1,
+        0,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ]
+  ]
+}

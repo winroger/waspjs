@@ -1,0 +1,3244 @@
+{
+  "cases": {
+    "line": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                4.0,
+                -31.0,
+                26.0
+              ],
+              "to": [
+                1.0,
+                -34.0,
+                29.0
+              ]
+            }
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "mesh": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  6.0,
+                  -28.0,
+                  25.0
+                ],
+                [
+                  6.0,
+                  -28.0,
+                  26.0
+                ],
+                [
+                  5.0,
+                  -28.0,
+                  25.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "mixed": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              4.0,
+              -31.0,
+              26.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                4.0,
+                -31.0,
+                26.0
+              ],
+              "to": [
+                1.0,
+                -34.0,
+                29.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                3.0,
+                -32.0,
+                27.0
+              ],
+              "xaxis": [
+                0.0,
+                0.0,
+                1.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  6.0,
+                  -28.0,
+                  25.0
+                ],
+                [
+                  6.0,
+                  -28.0,
+                  26.0
+                ],
+                [
+                  5.0,
+                  -28.0,
+                  25.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "plane": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                3.0,
+                -32.0,
+                27.0
+              ],
+              "xaxis": [
+                0.0,
+                0.0,
+                1.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "point": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              4.0,
+              -31.0,
+              26.0
+            ]
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          }
+        ]
+      }
+    },
+    "static": {
+      "chained": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      "copied": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      "imported": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      "placed": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      "source": {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "deferred": {
+    "internal": {
+      "class_type": "Attribute",
+      "name": "joint",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Mesh",
+          "valid": true,
+          "value": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Mesh",
+          "valid": true,
+          "value": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Line",
+          "valid": true,
+          "value": {
+            "from": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "to": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    "internal_copy_position": 0.5,
+    "internal_source_position": 0.25,
+    "internal_transform_position": 0.5,
+    "smart": {
+      "class_type": "SmartAttribute",
+      "conn_mask": [
+        1
+      ],
+      "connections": [
+        {
+          "id": 0,
+          "part": "A",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "name": "smart",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Point",
+          "valid": true,
+          "value": [
+            1.0,
+            2.0,
+            3.0
+          ]
+        }
+      ]
+    },
+    "smart_connections_shared": true,
+    "smart_transformed": {
+      "class_type": "SmartAttribute",
+      "conn_mask": [
+        1
+      ],
+      "connections": [
+        {
+          "id": 0,
+          "part": "A",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "name": "smart",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Point",
+          "valid": true,
+          "value": [
+            8.0,
+            21.0,
+            33.0
+          ]
+        }
+      ]
+    }
+  },
+  "inventory": [
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'str' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "String",
+        "valid": true,
+        "value": "label"
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'str'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'str' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'bool' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Boolean",
+        "valid": true,
+        "value": false
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'bool'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'bool' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'float' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Number",
+        "valid": true,
+        "value": 7.5
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'float'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'float' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'dict' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Dictionary",
+        "valid": true,
+        "value": {
+          "nested": [
+            1,
+            false
+          ]
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'dict'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'dict' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'Color' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Color",
+        "valid": true,
+        "value": [
+          128,
+          10,
+          20,
+          30
+        ]
+      },
+      "native_json_error": "128 is not JSON serializable",
+      "native_json_serializable": false,
+      "runtime_type": "<type 'Color'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'Color' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'Vector3d' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Vector",
+        "valid": true,
+        "value": [
+          1.0,
+          2.0,
+          3.0
+        ]
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Vector3d'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'Vector3d' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Point",
+              "valid": true,
+              "value": [
+                1.0,
+                2.0,
+                3.0
+              ]
+            }
+          ]
+        },
+        "ok": true
+      },
+      "data": {
+        "type": "Point",
+        "valid": true,
+        "value": [
+          1.0,
+          2.0,
+          3.0
+        ]
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Point3d'>",
+      "transform": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Point",
+              "valid": true,
+              "value": [
+                8.0,
+                21.0,
+                33.0
+              ]
+            }
+          ]
+        },
+        "ok": true
+      }
+    },
+    {
+      "copy": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Plane",
+              "valid": true,
+              "value": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      },
+      "data": {
+        "type": "Plane",
+        "valid": true,
+        "value": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "xaxis": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "yaxis": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Plane'>",
+      "transform": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Plane",
+              "valid": true,
+              "value": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      }
+    },
+    {
+      "copy": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Line",
+              "valid": true,
+              "value": {
+                "from": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "to": [
+                  1.0,
+                  2.0,
+                  3.0
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      },
+      "data": {
+        "type": "Line",
+        "valid": true,
+        "value": {
+          "from": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "to": [
+            1.0,
+            2.0,
+            3.0
+          ]
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Line'>",
+      "transform": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Line",
+              "valid": true,
+              "value": {
+                "from": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "to": [
+                  8.0,
+                  21.0,
+                  33.0
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'BoundingBox' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "BoundingBox",
+        "valid": true,
+        "value": {
+          "max": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "min": [
+            -1.0,
+            -2.0,
+            -3.0
+          ]
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'BoundingBox'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'BoundingBox' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'Box' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Box",
+        "valid": true,
+        "value": {
+          "max": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "min": [
+            -1.0,
+            -2.0,
+            -3.0
+          ],
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Box'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'Box' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    },
+    {
+      "copy": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Mesh",
+              "valid": true,
+              "value": {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      },
+      "data": {
+        "type": "Mesh",
+        "valid": true,
+        "value": {
+          "faces": [
+            [
+              0,
+              1,
+              2
+            ]
+          ],
+          "vertices": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ]
+          ]
+        }
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'Mesh'>",
+      "transform": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "Mesh",
+              "valid": true,
+              "value": {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ok": true
+      }
+    },
+    {
+      "copy": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "RhinoCommonObject",
+              "valid": true,
+              "value": "{\"version\":10000,\"archive3dm\":80,\"opennurbs\":-1870358518,\"data\":\"+n8CAP4BAAAAAAAA+/8CABQAAAAAAAAAGRGvXlEL1BG//gAQgwEi8EoaeRf8/wIAxgEAAAAAAAARAwAAAAEAAAADAAAACQAAAAAAAAAAAAAAAAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAYLURU+yH5PxgtRFT7Ifk/GC1EVPshCUAYLURU+yEJQNIhM3982RJA0iEzf3zZEkAYLURU+yEZQBgtRFT7IRlACQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/zDt/Zp6g9j/MO39mnqD2PwAAAAAAAAAAzDt/Zp6g5j8AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAADwP8w7f2aeoPa/zDt/Zp6g9j8AAAAAAAAAAMw7f2aeoOY/AAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8D/MO39mnqD2v8w7f2aeoPa/AAAAAAAAAADMO39mnqDmPwAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAPA/zDt/Zp6g9j/MO39mnqD2vwAAAAAAAAAAzDt/Zp6g5j8AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAaezKB/38CgAAAAAAAAAAA\"}"
+            }
+          ]
+        },
+        "ok": true
+      },
+      "data": {
+        "type": "RhinoCommonObject",
+        "valid": true,
+        "value": "{\"version\":10000,\"archive3dm\":80,\"opennurbs\":-1870358518,\"data\":\"+n8CAP4BAAAAAAAA+/8CABQAAAAAAAAAGRGvXlEL1BG//gAQgwEi8EoaeRf8/wIAxgEAAAAAAAARAwAAAAEAAAADAAAACQAAAAAAAAAAAAAAAAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAYLURU+yH5PxgtRFT7Ifk/GC1EVPshCUAYLURU+yEJQNIhM3982RJA0iEzf3zZEkAYLURU+yEZQBgtRFT7IRlACQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/zDt/Zp6g9j/MO39mnqD2PwAAAAAAAAAAzDt/Zp6g5j8AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAADwP8w7f2aeoPa/zDt/Zp6g9j8AAAAAAAAAAMw7f2aeoOY/AAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8D/MO39mnqD2v8w7f2aeoPa/AAAAAAAAAADMO39mnqDmPwAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAPA/zDt/Zp6g9j/MO39mnqD2vwAAAAAAAAAAzDt/Zp6g5j8AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwPwAaezKB/38CgAAAAAAAAAAA\"}"
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'NurbsCurve'>",
+      "transform": {
+        "data": {
+          "class_type": "Attribute",
+          "name": "probe",
+          "transformable": true,
+          "values": [
+            {
+              "type": "RhinoCommonObject",
+              "valid": true,
+              "value": "{\"version\":10000,\"archive3dm\":80,\"opennurbs\":-1870358518,\"data\":\"+n8CAP4BAAAAAAAA+/8CABQAAAAAAAAAGRGvXlEL1BG//gAQgwEi8EoaeRf8/wIAxgEAAAAAAAARAwAAAAEAAAADAAAACQAAAAAAAAAAAAAAAAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAYLURU+yH5PxgtRFT7Ifk/GC1EVPshCUAYLURU+yEJQNIhM3982RJA0iEzf3zZEkAYLURU+yEZQBgtRFT7IRlACQAAAAAAAAAAACRAAAAAAAAANkAAAAAAAAA+QAAAAAAAAPA/zDt/Zp6gFkA48u7M2RwvQA9IF4CUNjVAzDt/Zp6g5j8AAAAAAAAgQAAAAAAAADRAAAAAAAAAPkAAAAAAAADwP8w7f2aeoBZARiNPM7J0KUAPSBeAlDY1QMw7f2aeoOY/AAAAAAAAJEAAAAAAAAAyQAAAAAAAAD5AAAAAAAAA8D/ZbN/MdvggQEYjTzOydClAD0gXgJQ2NUDMO39mnqDmPwAAAAAAAChAAAAAAAAANEAAAAAAAAA+QAAAAAAAAPA/2WzfzHb4IEA48u7M2RwvQA9IF4CUNjVAzDt/Zp6g5j8AAAAAAAAkQAAAAAAAADZAAAAAAAAAPkAAAAAAAADwPwAl1oV7/38CgAAAAAAAAAAA\"}"
+            }
+          ]
+        },
+        "ok": true
+      }
+    },
+    {
+      "copy": {
+        "error_type": "AttributeError",
+        "message": "'list' object has no attribute 'Duplicate'",
+        "ok": false
+      },
+      "data": {
+        "type": "Unknown",
+        "valid": true,
+        "value": [
+          1,
+          "opaque",
+          null
+        ]
+      },
+      "native_json_serializable": true,
+      "runtime_type": "<type 'list'>",
+      "transform": {
+        "error_type": "AttributeError",
+        "message": "'list' object has no attribute 'Duplicate'",
+        "ok": false
+      }
+    }
+  ],
+  "ownership": {
+    "static_copy_mutates_source": true
+  },
+  "part_paths": {
+    "base": [
+      {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "copied": [
+      {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                1.0,
+                2.0,
+                3.0
+              ],
+              "to": [
+                4.0,
+                5.0,
+                6.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                2.0,
+                3.0,
+                4.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "full": [
+      {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "legacy_missing": [],
+    "light": [
+      {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "placed": [
+      {
+        "class_type": "Attribute",
+        "name": "static",
+        "transformable": false,
+        "values": [
+          {
+            "type": "String",
+            "valid": true,
+            "value": "label"
+          },
+          {
+            "type": "Boolean",
+            "valid": true,
+            "value": false
+          },
+          {
+            "type": "Number",
+            "valid": true,
+            "value": 7.5
+          },
+          {
+            "type": "Dictionary",
+            "valid": true,
+            "value": {
+              "nested": [
+                1,
+                false,
+                {
+                  "label": "keep"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Color",
+            "valid": true,
+            "value": [
+              128,
+              10,
+              20,
+              30
+            ]
+          },
+          {
+            "type": "Unknown",
+            "valid": true,
+            "value": [
+              1,
+              "opaque",
+              null
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "point",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "line",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "plane",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mesh",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "class_type": "Attribute",
+        "name": "mixed",
+        "transformable": true,
+        "values": [
+          {
+            "type": "Point",
+            "valid": true,
+            "value": [
+              8.0,
+              21.0,
+              33.0
+            ]
+          },
+          {
+            "type": "Line",
+            "valid": true,
+            "value": {
+              "from": [
+                8.0,
+                21.0,
+                33.0
+              ],
+              "to": [
+                5.0,
+                24.0,
+                36.0
+              ]
+            }
+          },
+          {
+            "type": "Plane",
+            "valid": true,
+            "value": {
+              "origin": [
+                7.0,
+                22.0,
+                34.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "type": "Mesh",
+            "valid": true,
+            "value": {
+              "faces": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ],
+              "vertices": [
+                [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                [
+                  10.0,
+                  21.0,
+                  30.0
+                ],
+                [
+                  9.0,
+                  20.0,
+                  30.0
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "capture_adapter": "System integral scalars converted to Python int for JSON output; native JSON failures recorded separately",
+    "captured_utc": "2026-10-19T12:14:24.791000Z",
+    "document_absolute_tolerance": 0.001,
+    "document_units": "Millimeters",
+    "gh_commit": "9bf05acd945e8581244a6ef3bf5a0733018c9b6d",
+    "gh_version": "0.7.003",
+    "kind": "executed-gh-wasp-core-in-rhino",
+    "loader": "verified temporary copy of the pinned source; previous wasp modules restored",
+    "python_platform": "cli",
+    "python_version": "2.7.12 (2.7.12.1000)\n[.NETCoreApp,Version=v3.1 on .NET 8.0.14 (64-bit)]",
+    "rhino_version": "8.33.26188.13002",
+    "scope": "Actual Attribute/Part paths, value-type inventory, deferred Smart/Internal probes; no DisCo",
+    "source_manifest": "../WASP-002/source-manifest.json",
+    "wasp_global_tolerance": 0.002
+  },
+  "unsupported_reader": {
+    "class_type": "Attribute",
+    "name": "invalid",
+    "transformable": false,
+    "values": [
+      {
+        "type": "Unknown",
+        "valid": true,
+        "value": null
+      },
+      {
+        "type": "Unknown",
+        "valid": true,
+        "value": null
+      }
+    ]
+  }
+}

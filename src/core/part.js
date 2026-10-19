@@ -2,6 +2,7 @@ import { copyMesh, meshAreaCentroid, meshFromData, meshToData, transformFromData
 import { Connection } from "./connection"; 
 import { Collider } from "./collider"; 
 import * as THREE from 'three';
+import { copyAttributes, transformAttributes } from './attributes.js';
 
 function parsePossiblyNumericId(value) {
     if (value === null || value === undefined || value === '') {
@@ -18,10 +19,6 @@ function parsePossiblyNumericId(value) {
     }
 
     return value;
-}
-
-function copyAttributes(attributes) {
-    return globalThis.structuredClone(attributes ?? []);
 }
 
 // Base Part
@@ -100,7 +97,10 @@ export class Part {
         } else {
             p_collider = new Collider([], false, false, [], []);
         }
-        let p_attributes = data['attributes'] ?? base_part?.attributes ?? [];
+        // Inline instance attributes already contain placement, including Light.
+        // GH-Wasp difference: recover missing legacy attributes from the base.
+        let p_attributes = data['attributes'] ?? (base_part
+            ? transformAttributes(base_part.attributes, p_transform) : []);
         let p_dim = parseFloat(data['dim']);
 
         let p_id = parsePossiblyNumericId(data['id']);
@@ -199,7 +199,8 @@ export class Part {
             connections_trans.push(conn_trans)
         }
 
-        let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, this.attributes, this.dim, this.id, this.field)
+        let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans,
+            transformAttributes(this.attributes, trans), this.dim, this.id, this.field)
         
         part_trans.transformation.copy(trans).multiply(this.transformation)
 

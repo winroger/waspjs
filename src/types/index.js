@@ -55,6 +55,22 @@
  */
 
 /**
+ * A typed GH transport record. Unsupported payloads may be retained statically.
+ * @typedef {Object} AttributeValueData
+ * @property {string} type
+ * @property {unknown} value
+ * @property {boolean} valid
+ */
+
+/**
+ * @typedef {Object} AttributeData
+ * @property {'Attribute'} class_type
+ * @property {string} name
+ * @property {AttributeValueData[]} values
+ * @property {boolean} transformable
+ */
+
+/**
  * @typedef {Object} PartData
  * @property {'Part'} class_type
  * @property {string} name
@@ -70,6 +86,7 @@
  * @property {number|string|null} conn_to_parent
  * @property {Array<number|string>} children
  * @property {unknown} field
+ * @property {Array<unknown>} [attributes] Typed attributes or opaque JSON metadata
  */
 
 /**

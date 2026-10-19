@@ -6,6 +6,7 @@ export {
 export { generateRules } from './operations/generateRules.js';
 export { loadAggregation } from './operations/loadAggregation.js';
 export { Aggregation } from './core/aggregation.js';
+export { Attribute } from './core/attributes.js';
 export { Graph } from './core/graph.js';
 export { Collider } from './core/collider.js';
 export { Connection } from './core/connection.js';

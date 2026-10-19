@@ -10,6 +10,7 @@
  * this module is not a complete port of the Python utilities module.
  */
 import * as THREE from 'three';
+import { Plane } from './plane.js';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 
 // Compatibility re-export for existing source imports; implementation lives in operations.
@@ -192,6 +193,50 @@ export function PlaneToPlane(sourcePlane, targetPlane) {
 
 
 // ==================== Internal JS host-API adapters ====================
+
+/**
+ * Transform a typed GH JSON geometry value without changing its source record.
+ * JS host-API adapter: Rhino geometry copy/Transform in attributes.py::Attribute.
+ * This is not an original Python utility. Static/unknown payloads are not inferred.
+ * @internal Not exported from the public package entry point.
+ * @param {import('../types/index.js').AttributeValueData} record
+ * @param {THREE.Matrix4} transform Positive rigid placement in model units
+ * @returns {import('../types/index.js').AttributeValueData}
+ */
+export function transformAttributeValue(record, transform) {
+    if (!record || record.valid !== true || !['Point', 'Line', 'Plane', 'Mesh'].includes(record.type)) {
+        throw new Error(`Unsupported transformable attribute value: ${record?.type ?? 'untyped/invalid'}`);
+    }
+    const e = transform?.elements;
+    if (!e || e.length !== 16 || !e.every(Number.isFinite)
+        || Math.abs(transform.determinant() - 1) > 1e-5
+        || [0, 4, 8].some(i => Math.abs(e[i] ** 2 + e[i + 1] ** 2 + e[i + 2] ** 2 - 1) > 1e-5)
+        || [e[3], e[7], e[11], e[15] - 1].some(v => Math.abs(v) > 1e-5)) {
+        throw new Error('Attribute geometry currently supports positive rigid transforms only');
+    }
+    const result = globalThis.structuredClone(record);
+    const point = values => {
+        if (!Array.isArray(values) || values.length !== 3 || !values.every(Number.isFinite)) {
+            throw new Error('Invalid attribute point coordinates');
+        }
+        return new THREE.Vector3(...values).applyMatrix4(transform).toArray();
+    };
+    if (record.type === 'Point') result.value = point(record.value);
+    else if (record.type === 'Line') {
+        result.value.from = point(record.value.from);
+        result.value.to = point(record.value.to);
+    } else if (record.type === 'Plane') {
+        const placed = Plane.fromData(record.value).applyMatrix4onPlane(transform).toData();
+        result.value = { ...result.value, ...placed };
+        if (!Object.hasOwn(record.value, 'zaxis')) delete result.value.zaxis;
+    } else {
+        if (!Array.isArray(record.value?.vertices) || !Array.isArray(record.value?.faces)) {
+            throw new Error('Invalid attribute mesh data');
+        }
+        result.value.vertices = record.value.vertices.map(point);
+    }
+    return result;
+}
 
 /**
  * Copy a core mesh with independent geometry buffers, preserving local placement.

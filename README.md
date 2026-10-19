@@ -133,9 +133,59 @@ for general affine transforms, reflections, or every aggregation workflow.
 
 ### Part attributes
 
-`Part.attributes` is an optional array of JSON values. The array and its nested values are copied when a part is constructed, copied, transformed, serialized, or deserialized. Placed parts retain their own attributes in both full and lightweight `Aggregation.toData()` exports. Older data without an `attributes` field loads with an empty array; a lightweight placed part can inherit attributes from its base part.
+`Part.attributes` remains an optional JSON array. Construction also accepts explicit
+`Attribute` instances, converted to data immediately; existing callers keep the
+same array/object shape. Nested values are copied during construction, copying,
+transformation, serialization and import.
 
-The original Python [Wasp Part implementation](https://github.com/ar0551/Wasp/blob/main/src/wasp/core/parts.py) omits attributes from `to_data()` and ignores them in `from_data()`. It can read the additional field in a `webwaspjs` export, but importing and exporting through Python Wasp will discard those attributes. Python Wasp attribute objects that contain Rhino geometry are outside this JSON data format.
+```js
+import { Attribute } from 'webwaspjs';
+const marker = new Attribute('marker', [
+  { type: 'Point', value: [1, 2, 3], valid: true },
+], true);
+const moved = marker.transform(placementMatrix);
+```
+
+`Attribute.values` uses GH's typed JSON records rather than Rhino runtime objects.
+`Attribute.fromData()`, `toData()`, `copy()` and `transform()` preserve extra JSON
+fields. Copies of static data are independent too; GH itself can share those values.
+Opaque JSON metadata without `class_type` is retained without inferred geometry.
+
+Declared `class_type: 'Attribute'` with `transformable: true` follows a Part's
+placement for these valid typed values:
+
+| Value type | Supported payload |
+| --- | --- |
+| `Point` | `[x, y, z]` |
+| `Line` | `{ from: [x, y, z], to: [x, y, z] }` |
+| `Plane` | GH origin/X/Y frame; optional redundant Z follows the plane contract |
+| `Mesh` | Vertex/face JSON; transformed vertices retain face topology |
+
+The measured scope is positive rigid transforms in model units. Other transforms,
+invalid values and unsupported declared transformable types raise errors. Static
+values, including dictionaries, colors, vectors, boxes and opaque Rhino JSON, are
+copied unchanged. Coordinates nested in dictionaries are not interpreted.
+
+Placed attributes are included in both full and lightweight core exports and are
+already transformed; importing them does not apply placement twice. When a legacy
+lightweight instance omits attributes, JS reconstructs them from its base Part and
+stored transform. An explicit empty array stays empty. GH's measured reader does
+not perform that fallback.
+
+GH-Wasp 0.7.003 serializes Attribute/SmartAttribute data and reads their `class_type`.
+The previous README statement that Python always discarded attributes was stale.
+Untyped JSON metadata is a JS extension and is not automatically a valid GH
+attribute. Unknown/invalid typed values can be normalized to null by GH's reader.
+In the measured IronPython host, native JSON dumping of Color channels also fails
+on `.NET Byte` values; the test capture adapter normalizes those scalars and records
+that native failure separately. A lossless arbitrary GH attribute roundtrip is not
+promised.
+
+**SmartAttribute validity and InternalTransform are deferred.** Static payloads can
+remain JSON, but declared transformable unsupported classes are rejected rather
+than silently kept in the wrong location. Full support for all RhinoCommon geometry
+and geometric SmartAttribute masks is outside this first slice. Comparison evidence
+is in [attributes.test.js](src/tests/attributes.test.js).
 
 ### Rules and manual placement
 
