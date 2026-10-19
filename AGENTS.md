@@ -19,9 +19,15 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   Prüfberichte und Release-Planung; diese Inhalte hier nicht kopieren.
 - Das originale GH-Wasp ist ausschließlich lesende Referenz. Dort keine Dateien,
   Git-Zustände, Branches oder Remotes verändern und keine PRs oder Pushes anlegen.
-- Änderungen in diesem Repository auf einem zum Auftrag passenden
-  `feature/...`-Branch durchführen. Push und Merge erst nach persönlicher Prüfung
-  und ausdrücklicher Anweisung des Benutzers; Commits nur im beauftragten Umfang.
+- Neue Features vom aktuellen lokalen `main` auf einem passenden `feature/...`-
+  Branch starten; Änderungen und Commits im beauftragten Umfang dort durchführen.
+  Die ausdrückliche Feature-Abnahme durch den Benutzer gilt als dauerhafte
+  Freigabe, den geprüften Stand lokal zu committen und nach `main` zu mergen,
+  ohne erneut nach Merge-Erlaubnis zu fragen. Fast-forward bevorzugen und den
+  vollständig integrierten lokalen Arbeitsbranch anschließend entfernen.
+  Das nächste beauftragte Feature beginnt wieder auf dem aktualisierten `main`.
+  Ein Arbeitsauftrag allein ist noch keine Abnahme. Push, Veröffentlichung und
+  App-Updates benötigen weiterhin eigene Anweisungen. GH-Wasp bleibt ausgenommen.
 - Änderungen an diesem Paket aktualisieren nicht automatisch die Anwendungen.
   Atlas/Explorer und Pipe einschließlich Dependencies und Lockfiles nur nach
   gesondertem Auftrag ändern. Der frühe `wasp-spec`-Draft ist ergänzende Referenz.
