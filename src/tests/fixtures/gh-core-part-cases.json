@@ -1,0 +1,191 @@
+{
+  "description": "Shared operations for the GH-Wasp Part comparison; matrices use row-major Mij fields and column vectors. No implementation-derived expected results.",
+  "attributes": [
+    {
+      "class_type": "Attribute",
+      "name": "test.metadata",
+      "values": [
+        {
+          "type": "Dictionary",
+          "value": {
+            "label": "triangle",
+            "number": 7
+          },
+          "valid": true
+        }
+      ],
+      "transformable": false
+    }
+  ],
+  "cases": [
+    {
+      "id": "identity",
+      "construction": "from_data",
+      "copy": false,
+      "transforms": []
+    },
+    {
+      "id": "copy",
+      "construction": "from_data",
+      "copy": true,
+      "transforms": []
+    },
+    {
+      "id": "constructor",
+      "construction": "constructor",
+      "copy": false,
+      "transforms": []
+    },
+    {
+      "id": "single_placement",
+      "construction": "from_data",
+      "copy": false,
+      "transforms": [
+        [
+          [
+            0,
+            -1,
+            0,
+            10
+          ],
+          [
+            1,
+            0,
+            0,
+            20
+          ],
+          [
+            0,
+            0,
+            1,
+            30
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "translation_then_rotation",
+      "construction": "from_data",
+      "copy": false,
+      "transforms": [
+        [
+          [
+            1,
+            0,
+            0,
+            10
+          ],
+          [
+            0,
+            1,
+            0,
+            20
+          ],
+          [
+            0,
+            0,
+            1,
+            30
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            0,
+            -1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "rotation_then_translation",
+      "construction": "from_data",
+      "copy": false,
+      "transforms": [
+        [
+          [
+            0,
+            -1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            10
+          ],
+          [
+            0,
+            1,
+            0,
+            20
+          ],
+          [
+            0,
+            0,
+            1,
+            30
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      ]
+    }
+  ]
+}

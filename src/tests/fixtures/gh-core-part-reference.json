@@ -1,0 +1,3907 @@
+{
+  "cases": {
+    "constructor": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 1.0,
+          "M01": 0.0,
+          "M02": 0.0,
+          "M03": 0.0,
+          "M10": 0.0,
+          "M11": 1.0,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 0.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "copy": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 1.0,
+          "M01": 0.0,
+          "M02": 0.0,
+          "M03": 0.0,
+          "M10": 0.0,
+          "M11": 1.0,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 0.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "identity": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 1.0,
+          "M01": 0.0,
+          "M02": 0.0,
+          "M03": 0.0,
+          "M10": 0.0,
+          "M11": 1.0,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 0.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                -1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "xaxis": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "yaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "rotation_then_translation": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 0.0,
+          "M01": -1.0,
+          "M02": 0.0,
+          "M03": 10.0,
+          "M10": 1.0,
+          "M11": 0.0,
+          "M12": 0.0,
+          "M13": 20.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 30.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "single_placement": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 0.0,
+          "M01": -1.0,
+          "M02": 0.0,
+          "M03": 10.0,
+          "M10": 1.0,
+          "M11": 0.0,
+          "M12": 0.0,
+          "M13": 20.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 30.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          9.666666666666666,
+          20.333333333333332,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    10.0,
+                    20.0,
+                    30.0
+                  ],
+                  [
+                    10.0,
+                    21.0,
+                    30.0
+                  ],
+                  [
+                    9.0,
+                    20.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  10.0,
+                  20.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                10.0,
+                20.0,
+                30.0
+              ],
+              [
+                10.0,
+                21.0,
+                30.0
+              ],
+              [
+                9.0,
+                20.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": 10.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 20.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                10.0,
+                20.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "translation_then_rotation": {
+      "base_unchanged": true,
+      "exports_unchanged": true,
+      "full_roundtrip": {
+        "center": [
+          -20.333333333333332,
+          10.333333333333334,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -20.0,
+                    10.0,
+                    30.0
+                  ],
+                  [
+                    -20.0,
+                    11.0,
+                    30.0
+                  ],
+                  [
+                    -21.0,
+                    10.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  -20.0,
+                  10.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              [
+                -20.0,
+                11.0,
+                30.0
+              ],
+              [
+                -21.0,
+                10.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": -20.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 10.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "input_unchanged": true,
+      "light_export": {
+        "active_connections": [
+          0
+        ],
+        "attributes": [
+          {
+            "class_type": "Attribute",
+            "name": "test.metadata",
+            "transformable": false,
+            "values": [
+              {
+                "type": "Dictionary",
+                "valid": true,
+                "value": {
+                  "label": "triangle",
+                  "number": 7
+                }
+              }
+            ]
+          }
+        ],
+        "children": [],
+        "class_type": "Part",
+        "conn_on_parent": null,
+        "conn_to_parent": null,
+        "connections": [
+          {
+            "id": 0,
+            "part": "A",
+            "plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ]
+            },
+            "type": "default"
+          }
+        ],
+        "dim": 1.0,
+        "field": null,
+        "id": 0,
+        "name": "A",
+        "parent": null,
+        "transform": {
+          "M00": 0.0,
+          "M01": -1.0,
+          "M02": 0.0,
+          "M03": -20.0,
+          "M10": 1.0,
+          "M11": 0.0,
+          "M12": 0.0,
+          "M13": 10.0,
+          "M20": 0.0,
+          "M21": 0.0,
+          "M22": 1.0,
+          "M23": 30.0,
+          "M30": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 1.0
+        }
+      },
+      "light_roundtrip": {
+        "center": [
+          -20.333333333333332,
+          10.333333333333334,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -20.0,
+                    10.0,
+                    30.0
+                  ],
+                  [
+                    -20.0,
+                    11.0,
+                    30.0
+                  ],
+                  [
+                    -21.0,
+                    10.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  -20.0,
+                  10.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              [
+                -20.0,
+                11.0,
+                30.0
+              ],
+              [
+                -21.0,
+                10.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": -20.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 10.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      },
+      "placed": {
+        "center": [
+          -20.333333333333332,
+          10.333333333333334,
+          30.0
+        ],
+        "data": {
+          "active_connections": [
+            0
+          ],
+          "attributes": [
+            {
+              "class_type": "Attribute",
+              "name": "test.metadata",
+              "transformable": false,
+              "values": [
+                {
+                  "type": "Dictionary",
+                  "valid": true,
+                  "value": {
+                    "label": "triangle",
+                    "number": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    1,
+                    2
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -20.0,
+                    10.0,
+                    30.0
+                  ],
+                  [
+                    -20.0,
+                    11.0,
+                    30.0
+                  ],
+                  [
+                    -21.0,
+                    10.0,
+                    30.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  -20.0,
+                  10.0,
+                  30.0
+                ],
+                "xaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "yaxis": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "type": "default"
+            }
+          ],
+          "dim": 1.0,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            "vertices": [
+              [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              [
+                -20.0,
+                11.0,
+                30.0
+              ],
+              [
+                -21.0,
+                10.0,
+                30.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 0.0,
+            "M01": -1.0,
+            "M02": 0.0,
+            "M03": -20.0,
+            "M10": 1.0,
+            "M11": 0.0,
+            "M12": 0.0,
+            "M13": 10.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 30.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        "frames": [
+          {
+            "flip_plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                1.0,
+                -0.0,
+                -0.0
+              ],
+              "zaxis": [
+                0.0,
+                0.0,
+                -1.0
+              ]
+            },
+            "plane": {
+              "origin": [
+                -20.0,
+                10.0,
+                30.0
+              ],
+              "xaxis": [
+                0.0,
+                1.0,
+                0.0
+              ],
+              "yaxis": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "zaxis": [
+                0.0,
+                -0.0,
+                1.0
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "copy_mutation_probe": {
+    "base_collider": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "base_geometry": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ]
+  },
+  "provenance": {
+    "captured_utc": "2026-10-19T07:58:13.600000Z",
+    "document_absolute_tolerance": 0.001,
+    "document_units": "Millimeters",
+    "gh_commit": "9bf05acd945e8581244a6ef3bf5a0733018c9b6d",
+    "gh_version": "0.7.003",
+    "kind": "executed-gh-wasp-core-in-rhino",
+    "loader": "verified temporary copy of the pinned source; previous wasp modules restored",
+    "python_platform": "cli",
+    "python_version": "2.7.12 (2.7.12.1000)\n[.NETCoreApp,Version=v3.1 on .NET 8.0.14 (64-bit)]",
+    "rhino_version": "8.33.26188.13002",
+    "scope": "Core Part readers and methods; no Grasshopper component execution or collision tests",
+    "source_manifest": "wasp-workspace/validation/WASP-002/source-manifest.json",
+    "wasp_global_tolerance": 0.002
+  }
+}
