@@ -61,6 +61,15 @@ parts. Importing inline geometry does not apply the Part transform a second time
 reconstructs them from the base parts and placement transforms. Viewer scene-parent
 transforms are not included in these exports.
 
+### Connection assignment
+
+Constructing a `Part` assigns its name to every supplied Connection's `part` field
+and assigns consecutive IDs starting at zero, replacing previous values as GH-Wasp
+does. The constructor retains those Connection objects and mutates them in place.
+Use separate Connection copies when creating independent parts; reusing the same
+object for another part changes the owner seen by the first part too.
+`Part.fromData()` creates new Connection objects, so its input JSON is unchanged.
+
 ### Geometry ownership
 
 `Part.copy()`, `Part.transform()`, lightweight `Part.fromData(data, basePart)`,

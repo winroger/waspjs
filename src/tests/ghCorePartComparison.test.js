@@ -23,11 +23,10 @@ const strict = process.env.WASP_STRICT_GH_COMPARISON === '1';
 // authorized fixes land. Strict mode exposes them as ordinary failing tests.
 // Each assertion tests one facet; unrelated setup errors fail the whole suite.
 const knownDifferences = {
-    metadata: new Set(['constructor']),
     center: new Set(corpus.cases.map(item => item.id)),
 };
 const issueByFacet = {
-    center: 'WASP-012', metadata: 'WASP-013',
+    center: 'WASP-012',
 };
 
 // ==================== Observation helpers ====================

@@ -30,6 +30,8 @@ function copyAttributes(attributes) {
  */
 export class Part {
     /**
+     * Assign owners and sequential IDs to the supplied Connection objects,
+     * retaining their references as GH Part.__init__ does.
      * @param {string} name
      * @param {THREE.Mesh} geometry
      * @param {Connection[]} connections
@@ -50,6 +52,7 @@ export class Part {
 
         let count = 0;
         for (let conn of connections) {
+            conn.part = this.name;
             conn.id = count;
             this.active_connections.push(count);
             this.connections.push(conn)
