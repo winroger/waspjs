@@ -1,4 +1,8 @@
-export * from './core/utilities.js';
+// Keep internal Three.js adapters out of the public package API.
+export {
+    checkMeshesIntersection, meshToData, meshFromData,
+    transformToData, transformFromData, PlaneToPlane, generateRules,
+} from './core/utilities.js';
 export { Aggregation } from './core/aggregation.js';
 export { Collider } from './core/collider.js';
 export { Connection } from './core/connection.js';

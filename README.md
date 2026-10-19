@@ -61,6 +61,26 @@ parts. Importing inline geometry does not apply the Part transform a second time
 reconstructs them from the base parts and placement transforms. Viewer scene-parent
 transforms are not included in these exports.
 
+### Geometry ownership
+
+`Part.copy()`, `Part.transform()`, lightweight `Part.fromData(data, basePart)`,
+and `Collider.copy()` / `Collider.transform()` produce independent geometry
+buffers, matching GH-Wasp's mesh duplication. Editing vertices, indices or normals
+on a result does not alter its source or another instance. A geometry-bound BVH
+cache is rebuilt lazily when needed. Material objects retain Three.js sharing
+semantics; viewer scene clones and custom geometry metadata are outside this
+ownership contract.
+
+Each result allocates its own vertex-attribute and index buffers, including collider
+meshes. This increases memory and copy work relative to shared geometry; no speed
+or memory-neutrality guarantee is implied. Tests are in
+[meshOwnership.test.js](src/tests/meshOwnership.test.js).
+
+The comments in [utilities.js](src/core/utilities.js) identify each function's
+GH utility/component counterpart or JavaScript-specific role, including Rhino
+API adapters and known differences. Internal helpers are excluded from the
+public package entry point.
+
 ### Connection frames
 
 Connection planes use right-handed orthonormal axes: `X × Y = Z`. The public

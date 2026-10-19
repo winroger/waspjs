@@ -7,6 +7,8 @@ import { Part } from '../core/part.js';
 import { Rule } from '../core/rule.js';
 import { Aggregation } from '../core/aggregation.js';
 import { createAggregationFromData } from '../core/publicApi.js';
+import * as packageApi from '../index.js';
+import * as utilities from '../core/utilities.js';
 
 function makePart(name) {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -21,6 +23,19 @@ function makePart(name) {
 }
 
 describe('public api', () => {
+  it('preserves public utilities and keeps mesh duplication internal', () => {
+    expect(packageApi).toMatchObject({
+      checkMeshesIntersection: utilities.checkMeshesIntersection,
+      meshToData: utilities.meshToData,
+      meshFromData: utilities.meshFromData,
+      transformToData: utilities.transformToData,
+      transformFromData: utilities.transformFromData,
+      PlaneToPlane: utilities.PlaneToPlane,
+      generateRules: utilities.generateRules,
+    });
+    expect(packageApi).not.toHaveProperty('copyMesh');
+  });
+
   it('creates an aggregation directly from serialized data', () => {
     const part = makePart('A');
     const partData = part.toData();

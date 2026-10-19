@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { meshFromData, meshToData } from './utilities';
+import { copyMesh, meshFromData, meshToData } from './utilities';
 import { Connection } from './connection';
 
 function meshesIntersectByBounds(meshA, meshB) {
@@ -70,9 +70,16 @@ export class Collider {
         };
     }
 
+    /**
+     * Transform independent mesh copies, matching GH Collider.transform.
+     * @param {THREE.Matrix4} trans
+     * @param {boolean} [transformConnections=false]
+     * @param {boolean} [maintainValid=false]
+     * @returns {Collider}
+     */
     transform(trans, transformConnections = false, maintainValid = false) {
         const geometryTrans = this.geometry.map(geo => {
-            const geoTrans = geo.clone();
+            const geoTrans = copyMesh(geo);
             geoTrans.applyMatrix4(trans);
             return geoTrans;
         });
@@ -89,8 +96,12 @@ export class Collider {
         }
     }
 
+    /**
+     * Copy collider meshes with independent buffers, matching GH Mesh.Duplicate.
+     * @returns {Collider}
+     */
     copy() {
-        const geometryCopy = this.geometry.map(geo => geo.clone());
+        const geometryCopy = this.geometry.map(copyMesh);
         const connectionsCopy = this.connections.map(conn => conn.copy());
         const validConnectionsCopy = [...this.validConnections];
         return new Collider(geometryCopy, this.multiple, this.checkAll, connectionsCopy, validConnectionsCopy);

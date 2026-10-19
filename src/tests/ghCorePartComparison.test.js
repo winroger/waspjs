@@ -186,8 +186,7 @@ describe('GH-Wasp 0.7.003 Part comparison', () => {
         }
     }
 
-    const copyTest = strict ? it : it.fails;
-    copyTest('copy owns independent geometry buffers [WASP-011: known GH-Wasp difference]', () => {
+    it('copy owns independent geometry buffers', () => {
         expectNumeric(observations.copy_mutation_probe, reference.copy_mutation_probe);
     });
 

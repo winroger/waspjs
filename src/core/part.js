@@ -1,4 +1,4 @@
-import { meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
+import { copyMesh, meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
 import { Connection } from "./connection"; 
 import { Collider } from "./collider"; 
 import * as THREE from 'three';
@@ -83,7 +83,7 @@ export class Part {
         if (Object.prototype.hasOwnProperty.call(data, 'geometry')) {
             p_geometry = meshFromData(data['geometry']);
         } else if (base_part !== null) {
-            p_geometry = base_part.geo.clone();
+            p_geometry = copyMesh(base_part.geo);
             p_geometry.applyMatrix4(p_transform);
         } else {
             return null;
@@ -185,7 +185,7 @@ export class Part {
      * @returns {Part}
      */
     transform(trans, _transform_sub_parts = false, maintain_parenting = false) {
-        let geo_trans = this.geo.clone()
+        let geo_trans = copyMesh(this.geo)
         geo_trans.applyMatrix4(trans);
 
         let collider_trans = this.collider.transform(trans);
@@ -209,9 +209,14 @@ export class Part {
         return part_trans
     }
 
-    // return a copy of the part
+    /**
+     * Return a copy with independent mesh buffers, matching GH Mesh.Duplicate.
+     * Materials remain shared; attributes and connection frames are copied.
+     * @param {boolean} [maintain_parenting=false] Preserve hierarchy references
+     * @returns {Part}
+     */
     copy(maintain_parenting = false) {
-        let geo_copy = this.geo.clone();
+        let geo_copy = copyMesh(this.geo);
 
         let collider_copy = this.collider.copy();
 

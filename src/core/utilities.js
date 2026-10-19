@@ -1,14 +1,31 @@
+/**
+ * WaspJS — serialization utilities and JavaScript host adapters.
+ *
+ * Provenance labels below distinguish:
+ * - GH-Wasp utility counterpart: named function in src/wasp/utilities/utilities.py.
+ * - GH-Wasp component counterpart: logic exposed by a Grasshopper component.
+ * - JS host-API adapter: replaces a Rhino operation used by the GH core.
+ * - JS-specific helper: implementation supplied by WaspJS, not a GH utility port.
+ * A counterpart identifies the source of the behavior, not complete parity.
+ * GH plane serialization is implemented by Plane.fromData/toData in plane.js;
+ * this module is not a complete port of the Python utilities module.
+ */
 import * as THREE from 'three';
 import { Rule } from './rule';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 
 
-/**
- * Check if two meshes intersect using BVH-accelerated geometry test.
- */
+// JS-specific setup for Three.js raycasting; no GH-Wasp utility counterpart.
 if (THREE.Mesh.prototype.raycast !== acceleratedRaycast) {
   THREE.Mesh.prototype.raycast = acceleratedRaycast;
 }
+
+/**
+ * Check if two meshes intersect using BVH-accelerated geometry test.
+ * JS-specific helper: three-mesh-bvh implementation, not a GH utility port.
+ * Related GH operation: Rhino Intersection.MeshMeshFast in
+ * src/wasp/core/colliders.py. Collision parity is not established by this mapping.
+ */
 export function checkMeshesIntersection(mesh1, mesh2) {
     if (!mesh1.geometry.boundsTree) {
       mesh1.geometry.boundsTree = new MeshBVH(mesh1.geometry);
@@ -28,6 +45,9 @@ export function checkMeshesIntersection(mesh1, mesh2) {
 /**
  * Convert a mesh to plain vertex/face data with its local placement baked in.
  * Scene-parent transforms are presentation state, not part of the WASP data.
+ * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::mesh_to_data.
+ * JS adaptation: bake Three.js local placement because Rhino stores mesh vertices
+ * in their placed coordinates; support indexed and non-indexed BufferGeometry.
  */
 export function meshToData(mesh) {
   const geom = mesh.geometry;
@@ -69,6 +89,9 @@ export function meshToData(mesh) {
 
 /**
  * Create a mesh from plain vertex/face data.
+ * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::mesh_from_data.
+ * JS adaptation: triangulate quads for BufferGeometry, compute normals and create
+ * a default rendering material. Rhino retains mesh quad faces.
  */
 export function meshFromData(data) {
     const geometry = new THREE.BufferGeometry();
@@ -99,6 +122,8 @@ export function meshFromData(data) {
 
 /**
  * Convert a Matrix4 to a plain object representation.
+ * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::transform_to_data.
+ * JS adaptation: map Three.js column-major storage to the shared M00..M33 fields.
  */
 export function transformToData(trans) {
   const e = trans.elements; // column-major
@@ -112,6 +137,8 @@ export function transformToData(trans) {
 
 /**
  * Rebuild a Matrix4 from plain object data.
+ * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::transform_from_data.
+ * JS adaptation: Matrix4.set accepts row-ordered arguments and stores columns.
  */
 export function transformFromData(data) {
   const m = [
@@ -134,6 +161,10 @@ export function transformFromData(data) {
 
 /**
  * Calculate a transform that orients sourcePlane to targetPlane.
+ * JS host-API adapter: Rhino.Geometry.Transform.PlaneToPlane, called directly by
+ * src/wasp/core/aggregation.py; no standalone function in GH-Wasp utilities.
+ * Computes targetBasis * inverse(sourceBasis); rigid-frame parity is measured in
+ * planeCompatibility.test.js, not general affine-transform parity.
  */
 export function PlaneToPlane(sourcePlane, targetPlane) {
     const sourceMatrix = new THREE.Matrix4();
@@ -161,6 +192,12 @@ export function PlaneToPlane(sourcePlane, targetPlane) {
 
 /**
  * Generate connection rules for a set of parts when none are provided.
+ * GH-Wasp component counterpart: src/ghComp/Wasp_Rules Generator.py::main,
+ * not a function in the GH core utilities module. Grasshopper UI is omitted.
+ * GH-Wasp difference: selfConnection defaults to false here (GH: true), and in
+ * the no-grammar branch equal IDs are excluded only within the same part here
+ * (GH excludes equal IDs across parts too). Kept unchanged; Rules parity is
+ * pending in WASP-003. This provenance mapping does not endorse either behavior.
  */
 export function generateRules(parts, selfPart = true, selfConnection = false, useTypes = false, grammar = []) {
     const rules = [];
@@ -230,3 +267,23 @@ export function generateRules(parts, selfPart = true, selfConnection = false, us
   
     return rules;
   }
+
+// ==================== Internal JS host-API adapters ====================
+
+/**
+ * Copy a core mesh with independent geometry buffers, preserving local placement.
+ * JS host-API adapter: Rhino Mesh.Duplicate used by src/wasp/core/parts.py and
+ * colliders.py; there is no corresponding GH-Wasp utility function.
+ * Three.js Mesh.clone() alone shares geometry; BufferGeometry.clone() copies its
+ * index, attributes and bounds without carrying over a geometry-bound BVH cache.
+ * Material objects retain Three.js sharing semantics. Viewer children and custom
+ * geometry userData are outside this core geometry-ownership contract.
+ * @internal Exported for core-module imports, excluded from the package entry point.
+ * @param {THREE.Mesh} mesh
+ * @returns {THREE.Mesh}
+ */
+export function copyMesh(mesh) {
+    const copy = mesh.clone();
+    copy.geometry = mesh.geometry.clone();
+    return copy;
+}

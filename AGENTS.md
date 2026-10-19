@@ -49,6 +49,14 @@ Header und Kommentare werden hier maßgeblich gepflegt.
 - Bestehende Dateien bei fachlichen Änderungen schrittweise an diesen Stil
   anpassen. Keine ungefragte Massenformatierung, Umordnung oder Verhaltensänderung
   allein zur Vereinheitlichung der Kommentare.
+- Gemeinsame Host-/Three.js-Helfer nach Möglichkeit in `src/core/utilities.js`
+  halten. Dort pro Funktion die Herkunft mit Quellpfad kennzeichnen:
+  `GH-Wasp utility counterpart`, `GH-Wasp component counterpart`,
+  `JS host-API adapter` oder `JS-specific helper`. Einen Rhino-API-Ersatz nicht
+  als ursprüngliche Python-Utility ausgeben; bekannte Unterschiede ergänzen.
+  Die Herkunftszuordnung ist kein Paritätsnachweis. Interne Helfer mit
+  `@internal` markieren und aus dem Paket-Einstieg `src/index.js` ausschließen;
+  bestehende öffentliche Utility-Exporte erhalten.
 
 ## Header und Kommentare
 
