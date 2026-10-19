@@ -18,20 +18,17 @@ import minimalPart from './fixtures/minimal-part.json';
 const clone = value => globalThis.structuredClone(value);
 const fixture = { ...clone(minimalPart), attributes: clone(corpus.attributes), id: 0 };
 const strict = process.env.WASP_STRICT_GH_COMPARISON === '1';
-const sequences = new Set(['translation_then_rotation', 'rotation_then_translation']);
 
 // GH-Wasp difference: these assertions remain expected failures until separately
 // authorized fixes land. Strict mode exposes them as ordinary failing tests.
 // Each assertion tests one facet; unrelated setup errors fail the whole suite.
 const knownDifferences = {
-    matrix: sequences,
     metadata: new Set(['constructor']),
     normals: new Set(corpus.cases.map(item => item.id)),
     center: new Set(corpus.cases.map(item => item.id)),
-    lightRoundtrip: sequences,
 };
 const issueByFacet = {
-    matrix: 'WASP-009', lightRoundtrip: 'WASP-009', normals: 'WASP-010',
+    normals: 'WASP-010',
     center: 'WASP-012', metadata: 'WASP-013',
 };
 
@@ -195,4 +192,20 @@ describe('GH-Wasp 0.7.003 Part comparison', () => {
     copyTest('copy owns independent geometry buffers [WASP-011: known GH-Wasp difference]', () => {
         expectNumeric(observations.copy_mutation_probe, reference.copy_mutation_probe);
     });
+
+    for (const id of ['translation_then_rotation', 'rotation_then_translation']) {
+        it(`${id}: preserves each source Part and incoming matrix during composition`, () => {
+            let part = Part.fromData(clone(fixture));
+            for (const rows of corpus.cases.find(spec => spec.id === id).transforms) {
+                const incoming = matrix(rows);
+                const beforeMatrix = incoming.elements.slice();
+                const beforePart = snapshot(part);
+                const transformed = part.transform(incoming);
+                expect(incoming.elements).toEqual(beforeMatrix);
+                expect(snapshot(part)).toEqual(beforePart);
+                part = transformed;
+            }
+            expectNumeric(snapshot(part).data.transform, reference.cases[id].placed.data.transform);
+        });
+    }
 });

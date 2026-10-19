@@ -175,7 +175,15 @@ export class Part {
         };
     }
 
-    // return a transformed copy of the part
+    /**
+     * Return a transformed copy without changing the source Part or input matrix.
+     * Geometry already contains the previous placement. With column vectors,
+     * the stored placement is new transform * previous placement, as in GH-Wasp.
+     * @param {THREE.Matrix4} trans Transform to apply after the current placement
+     * @param {boolean} [_transform_sub_parts=false] Reserved for base Part compatibility
+     * @param {boolean} [maintain_parenting=false] Preserve hierarchy references
+     * @returns {Part}
+     */
     transform(trans, _transform_sub_parts = false, maintain_parenting = false) {
         let geo_trans = this.geo.clone()
         geo_trans.applyMatrix4(trans);
@@ -190,7 +198,7 @@ export class Part {
 
         let part_trans = new Part(this.name, geo_trans, connections_trans, collider_trans, this.attributes, this.dim, this.id, this.field)
         
-        part_trans.transformation.copy(this.transformation).multiply(trans)
+        part_trans.transformation.copy(trans).multiply(this.transformation)
 
         if (maintain_parenting) {
             part_trans.parent = this.parent;
