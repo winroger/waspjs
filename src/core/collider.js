@@ -1,22 +1,18 @@
-import * as THREE from 'three';
-import { copyMesh, meshFromData, meshToData } from './utilities';
+/**
+ * WaspJS — Collider class and surface collision checks.
+ * Upstream module: src/wasp/core/colliders.py
+ */
+import { copyMesh, meshFromData, meshToData, checkMeshesIntersection } from './utilities';
 import { Connection } from './connection';
 
-function meshesIntersectByBounds(meshA, meshB) {
-    if (!meshA || !meshB) return false;
-    meshA.updateMatrixWorld?.(true);
-    meshB.updateMatrixWorld?.(true);
-    const boxA = new THREE.Box3().setFromObject(meshA);
-    const boxB = new THREE.Box3().setFromObject(meshB);
-    return boxA.intersectsBox(boxB);
-}
+// ==================== Collider ====================
 
 /**
- * Handles collision geometry for parts and optional per-connection colliders.
+ * Stores composite collision meshes or alternative free-space variants.
  */
 export class Collider {
     /**
-     * @param {Array<THREE.Mesh>} geometry
+     * @param {Array<import('three').Mesh>} geometry
      * @param {boolean} multiple
      * @param {boolean} checkAll
      * @param {Connection[]} connections
@@ -29,12 +25,12 @@ export class Collider {
         this.connections = connections;
 
         this.facesCount = 0;
-        if (this.geometry && Array.isArray(this.geometry)) {
-            for (let geo of this.geometry) {
-            if (geo && geo.faces) {
-                this.facesCount += geo.faces.length;
-            }
-            }
+        for (const mesh of this.geometry) {
+            const geo = mesh.geometry;
+            // JS host representation: JSON quads have already become triangles.
+            this.facesCount += geo.isBufferGeometry
+                ? Math.floor((geo.index?.count ?? geo.getAttribute('position')?.count ?? 0) / 3)
+                : geo.faces.length;
         }
 
         this.validConnections = validConnections;
@@ -72,7 +68,7 @@ export class Collider {
 
     /**
      * Transform independent mesh copies, matching GH Collider.transform.
-     * @param {THREE.Matrix4} trans
+     * @param {import('three').Matrix4} trans
      * @param {boolean} [transformConnections=false]
      * @param {boolean} [maintainValid=false]
      * @returns {Collider}
@@ -107,6 +103,13 @@ export class Collider {
         return new Collider(geometryCopy, this.multiple, this.checkAll, connectionsCopy, validConnectionsCopy);
     }
 
+    /**
+     * Test all meshes; multiple=true accepts any free variant and updates its
+     * geometry indices in validConnections when connections are associated.
+     * checkAll controls enumeration, not an AND of variants.
+     * @param {Array<{collider: Collider}>} parts
+     * @returns {boolean} True when blocked.
+     */
     checkCollisionsWithParts(parts) {
         if (this.multiple) {
             let validColliders = [];
@@ -116,7 +119,7 @@ export class Collider {
                 let validColl = true;
                 for (let part of parts) {
                     for (let otherGeo of part.collider.geometry) {
-                        if (meshesIntersectByBounds(geo, otherGeo)) {
+                        if (checkMeshesIntersection(geo, otherGeo)) {
                             validColl = false;
                             break;
                         }
@@ -135,7 +138,7 @@ export class Collider {
             for (let geo of this.geometry) {
                 for (let part of parts) {
                     for (let otherGeo of part.collider.geometry) {
-                        if (meshesIntersectByBounds(geo, otherGeo)) {
+                        if (checkMeshesIntersection(geo, otherGeo)) {
                             return true;
                         }
                     }
@@ -145,6 +148,12 @@ export class Collider {
         }
     }
 
+    /**
+     * Test selected array indices without changing validConnections, as GH does.
+     * @param {Array<{collider: Collider}>} parts
+     * @param {number[]} ids Array indices, not Part.id values.
+     * @returns {boolean} True when blocked.
+     */
     checkCollisionsById(parts, ids) {
         if (this.multiple) {
             let validColliders = [];
@@ -152,7 +161,7 @@ export class Collider {
                 let validColl = true;
                 for (let id of ids) {
                     for (let otherGeo of parts[id].collider.geometry) {
-                        if (meshesIntersectByBounds(geo, otherGeo)) {
+                        if (checkMeshesIntersection(geo, otherGeo)) {
                             validColl = false;
                             break;
                         }
@@ -167,7 +176,7 @@ export class Collider {
             for (let geo of this.geometry) {
                 for (let id of ids) {
                     for (let otherGeo of parts[id].collider.geometry) {
-                        if (meshesIntersectByBounds(geo, otherGeo)) {
+                        if (checkMeshesIntersection(geo, otherGeo)) {
                             return true;
                         }
                     }

@@ -47,11 +47,11 @@
 
 /**
  * @typedef {Object} ColliderData
- * @property {Array<import('three').Mesh>} geometry
- * @property {boolean} multiple
- * @property {boolean} check_all
+ * @property {Array<{vertices: number[][], faces: number[][]}>} geometry Serialized model-space meshes.
+ * @property {boolean} multiple Alternative variants rather than a composite obstacle.
+ * @property {boolean} check_all Enumerate all free variants when checking parts.
  * @property {ConnectionData[]} connections
- * @property {number[]} valid_connections
+ * @property {number[]} valid_connections Free geometry indices, not Connection.id values.
  */
 
 /**

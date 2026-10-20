@@ -22,27 +22,88 @@ if (THREE.Mesh.prototype.raycast !== acceleratedRaycast) {
   THREE.Mesh.prototype.raycast = acceleratedRaycast;
 }
 
+// JS host-API adapter cache. Original attributes, indices and BVH caches stay owned
+// by their callers. A new pose or a needsUpdate attribute rebuilds this CPU cache.
+const collisionMeshes = new WeakMap();
+
+/** JS host-API adapter: private model-space geometry/cache, not a GH utility. @internal */
+function collisionMesh(mesh) {
+    const source = mesh.geometry;
+    const position = source.getAttribute('position');
+    if (!position || position.count < 3 || (source.index && source.index.count < 3)) return null;
+    const positionVersion = position.version ?? position.data?.version;
+    const matrix = mesh.matrixAutoUpdate
+        ? new THREE.Matrix4().compose(mesh.position, mesh.quaternion, mesh.scale)
+        : mesh.matrix;
+    const cached = collisionMeshes.get(mesh);
+    if (cached && cached.source === source && cached.position === position
+        && cached.positionVersion === positionVersion && cached.index === source.index
+        && cached.indexVersion === source.index?.version && cached.matrix.equals(matrix)) return cached;
+
+    // Use the single-precision representation of GH JSON mesh imports and Three
+    // positions. Bake local placement; scene parents are presentation only.
+    const geometry = new THREE.BufferGeometry();
+    const placed = new THREE.BufferAttribute(new Float32Array(position.count * 3), 3);
+    const vertex = new THREE.Vector3();
+    for (let i = 0; i < position.count; i++) {
+        vertex.fromBufferAttribute(position, i).applyMatrix4(matrix);
+        placed.setXYZ(i, vertex.x, vertex.y, vertex.z);
+    }
+    geometry.setAttribute('position', placed);
+    if (source.index) geometry.setIndex(source.index.clone());
+    geometry.computeBoundingBox();
+    const result = { source, position, positionVersion,
+        index: source.index, indexVersion: source.index?.version,
+        matrix: matrix.clone(), geometry, bounds: geometry.boundingBox, tree: null };
+    collisionMeshes.set(mesh, result);
+    return result;
+}
+
 /**
- * Check if two meshes intersect using BVH-accelerated geometry test.
- * JS-specific helper: three-mesh-bvh implementation, not a GH utility port.
- * Related GH operation: Rhino Intersection.MeshMeshFast in
- * src/wasp/core/colliders.py. Collision parity is not established by this mapping.
+ * Test mesh surfaces in model coordinates without changing either source mesh.
+ * JS host-API adapter: Rhino Intersection.MeshMeshFast used by
+ * src/wasp/core/colliders.py, implemented with the installed three-mesh-bvh.
+ * Local placement is included; scene-parent transforms and render groups are not.
+ * Strict bounds and omission of coplanar/degenerate triangle pairs reproduce the
+ * measured GH cases. This is not a volume-containment or general contact test.
+ * Compatibility limitation: single-precision boundary cases can differ from
+ * first/repeated Rhino queries; a native coplanar asymmetry is deliberately not
+ * reproduced. See collider.test.js for the measured cases and differences.
+ * Mark edited position/index attributes needsUpdate before querying again.
+ * @param {THREE.Mesh} mesh1
+ * @param {THREE.Mesh} mesh2
+ * @returns {boolean}
  */
 export function checkMeshesIntersection(mesh1, mesh2) {
-    if (!mesh1.geometry.boundsTree) {
-      mesh1.geometry.boundsTree = new MeshBVH(mesh1.geometry);
+    const a = collisionMesh(mesh1);
+    const b = collisionMesh(mesh2);
+    if (!a || !b) return false;
+    // GH's measured endpoint contacts do not overlap strict bounding intervals.
+    for (const axis of ['x', 'y', 'z']) {
+        if (a.bounds.max[axis] <= b.bounds.min[axis] || a.bounds.min[axis] >= b.bounds.max[axis]) return false;
     }
-    if (!mesh2.geometry.boundsTree) {
-      mesh2.geometry.boundsTree = new MeshBVH(mesh2.geometry);
-    }
-  
-    const transformMatrix = new THREE.Matrix4();
-    transformMatrix.copy(mesh2.matrixWorld).invert().multiply(mesh1.matrixWorld);
-  
-    const intersects = mesh2.geometry.boundsTree.intersectsGeometry(mesh1.geometry, transformMatrix);
-  
-    return intersects;
-  }
+    a.tree ??= new MeshBVH(a.geometry, { indirect: true });
+    b.tree ??= new MeshBVH(b.geometry, { indirect: true });
+    const size = Math.max(1, Math.abs(a.bounds.min.x), Math.abs(a.bounds.min.y), Math.abs(a.bounds.min.z),
+        Math.abs(a.bounds.max.x), Math.abs(a.bounds.max.y), Math.abs(a.bounds.max.z),
+        Math.abs(b.bounds.min.x), Math.abs(b.bounds.min.y), Math.abs(b.bounds.min.z),
+        Math.abs(b.bounds.max.x), Math.abs(b.bounds.max.y), Math.abs(b.bounds.max.z));
+    const epsilon = Number.EPSILON * 128 * size;
+    return a.tree.bvhcast(b.tree, new THREE.Matrix4(), {
+        intersectsTriangles(first, second) {
+            first.update();
+            second.update();
+            if (first.plane.normal.lengthSq() === 0 || second.plane.normal.lengthSq() === 0) return false;
+            // Do not count overlapping coplanar surfaces. The distance threshold
+            // only absorbs double arithmetic roundoff, not the Rhino doc tolerance.
+            if (Math.abs(first.plane.normal.dot(second.plane.normal)) > 1 - 1e-12
+                && Math.abs(first.plane.distanceToPoint(second.a)) <= epsilon
+                && Math.abs(first.plane.distanceToPoint(second.b)) <= epsilon
+                && Math.abs(first.plane.distanceToPoint(second.c)) <= epsilon) return false;
+            return first.intersectsTriangle(second, null, true);
+        }
+    });
+}
 
 /**
  * Convert a mesh to plain vertex/face data with its local placement baked in.

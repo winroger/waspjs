@@ -223,9 +223,46 @@ these tests do not establish bidirectional Rule-JSON interoperability.
 output and forced placements against results executed in Rhino. The measured
 scope covers connection frames, meshes/colliders and parent/connection state for
 small rigid placements. It does not establish random-sequence, graph, constraint
-or general collision parity. Existing BVH construction can reorder collider
-triangles while building its cache, so geometry comparisons ignore face-list
-order while preserving vertices and triangle winding.
+or general collision parity. Geometry comparisons ignore face-list order while
+preserving vertices and triangle winding. The collision adapter described below
+now builds private acceleration data and preserves the source index order.
+
+### Collider checks
+
+Direct `Collider` checks, placement queries, manual placement and random growth
+now share the same mesh-surface predicate. All collider meshes on both sides are
+considered. With `multiple=false` they form a composite obstacle; with
+`multiple=true` they are alternatives and any free variant suffices. `checkAll`
+controls enumeration of free variants, not whether all variants must be free.
+`checkCollisionsWithParts()` updates `validConnections` with free geometry indices
+when connections are associated; `checkCollisionsById()` leaves that list intact.
+Its `ids` are indices into the supplied parts array, not Part IDs.
+
+`checkMeshesIntersection()` uses local mesh placement in model coordinates and
+excludes scene-parent transforms and render groups/draw ranges. It caches private
+Float32 positions, indices and a BVH without changing source buffers, matrices or
+existing BVH caches. Pose/geometry replacement and versioned attribute edits
+invalidate that cache; mark directly edited position/index attributes
+`needsUpdate=true`. Acceleration data consumes additional CPU memory per queried
+mesh. `facesCount` counts BufferGeometry triangles; an imported quad has already
+been triangulated and therefore counts as two.
+
+This checks surface intersections, not occupied volume. Strict bounding intervals
+and omission of coplanar/degenerate triangle pairs match the stable measured GH
+cases, including ordinary axis-aligned face/edge/point contacts and complete
+containment. Some rotated contacts still intersect; there is no universal
+touching-is-allowed rule. One native precision-boundary case changes after repeated
+GH queries, and one tilted coplanar GH case changes when argument order is reversed.
+JS deliberately keeps deterministic, symmetric decisions in those cases. See
+[collider.test.js](src/tests/collider.test.js) for the actual reference and limits.
+
+Placement retains two JS differences: an empty simple collider falls back to the
+unscaled Part mesh, and no separate GH center-overlap gate is added. Explicit
+empty alternative colliders remain blocked. There is no longer a `0.99` shrink.
+`coll_check=false` bypasses placement collision checks. All existing colliders are
+tested without GH's `center`/`dim` radius prefilter, since JS `dim` is derived from
+display geometry and may not bound an explicit collider. These changes do not
+implement AdvancedPart/local/global constraints or promise general Rhino parity.
 
 ### Aggregation state and graphs
 

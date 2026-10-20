@@ -1,0 +1,9141 @@
+{
+  "colliders": {
+    "all_blocked-False-False": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "all_blocked-False-True": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "all_blocked-True-False": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "all_blocked-True-True": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "all_free-False-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "all_free-False-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "all_free-True-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        0
+      ],
+      "with_parts": false
+    },
+    "all_free-True-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        0,
+        1
+      ],
+      "with_parts": false
+    },
+    "empty-False-False": {
+      "by_id": false,
+      "faces_count": 0,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "empty-False-True": {
+      "by_id": false,
+      "faces_count": 0,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "empty-True-False": {
+      "by_id": true,
+      "faces_count": 0,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "empty-True-True": {
+      "by_id": true,
+      "faces_count": 0,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "flags-False-False-separated-unit": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "flags-False-False-unit-separated": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "flags-False-True-separated-unit": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "flags-False-True-unit-separated": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "flags-True-False-separated-unit": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        0
+      ],
+      "with_parts": false
+    },
+    "flags-True-False-unit-separated": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        1
+      ],
+      "with_parts": false
+    },
+    "flags-True-True-separated-unit": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        0
+      ],
+      "with_parts": false
+    },
+    "flags-True-True-unit-separated": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        1
+      ],
+      "with_parts": false
+    },
+    "mismatched_connections-False-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "mismatched_connections-False-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "mismatched_connections-True-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": false
+    },
+    "mismatched_connections-True-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": false
+    },
+    "no_connections-False-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "no_connections-False-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": false
+    },
+    "no_connections-True-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": false
+    },
+    "no_connections-True-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": false
+    },
+    "no_selected-False-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "no_selected-False-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "no_selected-True-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "no_selected-True-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "second_obstacle_mesh-False-False": {
+      "by_id": true,
+      "faces_count": 12,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "second_obstacle_mesh-False-True": {
+      "by_id": true,
+      "faces_count": 12,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "second_obstacle_mesh-True-False": {
+      "by_id": true,
+      "faces_count": 12,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "second_obstacle_mesh-True-True": {
+      "by_id": true,
+      "faces_count": 12,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "selected_only-False-False": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "selected_only-False-True": {
+      "by_id": true,
+      "faces_count": 24,
+      "set_connections": false,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [
+        99
+      ],
+      "with_parts": true
+    },
+    "selected_only-True-False": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    },
+    "selected_only-True-True": {
+      "by_id": false,
+      "faces_count": 24,
+      "set_connections": true,
+      "valid_after_by_id": [
+        99
+      ],
+      "valid_after_parts": [],
+      "with_parts": true
+    }
+  },
+  "pairs": {
+    "aligned_overlap": {
+      "by_id": true,
+      "count": 25,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "aligned_two_axes": {
+      "by_id": true,
+      "count": 15,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        15,
+        15,
+        15,
+        15
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "contained": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "contained_offset": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "disjoint_overlapping_bounds": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 4,
+      "faces_b": 4,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "empty": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 1,
+      "faces_b": 0,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "face_partial": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "gap_0.0001": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "gap_0.01": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "gap_1e-06": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "identical": {
+      "by_id": true,
+      "count": 50,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        50,
+        50,
+        50,
+        50
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "near_gap": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "oblique_2": {
+      "by_id": true,
+      "count": 10,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "oblique_2.4": {
+      "by_id": true,
+      "count": 8,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "oblique_2.414213562373095": {
+      "by_id": true,
+      "count": 4,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "oblique_2.42": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "outer": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "overlap": {
+      "by_id": true,
+      "count": 14,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "penetrate_0.0001": {
+      "by_id": true,
+      "count": 12,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "penetrate_0.01": {
+      "by_id": true,
+      "count": 12,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "penetrate_1e-06": {
+      "by_id": true,
+      "count": 12,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_aligned_overlap": {
+      "by_id": true,
+      "count": 23,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        23,
+        23,
+        23,
+        23
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_contained": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "rotated_face_partial": {
+      "by_id": true,
+      "count": 11,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_overlap": {
+      "by_id": true,
+      "count": 14,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_touch_edge": {
+      "by_id": true,
+      "count": 15,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        15,
+        15,
+        15,
+        15
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_touch_face": {
+      "by_id": true,
+      "count": 18,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        18,
+        18,
+        18,
+        18
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "rotated_touch_vertex": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_0.001_face_partial": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_0.001_overlap": {
+      "by_id": true,
+      "count": 14,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "scale_0.001_separated": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_0.001_touch_face": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_1000_face_partial": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_1000_overlap": {
+      "by_id": true,
+      "count": 14,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "scale_1000_separated": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "scale_1000_touch_face": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "separated": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "tetra_face_contact": {
+      "by_id": true,
+      "count": 11,
+      "faces_a": 4,
+      "faces_b": 4,
+      "repeated_counts": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "tilted_coplanar": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 1,
+      "faces_b": 1,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": true,
+      "with_parts": false
+    },
+    "tilted_identical": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 1,
+      "faces_b": 1,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "touch_edge": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "touch_face": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "touch_vertex": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 12,
+      "faces_b": 12,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "triangle_coplanar": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 1,
+      "faces_b": 1,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    },
+    "triangle_cross": {
+      "by_id": true,
+      "count": 1,
+      "faces_a": 1,
+      "faces_b": 1,
+      "repeated_counts": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "reverse": true,
+      "with_parts": true
+    },
+    "triangle_degenerate": {
+      "by_id": false,
+      "count": 0,
+      "faces_a": 1,
+      "faces_b": 1,
+      "repeated_counts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "reverse": false,
+      "with_parts": false
+    }
+  },
+  "placements": {
+    "alternatives_blocked": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              },
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    4.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    6.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    6.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    4.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    4.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    6.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    6.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    4.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              },
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": true,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": true,
+      "query_count": 0,
+      "random_placed": false,
+      "random_result": "Could not place 1 parts"
+    },
+    "alternatives_free": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              },
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": true,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "candidate_second_blocked": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              },
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": true,
+      "query_count": 0,
+      "random_placed": false,
+      "random_result": "Could not place 1 parts"
+    },
+    "clear": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "contact": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "contained": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -0.20000000298023224,
+                    -0.30000001192092896,
+                    -0.30000001192092896
+                  ],
+                  [
+                    0.60000002384185791,
+                    -0.30000001192092896,
+                    -0.30000001192092896
+                  ],
+                  [
+                    0.60000002384185791,
+                    0.5,
+                    -0.30000001192092896
+                  ],
+                  [
+                    -0.20000000298023224,
+                    0.5,
+                    -0.30000001192092896
+                  ],
+                  [
+                    -0.20000000298023224,
+                    -0.30000001192092896,
+                    0.5
+                  ],
+                  [
+                    0.60000002384185791,
+                    -0.30000001192092896,
+                    0.5
+                  ],
+                  [
+                    0.60000002384185791,
+                    0.5,
+                    0.5
+                  ],
+                  [
+                    -0.20000000298023224,
+                    0.5,
+                    0.5
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "disabled": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "disjoint_bounds": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    1,
+                    3
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    1,
+                    2,
+                    3
+                  ]
+                ],
+                "vertices": [
+                  [
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  [
+                    0.80000001192092896,
+                    2.0,
+                    2.0
+                  ],
+                  [
+                    2.0,
+                    0.80000001192092896,
+                    2.0
+                  ],
+                  [
+                    2.0,
+                    2.0,
+                    0.80000001192092896
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    1,
+                    3
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    1,
+                    2,
+                    3
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    2.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    2.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    2.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": false,
+      "query_count": 1,
+      "random_placed": true,
+      "random_result": null
+    },
+    "empty_multiple": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [],
+            "multiple": true,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": true,
+      "query_count": 0,
+      "random_placed": false,
+      "random_result": "Could not place 1 parts"
+    },
+    "existing_second_blocked": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    3.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    3.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    5.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    3.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              },
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": true,
+      "query_count": 0,
+      "random_placed": false,
+      "random_result": "Could not place 1 parts"
+    },
+    "surface_overlap": {
+      "bases": [
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    -0.60000002384185791
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    -0.60000002384185791
+                  ],
+                  [
+                    0.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    -0.80000001192092896,
+                    1.3999999761581421
+                  ],
+                  [
+                    2.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ],
+                  [
+                    0.5,
+                    1.2000000476837158,
+                    1.3999999761581421
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "A",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                -11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                -11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                -9.0,
+                1.0,
+                1.0
+              ],
+              [
+                -11.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": 0,
+          "name": "A",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        },
+        {
+          "active_connections": [
+            0
+          ],
+          "attributes": [],
+          "children": [],
+          "class_type": "Part",
+          "collider": {
+            "check_all": false,
+            "connections": [],
+            "geometry": [
+              {
+                "faces": [
+                  [
+                    0,
+                    2,
+                    1
+                  ],
+                  [
+                    0,
+                    3,
+                    2
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ],
+                  [
+                    4,
+                    6,
+                    7
+                  ],
+                  [
+                    0,
+                    1,
+                    5
+                  ],
+                  [
+                    0,
+                    5,
+                    4
+                  ],
+                  [
+                    1,
+                    2,
+                    6
+                  ],
+                  [
+                    1,
+                    6,
+                    5
+                  ],
+                  [
+                    2,
+                    3,
+                    7
+                  ],
+                  [
+                    2,
+                    7,
+                    6
+                  ],
+                  [
+                    3,
+                    0,
+                    4
+                  ],
+                  [
+                    3,
+                    4,
+                    7
+                  ]
+                ],
+                "vertices": [
+                  [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    -1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    -1.0
+                  ],
+                  [
+                    -1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    -1.0,
+                    1.0
+                  ],
+                  [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  [
+                    -1.0,
+                    1.0,
+                    1.0
+                  ]
+                ]
+              }
+            ],
+            "multiple": false,
+            "valid_connections": []
+          },
+          "conn_on_parent": null,
+          "conn_to_parent": null,
+          "connections": [
+            {
+              "id": 0,
+              "part": "B",
+              "plane": {
+                "origin": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "xaxis": [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "yaxis": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "type": "x"
+            }
+          ],
+          "dim": 100,
+          "field": null,
+          "geometry": {
+            "faces": [
+              [
+                0,
+                2,
+                1
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                4,
+                6,
+                7
+              ],
+              [
+                0,
+                1,
+                5
+              ],
+              [
+                0,
+                5,
+                4
+              ],
+              [
+                1,
+                2,
+                6
+              ],
+              [
+                1,
+                6,
+                5
+              ],
+              [
+                2,
+                3,
+                7
+              ],
+              [
+                2,
+                7,
+                6
+              ],
+              [
+                3,
+                0,
+                4
+              ],
+              [
+                3,
+                4,
+                7
+              ]
+            ],
+            "vertices": [
+              [
+                9.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                -1.0
+              ],
+              [
+                11.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                1.0,
+                -1.0
+              ],
+              [
+                9.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                -1.0,
+                1.0
+              ],
+              [
+                11.0,
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "id": null,
+          "name": "B",
+          "parent": null,
+          "transform": {
+            "M00": 1.0,
+            "M01": 0.0,
+            "M02": 0.0,
+            "M03": 0.0,
+            "M10": 0.0,
+            "M11": 1.0,
+            "M12": 0.0,
+            "M13": 0.0,
+            "M20": 0.0,
+            "M21": 0.0,
+            "M22": 1.0,
+            "M23": 0.0,
+            "M30": 0.0,
+            "M31": 0.0,
+            "M32": 0.0,
+            "M33": 1.0
+          }
+        }
+      ],
+      "blocked": true,
+      "query_count": 0,
+      "random_placed": false,
+      "random_result": "Could not place 1 parts"
+    }
+  },
+  "provenance": {
+    "captured_utc": "2026-10-19T14:15:40.560000Z",
+    "document_absolute_tolerance": 0.001,
+    "document_units": "Millimeters",
+    "gh_commit": "9bf05acd945e8581244a6ef3bf5a0733018c9b6d",
+    "gh_version": "0.7.003",
+    "kind": "executed-gh-wasp-core-in-rhino",
+    "loader": "verified temporary copy of the pinned source; previous wasp modules restored",
+    "python_platform": "cli",
+    "python_version": "2.7.12 (2.7.12.1000)\n[.NETCoreApp,Version=v3.1 on .NET 8.0.14 (64-bit)]",
+    "rhino_version": "8.33.26188.13002",
+    "scope": "WASP-017 Collider surface and placement reference; no DisCo or component execution",
+    "source_manifest": "../WASP-002/source-manifest.json",
+    "wasp_global_tolerance": 0.002
+  },
+  "transform_matrix": [
+    [
+      0.93232734560603447,
+      -0.35367107170305978,
+      0.07538231673022,
+      10
+    ],
+    [
+      0.36161543196496199,
+      0.91184496664540704,
+      -0.1943528650888138,
+      20
+    ],
+    [
+      0,
+      0.20845989984609956,
+      0.97803091472414827,
+      30
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "transform_paths": {
+    "copied": {
+      "check_all": true,
+      "connections": [
+        {
+          "id": 90,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        },
+        {
+          "id": 91,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              -1.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              1.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              1.0,
+              1.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              1.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0,
+              1.0
+            ],
+            [
+              -1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              3.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              5.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              5.0,
+              1.0,
+              -1.0
+            ],
+            [
+              3.0,
+              1.0,
+              -1.0
+            ],
+            [
+              3.0,
+              -1.0,
+              1.0
+            ],
+            [
+              5.0,
+              -1.0,
+              1.0
+            ],
+            [
+              5.0,
+              1.0,
+              1.0
+            ],
+            [
+              3.0,
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": [
+        1
+      ]
+    },
+    "source": {
+      "check_all": true,
+      "connections": [
+        {
+          "id": 90,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        },
+        {
+          "id": 91,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "xaxis": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "yaxis": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              -1.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              1.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              1.0,
+              1.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              1.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              -1.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0,
+              1.0
+            ],
+            [
+              -1.0,
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              3.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              5.0,
+              -1.0,
+              -1.0
+            ],
+            [
+              5.0,
+              1.0,
+              -1.0
+            ],
+            [
+              3.0,
+              1.0,
+              -1.0
+            ],
+            [
+              3.0,
+              -1.0,
+              1.0
+            ],
+            [
+              5.0,
+              -1.0,
+              1.0
+            ],
+            [
+              5.0,
+              1.0,
+              1.0
+            ],
+            [
+              3.0,
+              1.0,
+              1.0
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": [
+        1
+      ]
+    },
+    "transform-False-False": {
+      "check_all": true,
+      "connections": [],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              9.3459615707397461,
+              18.920892715454102,
+              28.813508987426758
+            ],
+            [
+              11.210616111755371,
+              19.644123077392578,
+              28.813508987426758
+            ],
+            [
+              10.503273963928223,
+              21.467813491821289,
+              29.230428695678711
+            ],
+            [
+              8.6386194229125977,
+              20.744583129882812,
+              29.230428695678711
+            ],
+            [
+              9.4967260360717773,
+              18.532186508178711,
+              30.769571304321289
+            ],
+            [
+              11.361380577087402,
+              19.255416870117188,
+              30.769571304321289
+            ],
+            [
+              10.654038429260254,
+              21.079107284545898,
+              31.186491012573242
+            ],
+            [
+              8.7893838882446289,
+              20.355876922607422,
+              31.186491012573242
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              13.075270652770996,
+              20.367353439331055,
+              28.813508987426758
+            ],
+            [
+              14.939925193786621,
+              21.090585708618164,
+              28.813508987426758
+            ],
+            [
+              14.232583045959473,
+              22.914274215698242,
+              29.230428695678711
+            ],
+            [
+              12.367928504943848,
+              22.191043853759766,
+              29.230428695678711
+            ],
+            [
+              13.226035118103027,
+              19.978649139404297,
+              30.769571304321289
+            ],
+            [
+              15.090689659118652,
+              20.701879501342773,
+              30.769571304321289
+            ],
+            [
+              14.383347511291504,
+              22.525569915771484,
+              31.186491012573242
+            ],
+            [
+              12.518692970275879,
+              21.802337646484375,
+              31.186491012573242
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": []
+    },
+    "transform-False-True": {
+      "check_all": true,
+      "connections": [],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              9.3459615707397461,
+              18.920892715454102,
+              28.813508987426758
+            ],
+            [
+              11.210616111755371,
+              19.644123077392578,
+              28.813508987426758
+            ],
+            [
+              10.503273963928223,
+              21.467813491821289,
+              29.230428695678711
+            ],
+            [
+              8.6386194229125977,
+              20.744583129882812,
+              29.230428695678711
+            ],
+            [
+              9.4967260360717773,
+              18.532186508178711,
+              30.769571304321289
+            ],
+            [
+              11.361380577087402,
+              19.255416870117188,
+              30.769571304321289
+            ],
+            [
+              10.654038429260254,
+              21.079107284545898,
+              31.186491012573242
+            ],
+            [
+              8.7893838882446289,
+              20.355876922607422,
+              31.186491012573242
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              13.075270652770996,
+              20.367353439331055,
+              28.813508987426758
+            ],
+            [
+              14.939925193786621,
+              21.090585708618164,
+              28.813508987426758
+            ],
+            [
+              14.232583045959473,
+              22.914274215698242,
+              29.230428695678711
+            ],
+            [
+              12.367928504943848,
+              22.191043853759766,
+              29.230428695678711
+            ],
+            [
+              13.226035118103027,
+              19.978649139404297,
+              30.769571304321289
+            ],
+            [
+              15.090689659118652,
+              20.701879501342773,
+              30.769571304321289
+            ],
+            [
+              14.383347511291504,
+              22.525569915771484,
+              31.186491012573242
+            ],
+            [
+              12.518692970275879,
+              21.802337646484375,
+              31.186491012573242
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": [
+        1
+      ]
+    },
+    "transform-True-False": {
+      "check_all": true,
+      "connections": [
+        {
+          "id": 90,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              10.0,
+              20.0,
+              30.0
+            ],
+            "xaxis": [
+              0.93232734560603447,
+              0.36161543196496199,
+              0.0
+            ],
+            "yaxis": [
+              -0.35367107170305973,
+              0.91184496664540682,
+              0.2084598998460995
+            ]
+          },
+          "type": "x"
+        },
+        {
+          "id": 91,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              10.0,
+              20.0,
+              30.0
+            ],
+            "xaxis": [
+              0.93232734560603447,
+              0.36161543196496199,
+              0.0
+            ],
+            "yaxis": [
+              -0.35367107170305973,
+              0.91184496664540682,
+              0.2084598998460995
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              9.3459615707397461,
+              18.920892715454102,
+              28.813508987426758
+            ],
+            [
+              11.210616111755371,
+              19.644123077392578,
+              28.813508987426758
+            ],
+            [
+              10.503273963928223,
+              21.467813491821289,
+              29.230428695678711
+            ],
+            [
+              8.6386194229125977,
+              20.744583129882812,
+              29.230428695678711
+            ],
+            [
+              9.4967260360717773,
+              18.532186508178711,
+              30.769571304321289
+            ],
+            [
+              11.361380577087402,
+              19.255416870117188,
+              30.769571304321289
+            ],
+            [
+              10.654038429260254,
+              21.079107284545898,
+              31.186491012573242
+            ],
+            [
+              8.7893838882446289,
+              20.355876922607422,
+              31.186491012573242
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              13.075270652770996,
+              20.367353439331055,
+              28.813508987426758
+            ],
+            [
+              14.939925193786621,
+              21.090585708618164,
+              28.813508987426758
+            ],
+            [
+              14.232583045959473,
+              22.914274215698242,
+              29.230428695678711
+            ],
+            [
+              12.367928504943848,
+              22.191043853759766,
+              29.230428695678711
+            ],
+            [
+              13.226035118103027,
+              19.978649139404297,
+              30.769571304321289
+            ],
+            [
+              15.090689659118652,
+              20.701879501342773,
+              30.769571304321289
+            ],
+            [
+              14.383347511291504,
+              22.525569915771484,
+              31.186491012573242
+            ],
+            [
+              12.518692970275879,
+              21.802337646484375,
+              31.186491012573242
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": []
+    },
+    "transform-True-True": {
+      "check_all": true,
+      "connections": [
+        {
+          "id": 90,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              10.0,
+              20.0,
+              30.0
+            ],
+            "xaxis": [
+              0.93232734560603447,
+              0.36161543196496199,
+              0.0
+            ],
+            "yaxis": [
+              -0.35367107170305973,
+              0.91184496664540682,
+              0.2084598998460995
+            ]
+          },
+          "type": "x"
+        },
+        {
+          "id": 91,
+          "part": "variant",
+          "plane": {
+            "origin": [
+              10.0,
+              20.0,
+              30.0
+            ],
+            "xaxis": [
+              0.93232734560603447,
+              0.36161543196496199,
+              0.0
+            ],
+            "yaxis": [
+              -0.35367107170305973,
+              0.91184496664540682,
+              0.2084598998460995
+            ]
+          },
+          "type": "x"
+        }
+      ],
+      "geometry": [
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              9.3459615707397461,
+              18.920892715454102,
+              28.813508987426758
+            ],
+            [
+              11.210616111755371,
+              19.644123077392578,
+              28.813508987426758
+            ],
+            [
+              10.503273963928223,
+              21.467813491821289,
+              29.230428695678711
+            ],
+            [
+              8.6386194229125977,
+              20.744583129882812,
+              29.230428695678711
+            ],
+            [
+              9.4967260360717773,
+              18.532186508178711,
+              30.769571304321289
+            ],
+            [
+              11.361380577087402,
+              19.255416870117188,
+              30.769571304321289
+            ],
+            [
+              10.654038429260254,
+              21.079107284545898,
+              31.186491012573242
+            ],
+            [
+              8.7893838882446289,
+              20.355876922607422,
+              31.186491012573242
+            ]
+          ]
+        },
+        {
+          "faces": [
+            [
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              2,
+              6
+            ],
+            [
+              1,
+              6,
+              5
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              3,
+              0,
+              4
+            ],
+            [
+              3,
+              4,
+              7
+            ]
+          ],
+          "vertices": [
+            [
+              13.075270652770996,
+              20.367353439331055,
+              28.813508987426758
+            ],
+            [
+              14.939925193786621,
+              21.090585708618164,
+              28.813508987426758
+            ],
+            [
+              14.232583045959473,
+              22.914274215698242,
+              29.230428695678711
+            ],
+            [
+              12.367928504943848,
+              22.191043853759766,
+              29.230428695678711
+            ],
+            [
+              13.226035118103027,
+              19.978649139404297,
+              30.769571304321289
+            ],
+            [
+              15.090689659118652,
+              20.701879501342773,
+              30.769571304321289
+            ],
+            [
+              14.383347511291504,
+              22.525569915771484,
+              31.186491012573242
+            ],
+            [
+              12.518692970275879,
+              21.802337646484375,
+              31.186491012573242
+            ]
+          ]
+        }
+      ],
+      "multiple": true,
+      "valid_connections": [
+        1
+      ]
+    }
+  }
+}

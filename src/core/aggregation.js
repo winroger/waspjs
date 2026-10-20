@@ -2,7 +2,8 @@
  * WaspJS — aggregation growth, graph state and reconstruction.
  * Upstream module: src/wasp/core/aggregation.py; intentional differences documented below.
  */
-import { PlaneToPlane, checkMeshesIntersection, transformToData } from './utilities';
+import { PlaneToPlane, transformToData } from './utilities';
+import { Collider } from './collider';
 import { Part } from './part';
 import { Rule } from './rule';
 import { Graph } from './graph.js';
@@ -12,6 +13,16 @@ function normalizeList(value) {
     if (Array.isArray(value)) return value;
     if (typeof value === 'object') return Object.values(value);
     return [];
+}
+
+/**
+ * JS-specific placement helper. GH-Wasp difference: retain JS's Part-geometry
+ * fallback for an empty simple collider, without a percentage shrink.
+ * Explicit colliders remain authoritative. @internal
+ */
+function placementCollider(part) {
+    return part.collider && (part.collider.geometry.length || part.collider.multiple)
+        ? part.collider : new Collider([part.geo]);
 }
 
 function normalizeAggregatedParts(value, sequence = []) {
@@ -452,40 +463,7 @@ addPartToAggregation() {
                     return false;
                 }
 
-                let collisionDetected = false;
-
-                // Create a scaled-down version of next_part_trans
-                const next_part_trans_collider_geo = next_part_trans.copy().collider.geometry[0];
-                const next_part_trans_scale = next_part_trans.copy().geo;
-                next_part_trans_scale.scale.set(0.99, 0.99, 0.99);
-
-                for (let partToCheck of this.coll_check ? this.aggregated_parts : []) {
-                    let part1mesh = null
-                    if (partToCheck.collider.geometry[0] != undefined) {
-                        part1mesh = partToCheck.collider.geometry[0];
-                    }
-                    else {
-                        part1mesh = partToCheck.geo;
-                    }
-
-                    let part2mesh = null
-                    if (next_part_trans_collider_geo != undefined) {
-                        part2mesh = next_part_trans_collider_geo;
-                    }
-                    else {
-                        part2mesh = next_part_trans_scale;
-                    }
-                    
-                    part1mesh.updateMatrixWorld();
-                    part2mesh.updateMatrixWorld();
-                    const result = checkMeshesIntersection(part1mesh, part2mesh);
-                    if (result) {
-                        collisionDetected = true;
-                        break;
-                    }
-                }
-
-                if (collisionDetected) {
+                if (this._checkCollision(next_part_trans)) {
                     continue; // Restart the loop if a collision is detected
                 }
 
@@ -556,24 +534,12 @@ removePartFromAggregation(part_id) {
  */
 _checkCollision(partTrans) {
     if (!this.coll_check) return false;
-    const colliderGeo = partTrans.copy().collider.geometry[0];
-    const scaledGeo = partTrans.copy().geo;
-    scaledGeo.scale.set(0.99, 0.99, 0.99);
-
-    for (const existing of this.aggregated_parts) {
-        const part1mesh = existing.collider.geometry[0] != undefined
-            ? existing.collider.geometry[0]
-            : existing.geo;
-        const part2mesh = colliderGeo != undefined
-            ? colliderGeo
-            : scaledGeo;
-        part1mesh.updateMatrixWorld();
-        part2mesh.updateMatrixWorld();
-        if (checkMeshesIntersection(part1mesh, part2mesh)) {
-            return true;
-        }
-    }
-    return false;
+    // GH-Wasp difference: retain JS's surface-only placement contract, without
+    // GH's additional center-overlap gate. coll_check=false bypasses all checks.
+    // Test every existing collider: JS dim is derived from display geometry and
+    // is not a safe radius for off-center or larger explicit collider meshes.
+    const parts = this.aggregated_parts.map(part => ({ collider: placementCollider(part) }));
+    return placementCollider(partTrans).checkCollisionsById(parts, parts.map((_, i) => i));
 }
 
 /**
