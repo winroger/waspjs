@@ -1,0 +1,217 @@
+{
+  "cases": {
+    "advanced": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 6.0827625302982185, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 6.0827625302982185
+      }
+    }, 
+    "alternative_meshes": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 11.0, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 11.0
+      }
+    }, 
+    "default": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 6.0827625302982185, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 6.0827625302982185
+      }
+    }, 
+    "degenerate_collider": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 8.0, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 8.0
+      }
+    }, 
+    "empty_collider": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": null, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": null
+      }
+    }, 
+    "explicit": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 23, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 23
+      }
+    }, 
+    "multiple_meshes": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 11.0, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 11.0
+      }
+    }, 
+    "null": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 6.0827625302982185, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 6.0827625302982185
+      }
+    }, 
+    "small_collider": {
+      "center": [
+        0.0, 
+        0.66666666666666663, 
+        0.0
+      ], 
+      "dim": 1.9436506316151001, 
+      "posed": {
+        "center": [
+          9.3333333333333339, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 1.9436506316150997
+      }
+    }, 
+    "unused_vertex": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 20.0, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 20.0
+      }
+    }, 
+    "zero": {
+      "center": [
+        0.0, 
+        0.0, 
+        0.0
+      ], 
+      "dim": 0, 
+      "posed": {
+        "center": [
+          10.0, 
+          20.0, 
+          30.0
+        ], 
+        "dim": 0
+      }
+    }
+  }, 
+  "explicit_small_graph": {
+    "0": {}, 
+    "1": {}
+  }, 
+  "graph": {
+    "0": {
+      "1": {
+        "conn_end": 0, 
+        "conn_start": 0, 
+        "end": 1, 
+        "start": 0
+      }
+    }, 
+    "1": {
+      "0": {
+        "conn_end": 0, 
+        "conn_start": 0, 
+        "end": 0, 
+        "start": 1
+      }
+    }
+  }, 
+  "provenance": {
+    "captured_utc": "2026-10-20T08:44:50.806000Z", 
+    "case_source_sha256": "2fdb84ff063cf8dc575b8e149b6df577c3780242d74d642f460c25517b9e8290", 
+    "document_absolute_tolerance": 0.001, 
+    "document_units": "Millimeters", 
+    "gh_commit": "9bf05acd945e8581244a6ef3bf5a0733018c9b6d", 
+    "gh_version": "0.7.003", 
+    "kind": "executed-gh-wasp-core-in-rhino", 
+    "loader": "verified temporary package; module/path/RNG/bytecode state restored", 
+    "python_version": "2.7.12 (2.7.12.1000)\n[.NETCoreApp,Version=v3.1 on .NET 8.0.14 (64-bit)]", 
+    "rhino_version": "8.33.26188.13002", 
+    "scope": "Collider MeshLine and Part/AdvancedPart dim/Graph; no components, constraints or DisCo", 
+    "source_files_verified": 15, 
+    "wasp_global_tolerance": 0.002
+  }
+}

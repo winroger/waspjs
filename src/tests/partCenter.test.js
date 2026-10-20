@@ -87,13 +87,13 @@ describe('GH-Wasp Part surface centroid', () => {
         center(makePart(mesh).center, [1 / 3, 1 / 3, 0]);
     });
 
-    it('keeps existing explicit, default and derived dim behavior', () => {
+    it('keeps explicit dimensions and the empty-collider display-radius fallback', () => {
         const mesh = meshFromData(corpus.cases[0].geometry);
         mesh.scale.set(2, 3, 4);
         mesh.geometry.computeBoundingSphere();
         const expectedRadius = mesh.geometry.boundingSphere.radius;
         expect(makePart(mesh, null).dim).toBe(expectedRadius * 4);
         expect(makePart(mesh, 123).dim).toBe(123);
-        expect(new Part('default', mesh, [], new Collider([]), []).dim).toBe(1);
+        expect(new Part('default', mesh, [], new Collider([]), []).dim).toBe(expectedRadius * 4);
     });
 });

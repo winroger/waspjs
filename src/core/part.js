@@ -38,11 +38,11 @@ export class Part {
      * @param {Connection[]} connections
      * @param {Collider} collider
      * @param {Array<unknown>} [attributes] JSON values associated with the part
-     * @param {number|null} dim
+     * @param {number|null} [dim=null] Explicit size or automatic primary-collider radius
      * @param {number|string|null} id
      * @param {unknown} field
      */
-    constructor(name, geometry, connections, collider = null, attributes, dim = 1, id = null , field = null) {
+    constructor(name, geometry, connections, collider = null, attributes, dim = null, id = null , field = null) {
         this.name = name;
         this.id = id;
         this.geo = geometry;
@@ -62,7 +62,7 @@ export class Part {
 
         this.transformation = new THREE.Matrix4().identity();
 
-        const { center, dim: computedDim } = computeCenterAndDim(geometry, collider);
+        const { center, dim: computedDim } = computeCenterAndDim(geometry, collider, dim === null);
         this.center = center;
         this.collider = collider;
         this.dim = dim !== null ? dim : computedDim;
@@ -424,32 +424,45 @@ function advancedFromPart(part, additional) {
     return result;
 }
 
-// Use the GH-style surface centroid while retaining the existing size calculation.
-function computeCenterAndDim(mesh, collider) {
+// GH Part.__init__: surface centroid and largest distance to primary collider vertices.
+function computeCenterAndDim(mesh, collider, automatic) {
     const defaultResult = { center: new THREE.Vector3(), dim: 1 };
     if (!mesh || !mesh.geometry) {
         return defaultResult;
     }
 
-    if (typeof mesh.updateMatrix === 'function') {
-        mesh.updateMatrix();
-    }
-
-    const geom = mesh.geometry;
-    if (!geom.boundingBox) {
-        geom.computeBoundingBox();
-    }
-    if (!geom.boundingSphere) {
-        geom.computeBoundingSphere();
-    }
-
     const center = meshAreaCentroid(mesh);
+    if (!automatic) return { center, dim: null };
+    let radius = null;
+    const vertex = new THREE.Vector3();
+    for (const body of collider?.geometry ?? []) {
+        const position = body.geometry.getAttribute('position');
+        if (!position) continue;
+        const transform = body.matrixAutoUpdate
+            ? new THREE.Matrix4().compose(body.position, body.quaternion, body.scale)
+            : body.matrix;
+        // All vertices count, including unreferenced ones on directly built meshes.
+        for (let i = 0; i < position.count; i++) {
+            vertex.fromBufferAttribute(position, i).applyMatrix4(transform);
+            const distance = center.distanceTo(vertex);
+            if (!Number.isFinite(distance)) throw new Error('Cannot compute dim from nonfinite collider vertices');
+            radius = Math.max(radius ?? 0, distance);
+        }
+    }
+    if (radius !== null) return { center, dim: radius };
 
-    const radius = geom.boundingSphere ? geom.boundingSphere.radius * Math.max(mesh.scale.x, mesh.scale.y, mesh.scale.z) : null;
-    const boxSize = geom.boundingBox ? geom.boundingBox.getSize(new THREE.Vector3()).length() / 2 : null;
-    const dim = radius ?? boxSize ?? (collider && collider.geometry?.length ? collider.geometry.length : defaultResult.dim);
-
-    return { center, dim };
+    // GH-Wasp difference: no primary vertices gives GH None. Retain a finite JS
+    // display-radius fallback for empty/missing colliders, without mutating bounds.
+    const position = mesh.geometry.getAttribute('position');
+    if (!position?.count) return { center, dim: defaultResult.dim };
+    const sphereCenter = new THREE.Box3().setFromBufferAttribute(position).getCenter(new THREE.Vector3());
+    let radiusSq = 0;
+    for (let i = 0; i < position.count; i++) {
+        radiusSq = Math.max(radiusSq, vertex.fromBufferAttribute(position, i).distanceToSquared(sphereCenter));
+    }
+    const fallback = Math.sqrt(radiusSq) * Math.max(Math.abs(mesh.scale.x), Math.abs(mesh.scale.y), Math.abs(mesh.scale.z));
+    if (!Number.isFinite(fallback)) throw new Error('Cannot compute dim from nonfinite display vertices');
+    return { center, dim: fallback };
 }
 
 // ==================== PartCatalog ====================

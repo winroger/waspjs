@@ -1,0 +1,83 @@
+{
+  "cases": {
+    "coplanar_cross": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "coplanar_inside": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "cross": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "degenerate_face": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "edge": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "empty": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "endpoint_end": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "endpoint_start": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "extension_only": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "miss": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "parallel": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "reversed": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "second_mesh": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "vertex": {
+      "intersects": true, 
+      "posed_intersects": true
+    }, 
+    "zero_off_surface": {
+      "intersects": false, 
+      "posed_intersects": false
+    }, 
+    "zero_on_surface": {
+      "intersects": false, 
+      "posed_intersects": false
+    }
+  }, 
+  "provenance": {
+    "captured_utc": "2026-10-20T08:44:50.806000Z", 
+    "case_source_sha256": "2fdb84ff063cf8dc575b8e149b6df577c3780242d74d642f460c25517b9e8290", 
+    "document_absolute_tolerance": 0.001, 
+    "document_units": "Millimeters", 
+    "gh_commit": "9bf05acd945e8581244a6ef3bf5a0733018c9b6d", 
+    "gh_version": "0.7.003", 
+    "kind": "executed-gh-wasp-core-in-rhino", 
+    "loader": "verified temporary package; module/path/RNG/bytecode state restored", 
+    "python_version": "2.7.12 (2.7.12.1000)\n[.NETCoreApp,Version=v3.1 on .NET 8.0.14 (64-bit)]", 
+    "rhino_version": "8.33.26188.13002", 
+    "scope": "Collider MeshLine and Part/AdvancedPart dim/Graph; no components, constraints or DisCo", 
+    "source_files_verified": 15, 
+    "wasp_global_tolerance": 0.002
+  }
+}

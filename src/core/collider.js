@@ -2,7 +2,7 @@
  * WaspJS — Collider class and surface collision checks.
  * Upstream module: src/wasp/core/colliders.py
  */
-import { copyMesh, meshFromData, meshToData, checkMeshesIntersection } from './utilities';
+import { copyMesh, meshFromData, meshToData, checkMeshesIntersection, checkMeshLineIntersection } from './utilities';
 import { Connection } from './connection';
 
 // ==================== Collider ====================
@@ -186,9 +186,16 @@ export class Collider {
         }
     }
 
+    /**
+     * Test a finite model-space segment against every collider mesh, as GH MeshLine.
+     * Endpoint contacts count; coplanar and zero-length segments do not.
+     * Empty collider lists return false. Invalid endpoints on a queried mesh throw.
+     * @param {import('three').Line3|{start: {x:number,y:number,z:number}, end: {x:number,y:number,z:number}} line
+     * @returns {boolean}
+     */
     checkIntersectionWithLine(line) {
         for (let geo of this.geometry) {
-            if (geo.intersectsLine(line)) {
+            if (checkMeshLineIntersection(geo, line)) {
                 return true;
             }
         }

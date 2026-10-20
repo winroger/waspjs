@@ -226,12 +226,12 @@ describe('AdvancedPart support boundaries and ownership', () => {
         expect(a.rnd_seed).toBe(42); expect(a.mode).toBe(1);
         expect(Aggregation.fromData(a.toData()).mode).toBe(1);
     });
-    it('retains the JS base-Part default size calculation while explicit GH dim survives import', () => {
+    it('matches the GH automatic collider radius while explicit GH dim survives import', () => {
         const p = base('plain');
         const advanced = new AdvancedPart('B', p.geo, [], p.collider);
         const ordinary = new Part('B', p.geo, [], p.collider, [], null);
         expect(advanced.dim).toBe(ordinary.dim);
-        expect(Math.abs(advanced.dim - reference.reader_limits.default_dim)).toBeGreaterThan(1);
+        expect(advanced.dim).toBeCloseTo(reference.reader_limits.default_dim, 7);
         expect(p.dim).toBe(100);
     });
     for (const mode of [2, 3, 4, -1]) {

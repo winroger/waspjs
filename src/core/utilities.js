@@ -85,6 +85,48 @@ export function distanceToMesh(point, mesh) {
 }
 
 /**
+ * Test a finite segment against a mesh surface, including both endpoints/sides.
+ * JS host-API adapter: Rhino Intersection.MeshLine, used by
+ * src/wasp/core/colliders.py::check_intersection_w_line.
+ * Uses the shared private model-space geometry; no scene-parent or render state.
+ * Coplanar, zero-length and degenerate-triangle cases return false, matching the
+ * measured native cases. Float32/boundary limits remain; no volume test is made.
+ * @internal Not exported from the package entry point.
+ * @param {THREE.Mesh} mesh
+ * @param {THREE.Line3|{start: {x:number,y:number,z:number}, end: {x:number,y:number,z:number}}} line
+ * @returns {boolean}
+ * @throws {Error} Endpoints are missing or nonfinite
+ */
+export function checkMeshLineIntersection(mesh, line) {
+    if (!line || ![line.start, line.end].every(point => point
+        && ['x', 'y', 'z'].every(axis => Number.isFinite(point[axis])))) {
+        throw new Error('Line requires finite start and end points');
+    }
+    const start = new THREE.Vector3().copy(line.start);
+    const direction = new THREE.Vector3().subVectors(line.end, start);
+    const length = direction.length();
+    if (!Number.isFinite(length)) throw new Error('Line requires finite start and end separation');
+    if (length === 0) return false;
+    const placed = collisionMesh(mesh);
+    if (!placed) return false;
+    const ray = new THREE.Ray(start, direction.divideScalar(length));
+    const position = placed.geometry.getAttribute('position'), index = placed.geometry.index;
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+    const hit = new THREE.Vector3();
+    const count = index ? index.count : position.count;
+    // Endpoints are included; absorb only double-arithmetic roundoff, not model tolerance.
+    const epsilon = Number.EPSILON * 128 * Math.max(1, length, start.length());
+    for (let i = 0; i + 2 < count; i += 3) {
+        a.fromBufferAttribute(position, index ? index.getX(i) : i);
+        b.fromBufferAttribute(position, index ? index.getX(i + 1) : i + 1);
+        c.fromBufferAttribute(position, index ? index.getX(i + 2) : i + 2);
+        if (ray.intersectTriangle(a, b, c, false, hit)
+            && start.distanceTo(hit) <= length + epsilon) return true;
+    }
+    return false;
+}
+
+/**
  * Test mesh surfaces in model coordinates without changing either source mesh.
  * JS host-API adapter: Rhino Intersection.MeshMeshFast used by
  * src/wasp/core/colliders.py, implemented with the installed three-mesh-bvh.

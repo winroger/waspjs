@@ -72,8 +72,30 @@ non-indexed triangles include the local mesh placement and exclude scene-parent
 transforms; nonuniform scale changes the surface-area weights. Quad JSON uses the
 existing triangle split in `meshFromData`; planar quads are covered by the tests.
 Empty and zero-area triangle meshes return the origin, as in the measured Rhino
-cases. This change preserves the existing `dim` behavior and adds no dependency.
+cases. Dimension calculation is described separately below; no dependency is added.
 The calculation makes one pass over triangles whenever a Part is constructed.
+
+### Part dimension
+
+Omitted or `null` `dim` now computes the largest distance from the surface centroid
+of the display mesh to **all primary collider vertices**, matching the measured
+GH Part constructor. All meshes/alternative variants contribute, including unused
+vertices on directly constructed meshes; an additional collider does not contribute.
+Local model placement is included, scene parents excluded. Vertex/pose/bounds data
+are not changed. The same rule applies to Part and the supported AdvancedPart.
+
+**The previous Base-Part constructor default was `1`.** Pass `1` explicitly if
+that radius is intentional. Explicit values (including `0`) and imported dimensions
+remain unchanged through copy, rigid transforms and full/light data. The existing
+maximum-scale display bounding-sphere fallback remains for missing/empty primary
+colliders; GH instead yields `None` when there are no primary vertices. This finite
+fallback is a JS compatibility boundary, not GH parity. Nonfinite primary vertices
+are rejected when an automatic radius is requested.
+
+`Graph.fromAggregation` uses these dimensions in its neighbor filter. The native
+counterexample in [partDimension.test.js](src/tests/partDimension.test.js) now
+retains two directed edges previously excluded by the JS default. Existing stored
+models with explicit small dimensions are not silently repaired or migrated.
 
 ### Connection assignment
 
@@ -394,9 +416,29 @@ Placement retains two JS differences: an empty simple collider falls back to the
 unscaled Part mesh, and no separate GH center-overlap gate is added. Explicit
 empty alternative colliders remain blocked. There is no longer a `0.99` shrink.
 `coll_check=false` bypasses primary placement collision checks. All existing colliders are
-tested without GH's `center`/`dim` radius prefilter, since JS `dim` is derived from
-display geometry and may not bound an explicit collider. The limited AdvancedPart
+tested without GH's `center`/`dim` radius prefilter. Automatic dimensions now bound
+primary collider vertices; explicit/imported sizes can still be smaller. The limited AdvancedPart
 extension is described below; general Rhino/constraint parity is not implied.
+
+### Collider line checks
+
+`collider.checkIntersectionWithLine(line)` accepts a `THREE.Line3` or an object
+with finite `{start: {x,y,z}, end: {x,y,z}}` points in model coordinates. It tests a
+**finite segment**, both triangle sides and every collider mesh, regardless of
+alternative-variant flags. It no longer requires a nonexistent `Mesh.intersectsLine`
+patch. Invalid endpoints throw when a mesh is queried; an empty collider returns
+`false`. Measured endpoint/edge/vertex contacts count. Zero-length, coplanar and
+degenerate-triangle cases return `false` in the covered native cases.
+
+The internal adapter uses the shared private model-space geometry, including local
+pose and marked buffer edits, without changing caller matrices, indices, buffers
+or external BVH caches. Scene parents, render groups/draw ranges and visibility
+are excluded. It scans triangles and stops at the first hit; this adds no new BVH
+or dependency. Float32 precision and double-roundoff endpoint limits remain; no
+universal tolerance/contact or general Rhino geometry parity is promised.
+[colliderLine.test.js](src/tests/colliderLine.test.js) contains the native cases.
+This does not implement Supports or other constraints; `checkGlobalConstraints`
+remains a reserved placeholder.
 
 ### AdvancedPart and additional colliders
 
@@ -438,9 +480,9 @@ full/light data for this subset.
 uses GH's AdvancedPart argument order, which differs from Part's third parenting
 argument. Hierarchy transforms remain rejected. `toData(includeGeometry,
 includePrimaryCollider)` keeps the existing JS Part flags; GH's second export
-flag instead controls attributes. Defaults for `dim` reuse JS Part's display-mesh
-size calculation; imported explicit GH `dim` values are retained. This is not
-GH's maximum collider-vertex distance calculation.
+flag instead controls attributes. Automatic `dim` uses the same primary-collider
+vertex-distance calculation as Part; imported explicit values are retained.
+See [Part dimension](#part-dimension) for defaults and the empty-collider boundary.
 
 [advancedPart.test.js](src/tests/advancedPart.test.js) contains executed GH
 comparisons, supported modes, native reader limits and ownership checks.
