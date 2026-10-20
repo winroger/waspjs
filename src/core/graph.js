@@ -7,6 +7,9 @@
 
 /** Stores part IDs and directed edges with their two connection IDs. */
 export class Graph {
+    /**
+     * Create an empty adjacency dictionary; graph-attribute support remains reserved.
+     */
     constructor() {
         this.graph_dict = {};
         // Reserved in GH; attribute-driven graph operations are not implemented.
@@ -82,7 +85,7 @@ export class Graph {
         return graph;
     }
 
-    /** @param {number|string} id */
+    /** @param {number|string} id @returns {void} */
     addNode(id) {
         if (!Object.hasOwn(this.graph_dict, id)) {
             Object.defineProperty(this.graph_dict, id, {
@@ -97,6 +100,7 @@ export class Graph {
      * @param {number|string} endId
      * @param {number} startConnection
      * @param {number} endConnection
+     * @returns {void}
      */
     addEdge(startId, endId, startConnection, endConnection) {
         this.addNode(startId);
@@ -108,7 +112,7 @@ export class Graph {
         }
     }
 
-    /** @param {number|string} id */
+    /** @param {number|string} id @returns {void} */
     removeNode(id) {
         delete this.graph_dict[id];
         for (const neighbours of Object.values(this.graph_dict)) delete neighbours[id];

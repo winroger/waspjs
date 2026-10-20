@@ -93,7 +93,7 @@ export function distanceToMesh(point, mesh) {
  * measured native cases. Float32/boundary limits remain; no volume test is made.
  * @internal Not exported from the package entry point.
  * @param {THREE.Mesh} mesh
- * @param {THREE.Line3|{start: {x:number,y:number,z:number}, end: {x:number,y:number,z:number}}} line
+ * @param {THREE.Line3|import('../types/index.js').SegmentData} line
  * @returns {boolean}
  * @throws {Error} Endpoints are missing or nonfinite
  */
@@ -178,6 +178,8 @@ export function checkMeshesIntersection(mesh1, mesh2) {
  * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::mesh_to_data.
  * JS adaptation: bake Three.js local placement because Rhino stores mesh vertices
  * in their placed coordinates; support indexed and non-indexed BufferGeometry.
+ * @param {THREE.Mesh} mesh
+ * @returns {import('../types/index.js').MeshData}
  */
 export function meshToData(mesh) {
   const geom = mesh.geometry;
@@ -222,6 +224,8 @@ export function meshToData(mesh) {
  * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::mesh_from_data.
  * JS adaptation: triangulate quads for BufferGeometry, compute normals and create
  * a default rendering material. Rhino retains mesh quad faces.
+ * @param {import('../types/index.js').MeshData} data
+ * @returns {THREE.Mesh}
  */
 export function meshFromData(data) {
     const geometry = new THREE.BufferGeometry();
@@ -254,6 +258,8 @@ export function meshFromData(data) {
  * Convert a Matrix4 to a plain object representation.
  * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::transform_to_data.
  * JS adaptation: map Three.js column-major storage to the shared M00..M33 fields.
+ * @param {THREE.Matrix4} trans
+ * @returns {import('../types/index.js').TransformData}
  */
 export function transformToData(trans) {
   const e = trans.elements; // column-major
@@ -269,6 +275,8 @@ export function transformToData(trans) {
  * Rebuild a Matrix4 from plain object data.
  * GH-Wasp utility counterpart: src/wasp/utilities/utilities.py::transform_from_data.
  * JS adaptation: Matrix4.set accepts row-ordered arguments and stores columns.
+ * @param {import('../types/index.js').TransformData} data
+ * @returns {THREE.Matrix4}
  */
 export function transformFromData(data) {
   const m = [
@@ -295,6 +303,9 @@ export function transformFromData(data) {
  * src/wasp/core/aggregation.py; no standalone function in GH-Wasp utilities.
  * Computes targetBasis * inverse(sourceBasis); rigid-frame parity is measured in
  * planeCompatibility.test.js, not general affine-transform parity.
+ * @param {Plane} sourcePlane
+ * @param {Plane} targetPlane
+ * @returns {THREE.Matrix4}
  */
 export function PlaneToPlane(sourcePlane, targetPlane) {
     const sourceMatrix = new THREE.Matrix4();

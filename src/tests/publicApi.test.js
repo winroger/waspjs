@@ -6,7 +6,7 @@ import { Collider } from '../core/collider.js';
 import { Part } from '../core/part.js';
 import { Rule } from '../core/rule.js';
 import { Aggregation } from '../core/aggregation.js';
-import { createAggregationFromData } from '../core/publicApi.js';
+import { createAggregationFromData } from '../operations/aggregation.js';
 import * as packageApi from '../index.js';
 import * as utilities from '../core/utilities.js';
 import { generateRules } from '../operations/generateRules.js';

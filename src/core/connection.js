@@ -1,3 +1,7 @@
+/**
+ * WaspJS — Connection class and rule-table assignment.
+ * Upstream module: src/wasp/core/connection.py
+ */
 import { Plane } from './plane.js';
 
 
@@ -26,7 +30,9 @@ export class Connection {
     }
 
     /**
-     * Deserialize a connection.
+     * Read a connection frame and parse its ID as an integer.
+     * @param {import('../types/index.js').ConnectionData} data
+     * @returns {Connection}
      */
     static fromData(data) {
         let c_pln =  Plane.fromData(data['plane']);
@@ -34,7 +40,8 @@ export class Connection {
     }
 
     /**
-     * Serialize the connection.
+     * Serialize the frame, type and owner; transient rule tables are excluded.
+     * @returns {import('../types/index.js').ConnectionData}
      */
     toData() {
         return {
@@ -45,11 +52,21 @@ export class Connection {
         };
     }
 
+    /**
+     * Return a new connection with a transformed independent frame.
+     * Rule tables are reset on the result; this connection is unchanged.
+     * @param {import('three').Matrix4} trans
+     * @returns {Connection}
+     */
     transform(trans) {
         let newPlane = this.pln.applyMatrix4onPlane(trans);
         return new Connection(newPlane, this.type, this.part, this.id);
     }
 
+    /**
+     * Copy both frames via construction; rule tables start empty.
+     * @returns {Connection}
+     */
     copy() {
         let pln_copy = this.pln.clone()
         return new Connection(pln_copy, this.type, this.part, this.id);
@@ -59,6 +76,7 @@ export class Connection {
      * Match GH Connection.generate_rules_table: retain matching rules in order.
      * Rule.active is stored metadata here; active_rules holds usable table indices.
      * @param {import('./rule.js').Rule[]} rules
+     * @returns {void}
      */
     generateRulesTable(rules) {
         let count = 0;

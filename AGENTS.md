@@ -8,13 +8,14 @@ Header und Kommentare werden hier maßgeblich gepflegt.
 - WaspJS zunächst in JavaScript weiterentwickeln. Priorität ist die Angleichung
   an den tatsächlichen GH-Wasp-Core. Eine TypeScript-Migration, ein neuer Core
   oder eine neue Komponenten-API benötigen einen eigenen Auftrag.
-- Vor Arbeiten [README](README.md) und [Architektur](docs/ARCHITECTURE.md) lesen.
+- Vor Arbeiten [README](README.md), [API-Verträge](API.md) und
+  [Entwicklung/Release](CONTRIBUTING.md) lesen.
   Dokumentierte Aussagen am Quellcode prüfen; die Dokumentation ist kein
   vollständiger Kompatibilitätsnachweis.
 - Wenn der gemeinsame Workspace vorhanden ist, zusätzlich
-  [Workspace-Anweisungen](../wasp-workspace/AGENTS.md),
-  [Architektur](../wasp-workspace/ARCHITECTURE.md),
-  [Backlog](../wasp-workspace/backlog/README.md) und den zum Auftrag gehörenden
+  `../wasp-workspace/AGENTS.md`,
+  `../wasp-workspace/ARCHITECTURE.md`,
+  `../wasp-workspace/backlog/README.md` und den zum Auftrag gehörenden
   Feature-Eintrag lesen. Dort bleiben repoübergreifende Regeln, Referenzstände,
   Prüfberichte und Release-Planung; diese Inhalte hier nicht kopieren.
 - Das originale GH-Wasp ist ausschließlich lesende Referenz. Dort keine Dateien,
@@ -59,8 +60,12 @@ Header und Kommentare werden hier maßgeblich gepflegt.
 - Öffentliche Klassen und Operations über `src/index.js` bereitstellen. Ordner
   bestimmen die Zuständigkeit, nicht automatisch die öffentliche API. Bei einer
   Verschiebung bestehende Paketnamen und Signaturen erhalten; notwendige bisherige
-  Modul-Exporte als Re-Export derselben Implementierung erhalten. Das bestehende
-  `src/core/publicApi.js` bleibt zunächst unverändert; keine zweite Fachlogik dort.
+  Modul-Exporte als Re-Export derselben Implementierung erhalten.
+  Aggregations-Convenience-Funktionen gemeinsam in `src/operations/aggregation.js`
+  pflegen und über den Paket-Einstieg exportieren. `src/core/publicApi.js` bleibt
+  ausschließlich Kompatibilitäts-Re-Export für alte Source-Importe; dort keine
+  Funktionskörper oder neue Logik hinzufügen. Die öffentliche API umfasst alle
+  Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
 - Abweichungen vom Python-Verhalten ausdrücklich begründen und prüfen. Bekannte
   Upstream-Fehler nicht stillschweigend als gewünschtes Verhalten übernehmen.
 - Bestehende Dateien bei fachlichen Änderungen schrittweise an diesen Stil
@@ -138,6 +143,21 @@ export class Connection {
     // Rule tables
 }
 ```
+
+## Öffentliche Dokumentation
+
+- README auf Installation, ausführbare Beispiele und Anwendungsnutzung ausrichten.
+  Detaillierte öffentliche Verträge in `API.md`, Entwicklung/Release in
+  `CONTRIBUTING.md` pflegen. Änderungen derselben Aussage nur dort nachführen.
+- Öffentliche Nutzungsdokumentation muss ohne benachbarte Repositories lesbar sein.
+  Keine lokalen absoluten Pfade, Workspace-Links oder Links zu ignorierten Dateien.
+  Optionale lokale Agenten-Anweisungen sind keine Installationsvoraussetzung.
+- JSDoc mit Signaturen, Standardwerten, ID-Typen, Mutation und Rückgaben abstimmen.
+  Vorhandene API-/Host-Grenzen ausdrücklich belassen; keine vollständige GH-Parität
+  oder TypeScript-Typdeklarationen aus Kommentaren ableiten.
+- Das veröffentlichte Archiv enthält `dist`, `API.md`, README und Lizenz.
+  `prepack` erzeugt frische Bundles; keine Version, Tags oder Veröffentlichung
+  allein aus Dokumentations-/Paketprüfungen ableiten.
 
 ## Prüfung und Abschluss
 

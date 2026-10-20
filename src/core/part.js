@@ -25,7 +25,7 @@ function parsePossiblyNumericId(value) {
     return value;
 }
 
-// Base Part
+// ==================== Part ====================
 /**
  * Represents a single placeable part with geometry, connections, and collider.
  */
@@ -36,11 +36,11 @@ export class Part {
      * @param {string} name
      * @param {THREE.Mesh} geometry
      * @param {Connection[]} connections
-     * @param {Collider} collider
+     * @param {Collider|null} [collider=null] Supply a Collider for copy/transform/placement
      * @param {Array<unknown>} [attributes] JSON values associated with the part
      * @param {number|null} [dim=null] Explicit size or automatic primary-collider radius
-     * @param {number|string|null} id
-     * @param {unknown} field
+     * @param {number|string|null} [id=null]
+     * @param {unknown} [field=null] Opaque Part metadata; not field-driven growth
      */
     constructor(name, geometry, connections, collider = null, attributes, dim = null, id = null , field = null) {
         this.name = name;
@@ -77,7 +77,14 @@ export class Part {
         this.is_constrained = false;
     }
 
-    // create class from data dictionary
+    /**
+     * Read full Part data or reconstruct omitted geometry using a matching base.
+     * Inline geometry, connections and attributes are already placed; do not transform twice.
+     * Dispatches AdvancedPart data to its reader. Imported dim is retained, not recalculated.
+     * @param {import('../types/index.js').PartData|import('../types/index.js').AdvancedPartData} data
+     * @param {Part|null} [base_part=null] Required when geometry is omitted
+     * @returns {Part|AdvancedPart|null} Null when a plain Part has no geometry or base
+     */
     static fromData(data, base_part = null) {
         if (data.class_type === 'AdvancedPart') return AdvancedPart.fromData(data, base_part);
         let p_name = data['name'];
@@ -127,7 +134,14 @@ export class Part {
         return part;
     }
 
-    // return the data dictionary representing the part
+    /**
+     * Serialize placed model geometry and independently copied attribute JSON.
+     * Local mesh placement is baked into vertices; scene-parent transforms are excluded.
+     * The two flags control geometry and primary collider, not attribute inclusion.
+     * @param {boolean} [include_geo=true]
+     * @param {boolean} [include_collider=true]
+     * @returns {import('../types/index.js').PartData}
+     */
     toData(include_geo = true, include_collider = true) {
         const data = {
             'class_type': 'Part',
@@ -156,7 +170,12 @@ export class Part {
         return data;
     }
 
-    // reset the part and connections according to new provided aggregation rules
+    /**
+     * Rebuild rule tables and reopen every connection in place.
+     * This resets occupancy; aggregation import restores its occupied slots separately.
+     * @param {import('./rule.js').Rule[]} rules
+     * @returns {void}
+     */
     resetPart(rules) {
         let count = 0;
         this.active_connections = [];
@@ -167,7 +186,12 @@ export class Part {
         }
     }
 
-    // return a dictionary containing all part data
+    /**
+     * Return runtime references for inspection, with independently copied attributes.
+     * This is not JSON transport; use toData() for export. Compatibility limitation:
+     * active_connections and is_constrained from GH's BasePart reader are not returned.
+     * @returns {import('../types/index.js').RuntimePartData}
+     */
     returnPartData() {
         return {
             'name': this.name,
@@ -244,18 +268,31 @@ export class Part {
         return part_copy;
     }
 
-    // return transformed center point of the part
+    /**
+     * Return a transformed center without changing this Part.
+     * @param {THREE.Matrix4} trans
+     * @returns {THREE.Vector3}
+     */
     transformCenter(trans) {
         const centerTrans = this.center.clone();
         centerTrans.applyMatrix4(trans);
         return centerTrans;
     }
 
-    // return transformed collider
+    /**
+     * Return an independent transformed primary collider; requires a Collider.
+     * @param {THREE.Matrix4} trans
+     * @returns {Collider}
+     */
     transformCollider(trans) {
         return this.collider.transform(trans);
     }
 
+    /**
+     * Assign the runtime Part ID in place without updating aggregation graph references.
+     * @param {number|string|null} id
+     * @returns {void}
+     */
     assignId(id) {
         this.id = id;
     }
@@ -360,7 +397,11 @@ export class AdvancedPart extends Part {
             adjacency_const: [], sub_parts: [] };
     }
 
-    /** @returns {Object} Live part data including the additional collider. */
+    /**
+     * Return the same runtime references as Part plus the live additional collider.
+     * This is not a serializable snapshot; attributes alone are copied.
+     * @returns {import('../types/index.js').RuntimePartData}
+     */
     returnPartData() {
         this._assertSupported();
         return { ...super.returnPartData(), add_collider: this.add_collider };
@@ -557,6 +598,7 @@ export class PartCatalog {
      * Invalid/negative results and zero adaptive denominators fail before mutation.
      * @param {string} partName
      * @param {number} difference Signed count/weight change
+     * @returns {void}
      */
     update(partName, difference) {
         this._validate();

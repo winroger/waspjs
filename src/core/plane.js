@@ -62,7 +62,7 @@ export class Plane {
     /**
      * Serialize the canonical right-handed axes, retaining the existing XYZ fields.
      * Compatibility limitation: old WaspJS readers prioritize Z and reverse Y for
-     * this corrected XYZ representation. See README "Connection frames".
+     * this corrected XYZ representation. See API.md "Connection frames".
      * @returns {object} Origin and X/Y/Z arrays
      */
     toData() {

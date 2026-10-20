@@ -151,7 +151,7 @@ export class Aggregation {
      * @param {string} _name
      * @param {Part[]} _parts
      * @param {Rule[]} _rules
-     * @param {number|null} _rnd_seed
+     * @param {number|null} [_rnd_seed=null]
      * @param {0|1} [mode=0] Added after the existing seed argument.
      * @param {PartCatalog|null} [catalog=null] Remaining inventory; Mode 0 only, copied on input
      */
@@ -191,7 +191,13 @@ export class Aggregation {
   }
 
     /**
-     * Deserialize an aggregation from JSON-friendly data.
+     * Reconstruct Full/Light core data, validate placed state and restore the graph.
+     * Supports Mode 0 and the additional-collider subset of Mode 1; catalogs require Mode 0.
+     * Compact data needs loadAggregation() with external bases/rules. The random cursor
+     * is not restored. Nonempty Fields/global constraints and unsupported modes throw.
+     * @param {import('../types/index.js').AggregationData} data
+     * @returns {Aggregation}
+     * @throws {Error} Payload or placed state is invalid or outside the supported subset
      */
     static fromData(data) {
     if (data.aggregation_name !== undefined && data.name === undefined) {
@@ -283,7 +289,11 @@ export class Aggregation {
   }
 
     /**
-     * Serialize the aggregation into a JSON-friendly WASP-compatible structure.
+     * Serialize Full/Light core state with current catalog amounts and graph.
+     * Light omits per-instance display geometry and primary colliders; matching bases
+     * remain embedded. Already placed attributes/additional colliders are retained.
+     * @param {boolean} [include_aggr_geo=true]
+     * @returns {import('../types/index.js').AggregationData}
      */
     toData(include_aggr_geo = true) {
         const mode = supportedMode(this.mode);
@@ -313,7 +323,11 @@ export class Aggregation {
     }
 
     /**
-     * Serialize the placed aggregation state in the compact WASP "Save Aggregation to File" shape.
+     * Serialize compact placed state requiring external base Parts and rules.
+     * No graph, instance attributes, inventory or random cursor is carried in this format.
+     * The compact loader accepts only unconstrained plain Parts with positive rigid transforms.
+     * @returns {import('../types/index.js').AggregationFileData}
+     * @throws {Error} An attached inventory catalog would be lost
      */
     toFileData() {
         if (this._getCatalog()) throw new Error('Compact format cannot preserve inventory catalog; use full/light core data');
@@ -332,12 +346,21 @@ export class Aggregation {
         };
     }
 
+    /**
+     * Return the live placed-Parts array, not base definitions or a snapshot.
+     * @returns {Part[]}
+     */
     getParts() {
         return this.aggregated_parts
     }
 
     /**
-     * Adjust aggregation size to match target count, mutating the visualizer when provided.
+     * Adjust toward a target count and update the supplied viewer after each edit.
+     * A viewer is required when an edit succeeds. Growth can stop below the target;
+     * inspect getParts().length for the actual count. This method resolves without a result.
+     * @param {number} newCount Requested total number of placed Parts
+     * @param {{addEntity: function(Part): void, removeEntity: function(Part): void}} waspVisualization
+     * @returns {Promise<void>}
      */
     async modifyParts(newCount, waspVisualization) {
     let isCount = this.getParts().length;
@@ -383,10 +406,12 @@ _catalogAllows(name) {
     return this._getCatalog()?.canConsume(name) ?? true;
 }
 
-    /**
-     * Randomly grow by the requested number of parts; an attached catalog is used.
-     * GH counterpart: aggregate_rnd(num, use_catalog=True) when catalog is present.
-     */
+/**
+ * Try to add num Parts; an attached inventory catalog always governs placement.
+ * GH counterpart: aggregate_rnd(num, use_catalog=True) when a catalog is present.
+ * @param {number} num Number to add, not a target total
+ * @returns {true|string} True on success; a message if growth stops short
+ */
 aggregate_rnd(num) {
     let added = 0;
     let loops = 0;
@@ -440,6 +465,11 @@ checkBlockedConnections(part, connectionsOnly = false, customGraph = null, toler
     });
 }
 
+/**
+ * Append a randomly chosen seed Part, applying active type and inventory filters.
+ * The seed bypasses collision checks. Consumes stock only when a Part is appended.
+ * @returns {boolean} Whether a Part was added
+ */
 addFirstPartToAggregation() {
     supportedMode(this.mode);
     const catalog = this._getCatalog();
@@ -466,6 +496,12 @@ addFirstPartToAggregation() {
 }
 
 
+/**
+ * Try one random placement, or seed an empty aggregation.
+ * Updates parenting, occupancy, graph and inventory on success; may stop without
+ * placing when available rules, geometry or stock block progress.
+ * @returns {boolean} Whether a Part was added
+ */
 addPartToAggregation() {
     supportedMode(this.mode);
     const catalog = this._getCatalog();
@@ -679,7 +715,7 @@ placeFirstPart(partName) {
 /**
  * Place a specific part at a specific connection (deterministic, for manual mode).
  * Selects usable rules through active_rules, as GH aggregate_rnd does.
- * @param {number} parentPartId
+ * @param {number|string} parentPartId
  * @param {number} connectionId
  * @param {string} partName
  * @param {number} connectionBId
@@ -736,7 +772,7 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
 /**
  * Return all open (unused) connections across aggregated parts.
  * Each rules array contains usable entries selected by active_rules.
- * @returns {Array<{partId: number, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
+ * @returns {Array<{partId: number|string, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
  */
 getOpenConnections() {
     const openConns = [];
@@ -760,7 +796,7 @@ getOpenConnections() {
  * Returns positions where the part can be placed without collision.
  * Uses active_rules indices; ruleIndex refers to the complete rules_table.
  * @param {string} partName
- * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsForPart(partName) {
     const catalogPart = this.parts[partName];
@@ -803,10 +839,10 @@ getValidPlacementsForPart(partName) {
 
 /**
  * Compute valid placements for a given part type, scoped to a single parent part.
- * Much cheaper than getValidPlacementsForPart when the aggregation is large.
+ * Limits the search to that parent's connection slots.
  * @param {string} partName
- * @param {number} parentPartId
- * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ * @param {number|string} parentPartId
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsAtParent(partName, parentPartId) {
     const catalogPart = this.parts[partName];
@@ -849,11 +885,11 @@ getValidPlacementsAtParent(partName, parentPartId) {
 
 /**
  * Compute valid placements for a given part type at a single connection.
- * Cheapest option — only checks rules for one connection slot.
+ * Only checks rules for one connection slot.
  * @param {string} partName
- * @param {number} parentPartId
+ * @param {number|string} parentPartId
  * @param {number} connectionId
- * @returns {Array<{parentPartId: number, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
     const catalogPart = this.parts[partName];
@@ -899,6 +935,7 @@ getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
  * Set which part types are allowed for random aggregation.
  * Pass null or undefined to allow all parts.
  * @param {string[]|null} partNames
+ * @returns {void}
  */
 setActivePartTypes(partNames) {
     this.activePartTypes = partNames ? new Set(partNames) : null;

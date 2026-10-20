@@ -6,7 +6,7 @@
 import { Rule } from '../core/rule.js';
 
 /**
- * Generate connection rules for a set of parts when none are provided.
+ * Generate directed compatibility rules for the supplied base Parts.
  * GH-Wasp component counterpart: src/ghComp/Wasp_Rules Generator.py::main,
  * not a function in the GH core utilities module. Grasshopper UI is omitted.
  * Self-connection means equal connection IDs, including across different parts,

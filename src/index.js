@@ -1,3 +1,6 @@
+/**
+ * WaspJS — public package exports. Internal host adapters remain private.
+ */
 // Keep internal Three.js adapters out of the public package API.
 export {
     checkMeshesIntersection, meshToData, meshFromData,
@@ -16,5 +19,12 @@ export { Part, AdvancedPart, PartCatalog } from './core/part.js';
 export { Plane } from './core/plane.js';
 export { Rule } from './core/rule.js';
 export { Visualizer } from './core/visualizer.js';
-export * from './core/publicApi.js';
+export {
+    createAggregationFromData,
+    getAggregationCatalogParts,
+    getValidPlacementsAtParent,
+    getValidPlacementsAtConnection,
+    getOpenConnectionsForPart,
+    setActivePartTypes,
+} from './operations/aggregation.js';
 export * from './types/index.js';

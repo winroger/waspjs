@@ -6,11 +6,13 @@
 import { PartCatalog } from '../core/part.js';
 
 /**
+ * Create a PartCatalog using GH component defaults and single-amount broadcast.
  * @param {import('../core/part.js').Part[]} parts
  * @param {number[]} amounts One for all types, or one per Part
  * @param {boolean|null} [limited=false] Component default differs from core class
  * @param {boolean|null} [adaptive=false]
  * @returns {PartCatalog}
+ * @throws {Error} Inputs or catalog counts/weights are invalid
  */
 export function createPartCatalog(parts, amounts, limited = false, adaptive = false) {
     if (!Array.isArray(parts) || parts.length === 0 || !Array.isArray(amounts) || amounts.length === 0) {

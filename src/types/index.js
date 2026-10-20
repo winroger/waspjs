@@ -1,4 +1,18 @@
 /**
+ * WaspJS — JSDoc transport and runtime shapes.
+ * These comments are editor documentation, not generated TypeScript declarations
+ * or a runtime schema validator.
+ */
+/**
+ * @typedef {{x: number, y: number, z: number}} Vector3Like
+ */
+
+/**
+ * Finite model-coordinate segment endpoints for collider line queries.
+ * @typedef {{start: Vector3Like, end: Vector3Like}} SegmentData
+ */
+
+/**
  * @typedef {Object} TransformData
  * @property {number} M00
  * @property {number} M01
@@ -160,6 +174,35 @@
  * @typedef {Object} AggregationFileData
  * @property {string} aggregation_name
  * @property {Record<string, AggregationFilePartData>} parts
+ */
+
+/**
+ * Candidate returned by placement queries; not yet registered or charged to stock.
+ * @typedef {Object} PlacementOption
+ * @property {number|string} parentPartId
+ * @property {number} connectionId
+ * @property {string} partName
+ * @property {number} connectionBId
+ * @property {number} ruleIndex Index into the complete connection rules_table
+ * @property {import('three').Matrix4} transform
+ * @property {import('../core/part.js').Part} transformedPart Independent preview
+ */
+
+/**
+ * Inspectable runtime references from returnPartData(), not JSON transport.
+ * Compatibility limitation: active_connections and is_constrained are omitted.
+ * @typedef {Object} RuntimePartData
+ * @property {string} name
+ * @property {number|string|null} id
+ * @property {import('three').Mesh} geo
+ * @property {import('../core/connection.js').Connection[]} connections
+ * @property {import('three').Matrix4} transform
+ * @property {import('../core/collider.js').Collider|null} collider
+ * @property {import('three').Vector3} center
+ * @property {number|string|null} parent
+ * @property {Array<number|string>} children
+ * @property {unknown[]} attributes Copied JSON; other object fields are live references
+ * @property {import('../core/collider.js').Collider|null} [add_collider] AdvancedPart only
  */
 
 export const types = {};

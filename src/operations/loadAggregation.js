@@ -1,6 +1,6 @@
 /**
  * WaspJS — reconstruct compact aggregation data with external base parts.
- * GH-Wasp component counterpart: Wasp_Load Aggregation from File.py::main.
+ * GH-Wasp component counterpart: src/ghComp/Wasp_Load Aggregation from File.py::main.
  * File access and Grasshopper UI are supplied by the caller. No DisCo support.
  */
 import { Aggregation } from '../core/aggregation.js';

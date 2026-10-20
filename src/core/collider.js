@@ -13,10 +13,10 @@ import { Connection } from './connection';
 export class Collider {
     /**
      * @param {Array<import('three').Mesh>} geometry
-     * @param {boolean} multiple
-     * @param {boolean} checkAll
-     * @param {Connection[]} connections
-     * @param {number[]} validConnections
+     * @param {boolean} [multiple=false]
+     * @param {boolean} [checkAll=false]
+     * @param {Connection[]} [connections=[]]
+     * @param {number[]} [validConnections=[]]
      */
     constructor(geometry, multiple = false, checkAll = false, connections = [], validConnections = []) {
         this.geometry = geometry;
@@ -42,7 +42,9 @@ export class Collider {
     }
 
     /**
-     * Deserialize collider data.
+     * Reconstruct collider meshes and connections from model-coordinate JSON.
+     * @param {import('../types/index.js').ColliderData} data
+     * @returns {Collider}
      */
     static fromData(data) {
         const geometry = data.geometry.map(meshFromData);
@@ -54,7 +56,9 @@ export class Collider {
     }
 
     /**
-     * Serialize collider data.
+     * Serialize model-space meshes and connections. valid_connections retains its
+     * runtime array reference; clone the result if editing that list independently.
+     * @returns {import('../types/index.js').ColliderData}
      */
     toData() {
         return {
@@ -190,7 +194,7 @@ export class Collider {
      * Test a finite model-space segment against every collider mesh, as GH MeshLine.
      * Endpoint contacts count; coplanar and zero-length segments do not.
      * Empty collider lists return false. Invalid endpoints on a queried mesh throw.
-     * @param {import('three').Line3|{start: {x:number,y:number,z:number}, end: {x:number,y:number,z:number}} line
+     * @param {import('three').Line3|import('../types/index.js').SegmentData} line
      * @returns {boolean}
      */
     checkIntersectionWithLine(line) {
@@ -202,6 +206,12 @@ export class Collider {
         return false;
     }
 
+    /**
+     * Compatibility limitation: reserved upstream placeholder, always returns false.
+     * This method does not validate or implement global constraints.
+     * @param {unknown} _constraint Ignored
+     * @returns {false}
+     */
     checkGlobalConstraints(_constraint) {
         // Placeholder for global constraints check
         return false;
