@@ -4,6 +4,7 @@
  * File access and Grasshopper UI are supplied by the caller. No DisCo support.
  */
 import { Aggregation } from '../core/aggregation.js';
+import { AdvancedPart } from '../core/part.js';
 import { transformFromData } from '../core/utilities.js';
 
 /**
@@ -36,6 +37,7 @@ export function loadAggregation(data, baseParts, rules, seed = null, tolerance =
     const parts = entries.map(([id, raw]) => {
         const base = byName.get(raw.name);
         if (!base) throw new Error(`Missing base part for ${raw.name}`);
+        if (base instanceof AdvancedPart) throw new Error('AdvancedPart compact loading is not implemented; use full/light core data');
         if (raw.is_constrained) throw new Error('Constrained compact parts are not implemented');
         const transform = transformFromData(raw.transform);
         // Compatibility limitation: reflected/scaled compact reconstruction is

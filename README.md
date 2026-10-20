@@ -46,7 +46,7 @@ Main entry points:
 
 - `createAggregationFromData(data)` to rebuild an aggregation from serialized data
 - `aggregation.toData()` to export the full roundtrip/core aggregation data
-- `aggregation.toData(false)` to export roundtrip/core data without per-instance aggregated geometry or colliders
+- `aggregation.toData(false)` to export roundtrip/core data without per-instance aggregated geometry or primary colliders
 - `aggregation.toFileData()` to export the compact placed-parts file format
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
@@ -59,7 +59,7 @@ Main entry points:
 coordinates, matching Python Wasp's inline geometry convention. Their placement
 is baked into the exported vertices without changing the runtime meshes or base
 parts. Importing inline geometry does not apply the Part transform a second time.
-`aggregation.toData(false)` instead omits instance geometry and colliders; import
+`aggregation.toData(false)` instead omits instance geometry and primary colliders; import
 reconstructs them from the base parts and placement transforms. Viewer scene-parent
 transforms are not included in these exports.
 
@@ -259,10 +259,56 @@ JS deliberately keeps deterministic, symmetric decisions in those cases. See
 Placement retains two JS differences: an empty simple collider falls back to the
 unscaled Part mesh, and no separate GH center-overlap gate is added. Explicit
 empty alternative colliders remain blocked. There is no longer a `0.99` shrink.
-`coll_check=false` bypasses placement collision checks. All existing colliders are
+`coll_check=false` bypasses primary placement collision checks. All existing colliders are
 tested without GH's `center`/`dim` radius prefilter, since JS `dim` is derived from
-display geometry and may not bound an explicit collider. These changes do not
-implement AdvancedPart/local/global constraints or promise general Rhino parity.
+display geometry and may not bound an explicit collider. The limited AdvancedPart
+extension is described below; general Rhino/constraint parity is not implied.
+
+### AdvancedPart and additional colliders
+
+`AdvancedPart` is exported alongside `Part` from `src/core/part.js` and the package
+entry point. Its constructor order follows GH's core:
+
+```js
+new AdvancedPart(name, mesh, connections, primaryCollider, attributes,
+    additionalCollider, [], dim, id, field);
+new Aggregation(name, baseParts, rules, seed, 1);
+```
+
+The empty array is the unsupported Support slot. Sub-parts, Adjacency and
+Orientation lists must also be empty; nonempty or malformed payloads fail
+explicitly. No automatic GH-component collider construction is included.
+Mode is an optional **fifth** Aggregation argument, preserving the existing fourth
+seed argument. Mode `0` ignores additional constraints; mode `1` checks additional
+colliders after the primary check, including when `coll_check=false`. Modes `2/3`,
+Fields, global constraints and inventory catalogs remain unsupported.
+
+The additional collider is transformed with the part, including its Connection
+frames. Its free variants are geometry indices and do not remove or reopen Part
+connections. Query, manual and random placement compute validity on independent
+candidates and leave the catalog unchanged. GH writes this cache onto its base
+Part during queries; JS deliberately retains its independent-candidate contract.
+The first seed bypasses additional checks, as in the measured GH core.
+
+`Part.fromData()` dispatches `class_type: 'AdvancedPart'`; the class's own
+`fromData()` and aggregation imports preserve it. Full/light core exports retain
+already placed `add_collider` data. Omitted primary buffers are recovered from the
+matching AdvancedPart base, without transforming inline additional data again.
+A missing legacy `add_collider` can inherit a transformed base copy; explicit null
+clears it. Unknown AdvancedPart JSON metadata and explicit connection occupancy
+survive JS roundtrips. The separate compact loader rejects AdvancedPart; use core
+full/light data for this subset.
+
+`transform(matrix, transformSubParts=false, subLevel=0, maintainParenting=false)`
+uses GH's AdvancedPart argument order, which differs from Part's third parenting
+argument. Hierarchy transforms remain rejected. `toData(includeGeometry,
+includePrimaryCollider)` keeps the existing JS Part flags; GH's second export
+flag instead controls attributes. Defaults for `dim` reuse JS Part's display-mesh
+size calculation; imported explicit GH `dim` values are retained. This is not
+GH's maximum collider-vertex distance calculation.
+
+[advancedPart.test.js](src/tests/advancedPart.test.js) contains executed GH
+comparisons, supported modes, native reader limits and ownership checks.
 
 ### Aggregation state and graphs
 
@@ -302,9 +348,10 @@ such as `42-beam` retain their complete string value.
 
 Core loading preserves explicitly closed free connections and excludes occupied
 parent/child slots. Rule tables and `active_rules` are regenerated because the GH
-transport does not serialize their transient pruning. Mode `0` is supported;
-nonzero modes, nonempty Fields, global constraints and catalogs are rejected.
-The `coll_check` flag is retained and actually controls collision checks.
+transport does not serialize their transient pruning. Modes `0` and the limited
+additional-collider subset of `1` are supported; modes `2/3`, nonempty Fields,
+global constraints and catalogs are rejected. The `coll_check` flag controls
+primary collision checks; mode-1 additional colliders are checked independently.
 
 **Known GH-reader differences:** the measured GH reader resets connection
 occupancy, duplicates Rule endpoints and leaves JSON graph keys as strings,

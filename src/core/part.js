@@ -1,3 +1,7 @@
+/**
+ * WaspJS — Part and AdvancedPart classes.
+ * Upstream module: src/wasp/core/parts.py
+ */
 import { copyMesh, meshAreaCentroid, meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
 import { Connection } from "./connection"; 
 import { Collider } from "./collider"; 
@@ -75,6 +79,7 @@ export class Part {
 
     // create class from data dictionary
     static fromData(data, base_part = null) {
+        if (data.class_type === 'AdvancedPart') return AdvancedPart.fromData(data, base_part);
         let p_name = data['name'];
         let p_transform = data['transform']
             ? transformFromData(data['transform'])
@@ -254,6 +259,169 @@ export class Part {
     assignId(id) {
         this.id = id;
     }
+}
+
+// ==================== AdvancedPart ====================
+
+/**
+ * Part with additional fabrication/free-space colliders, in model coordinates.
+ * Compatibility limitation: supports, adjacency/orientation constraints and
+ * sub-parts are rejected until their separately tested counterparts exist.
+ */
+export class AdvancedPart extends Part {
+    /**
+     * Positional order follows GH AdvancedPart; the inherited JS dim calculation
+     * remains in use when dim=null. Connections follow the Part ownership contract.
+     * @param {string} name
+     * @param {THREE.Mesh} geometry
+     * @param {Connection[]} connections
+     * @param {Collider} collider
+     * @param {Array<unknown>} [attributes=[]]
+     * @param {Collider|null} [additionalCollider=null]
+     * @param {unknown[]} [supports=[]] Empty only.
+     * @param {number|null} [dim=null]
+     * @param {number|string|null} [id=null]
+     * @param {unknown} [field=null]
+     * @param {unknown[]} [subParts=[]] Empty only.
+     * @param {unknown[]} [adjacencyConstraints=[]] Empty only.
+     * @param {unknown[]} [orientationConstraints=[]] Empty only.
+     */
+    constructor(name, geometry, connections, collider, attributes = [], additionalCollider = null,
+        supports = [], dim = null, id = null, field = null, subParts = [],
+        adjacencyConstraints = [], orientationConstraints = []) {
+        assertAdvancedCollections({ supports, sub_parts: subParts, adjacency_const: adjacencyConstraints,
+            orientation_const: orientationConstraints });
+        if (!(collider instanceof Collider)) throw new Error('AdvancedPart requires a primary Collider');
+        if (additionalCollider !== null && !(additionalCollider instanceof Collider)) {
+            throw new Error('AdvancedPart add_collider must be a Collider or null');
+        }
+        super(name, geometry, connections, collider, attributes, dim, id, field);
+        this.add_collider = additionalCollider;
+        this.supports = supports;
+        this.adjacency_const = adjacencyConstraints;
+        this.orientation_const = orientationConstraints;
+        this.sub_parts = subParts;
+        this.hierarchy_level = 0;
+        this.is_constrained = additionalCollider !== null;
+        this._extraData = {};
+    }
+
+    /** Validate the implemented subset, including mutable runtime lists. @internal */
+    _assertSupported() {
+        assertAdvancedCollections(this);
+        if (this.add_collider !== null && !(this.add_collider instanceof Collider)) {
+            throw new Error('AdvancedPart add_collider must be a Collider or null');
+        }
+    }
+
+    /**
+     * Read inline placed data or recover omitted primary geometry from a base.
+     * Explicit additional collider data is already placed and is never moved again.
+     * @param {import('../types/index.js').AdvancedPartData} data
+     * @param {AdvancedPart|null} [basePart=null]
+     * @returns {AdvancedPart|null}
+     */
+    static fromData(data, basePart = null) {
+        assertAdvancedCollections(data);
+        if (basePart instanceof AdvancedPart) basePart._assertSupported();
+        if (data.class_type !== 'AdvancedPart') throw new Error('Expected AdvancedPart class_type');
+        if (!Object.hasOwn(data, 'geometry') && !(basePart instanceof AdvancedPart)) {
+            throw new Error('AdvancedPart light import requires an AdvancedPart base');
+        }
+        if (!data.collider && !basePart) throw new Error('AdvancedPart import requires primary collider data or a base');
+        const part = Part.fromData({ ...data, class_type: 'Part' }, basePart);
+        if (!part) return null;
+        // GH-Wasp difference: like primary geometry, omitted legacy additional
+        // geometry can be recovered once from a base. Explicit null clears it.
+        const additional = Object.hasOwn(data, 'add_collider')
+            ? (data.add_collider === null ? null : Collider.fromData(data.add_collider))
+            : (basePart?.add_collider?.transform(part.transformation, true, true) ?? null);
+        const result = advancedFromPart(part, additional);
+        const known = new Set(['class_type', 'name', 'id', 'geometry', 'field', 'connections',
+            'active_connections', 'collider', 'transform', 'dim', 'parent', 'conn_on_parent',
+            'conn_to_parent', 'children', 'attributes', 'add_collider', 'supports',
+            'sub_parts', 'adjacency_const', 'orientation_const', 'hierarchy_level']);
+        result._extraData = globalThis.structuredClone(Object.fromEntries(
+            Object.entries(data).filter(([key]) => !known.has(key))));
+        return result;
+    }
+
+    /**
+     * Export the GH discriminator and additional collider even in JS Light data.
+     * The two flags retain Part.toData's JS meanings: geometry and primary collider.
+     * @param {boolean} [include_geo=true]
+     * @param {boolean} [include_collider=true]
+     * @returns {import('../types/index.js').AdvancedPartData}
+     */
+    toData(include_geo = true, include_collider = true) {
+        this._assertSupported();
+        return { ...globalThis.structuredClone(this._extraData), ...super.toData(include_geo, include_collider),
+            class_type: 'AdvancedPart', add_collider: this.add_collider?.toData() ?? null,
+            adjacency_const: [], sub_parts: [] };
+    }
+
+    /** @returns {Object} Live part data including the additional collider. */
+    returnPartData() {
+        this._assertSupported();
+        return { ...super.returnPartData(), add_collider: this.add_collider };
+    }
+
+    /**
+     * Move independent Part buffers and additional meshes/connections once.
+     * GH parameter order includes sub_level before maintain_parenting.
+     * @param {THREE.Matrix4} trans
+     * @param {boolean} [transform_sub_parts=false] Hierarchy is not implemented.
+     * @param {number} [sub_level=0] Hierarchy is not implemented.
+     * @param {boolean} [maintain_parenting=false]
+     * @returns {AdvancedPart}
+     */
+    transform(trans, transform_sub_parts = false, sub_level = 0, maintain_parenting = false) {
+        this._assertSupported();
+        if (transform_sub_parts || sub_level !== 0) throw new Error('AdvancedPart sub-part transforms are not implemented');
+        const result = advancedFromPart(super.transform(trans, false, maintain_parenting),
+            this.add_collider?.transform(trans, true, true) ?? null);
+        result.is_constrained = true; // GH marks even an otherwise empty transformed AdvancedPart.
+        result._extraData = globalThis.structuredClone(this._extraData);
+        return result;
+    }
+
+    /**
+     * Copy all Part and additional collider buffers independently.
+     * @param {boolean} [maintain_parenting=false]
+     * @returns {AdvancedPart}
+     */
+    copy(maintain_parenting = false) {
+        this._assertSupported();
+        const result = advancedFromPart(super.copy(maintain_parenting), this.add_collider?.copy() ?? null);
+        result.is_constrained = true;
+        result._extraData = globalThis.structuredClone(this._extraData);
+        return result;
+    }
+}
+
+/** JS-specific guard against silently ineffective, not-yet-ported constraints. @internal */
+function assertAdvancedCollections(value) {
+    for (const key of ['supports', 'sub_parts', 'adjacency_const', 'orientation_const']) {
+        if (value[key] !== undefined && (!Array.isArray(value[key]) || value[key].length)) {
+            throw new Error(`AdvancedPart ${key} is not implemented; only an empty array is supported`);
+        }
+    }
+    if (value.hierarchy_level != null && value.hierarchy_level !== 0) {
+        throw new Error('AdvancedPart hierarchy is not implemented');
+    }
+}
+
+/** Reuse Part reconstruction/copy/transform without duplicating its geometry logic. @internal */
+function advancedFromPart(part, additional) {
+    const result = new AdvancedPart(part.name, part.geo, part.connections, part.collider,
+        part.attributes, additional, [], part.dim, part.id, part.field);
+    result.transformation.copy(part.transformation);
+    result.parent = part.parent;
+    result.conn_on_parent = part.conn_on_parent;
+    result.conn_to_parent = part.conn_to_parent;
+    result.children = [...part.children];
+    result.active_connections = [...part.active_connections];
+    return result;
 }
 
 // Use the GH-style surface centroid while retaining the existing size calculation.

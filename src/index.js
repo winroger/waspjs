@@ -10,7 +10,7 @@ export { Attribute } from './core/attributes.js';
 export { Graph } from './core/graph.js';
 export { Collider } from './core/collider.js';
 export { Connection } from './core/connection.js';
-export { Part } from './core/part.js';
+export { Part, AdvancedPart } from './core/part.js';
 export { Plane } from './core/plane.js';
 export { Rule } from './core/rule.js';
 export { Visualizer } from './core/visualizer.js';

@@ -262,7 +262,7 @@ describe('aggregation state and roundtrips', () => {
         bad_graph_edge: d => { d.graph[0][1].conn_start = 99; },
         duplicate_active: d => { d.aggregated_parts[0].active_connections = [1, 1]; },
         invalid_active: d => { d.aggregated_parts[0].active_connections = [99]; },
-        unsupported_mode: d => { d.mode = 1; },
+        unsupported_mode: d => { d.mode = 2; },
         unsupported_field: d => { d.field = [{ name: 'field' }]; },
         unsupported_constraints: d => { d.global_constraints = [{ type: 'plane' }]; },
         unsupported_catalog: d => { d.catalog = {}; },

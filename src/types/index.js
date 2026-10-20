@@ -46,8 +46,15 @@
  */
 
 /**
+ * Model-coordinate mesh transport, distinct from a runtime Three.js Mesh.
+ * @typedef {Object} MeshData
+ * @property {number[][]} vertices
+ * @property {number[][]} faces Triangle or quad vertex indices.
+ */
+
+/**
  * @typedef {Object} ColliderData
- * @property {Array<{vertices: number[][], faces: number[][]}>} geometry Serialized model-space meshes.
+ * @property {MeshData[]} geometry Serialized model-space meshes.
  * @property {boolean} multiple Alternative variants rather than a composite obstacle.
  * @property {boolean} check_all Enumerate all free variants when checking parts.
  * @property {ConnectionData[]} connections
@@ -74,8 +81,8 @@
  * @typedef {Object} PartData
  * @property {'Part'} class_type
  * @property {string} name
- * @property {number|string} id
- * @property {import('three').Mesh} [geometry]
+ * @property {number|string|null} id
+ * @property {MeshData} [geometry]
  * @property {ConnectionData[]} connections
  * @property {number[]} active_connections
  * @property {ColliderData} [collider]
@@ -90,6 +97,12 @@
  */
 
 /**
+ * Supported AdvancedPart transport. Additional collider data is already placed;
+ * nonempty local-constraint and hierarchy arrays are rejected.
+ * @typedef {Omit<PartData, 'class_type'> & {class_type: 'AdvancedPart', add_collider: ColliderData|null, adjacency_const: [], sub_parts: []}} AdvancedPartData
+ */
+
+/**
  * @typedef {Object} GraphEdgeData
  * @property {number|string} start
  * @property {number|string} end
@@ -101,15 +114,15 @@
  * @typedef {Object} AggregationData
  * @property {'Aggregation'} [object_type]
  * @property {string} name
- * @property {PartData[]} parts
+ * @property {Array<PartData|AdvancedPartData>} parts
  * @property {RuleData[]} rules
  * @property {number|null} rnd_seed
- * @property {0} [mode]
+ * @property {0|1} [mode]
  * @property {boolean} [coll_check]
  * @property {null} [field]
  * @property {Record<string, Record<string, GraphEdgeData>>} [graph]
  * @property {boolean} [include_aggr_geo]
- * @property {Record<string, PartData>|PartData[]} [aggregated_parts]
+ * @property {Record<string, PartData|AdvancedPartData>|Array<PartData|AdvancedPartData>} [aggregated_parts]
  * @property {Array<number|string>} [aggregated_parts_sequence]
  * @property {Array<Object>} [global_constraints]
  * @property {null|Object} [catalog]

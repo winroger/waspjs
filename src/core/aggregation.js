@@ -4,7 +4,7 @@
  */
 import { PlaneToPlane, transformToData } from './utilities';
 import { Collider } from './collider';
-import { Part } from './part';
+import { Part, AdvancedPart } from './part';
 import { Rule } from './rule';
 import { Graph } from './graph.js';
 
@@ -13,6 +13,13 @@ function normalizeList(value) {
     if (Array.isArray(value)) return value;
     if (typeof value === 'object') return Object.values(value);
     return [];
+}
+
+/** JS-specific guard for the measured mode/AdvancedPart subset. @internal */
+function supportedMode(mode = 0) {
+    const value = Number(mode);
+    if (value !== 0 && value !== 1) throw new Error('Only aggregation modes 0 and 1 are implemented');
+    return value;
 }
 
 /**
@@ -49,6 +56,7 @@ function restorePart(partData, base_part = null) {
     if (partData['class_type'] === 'Part') {
         return Part.fromData(partData, base_part);
     }
+    if (partData.class_type === 'AdvancedPart') return AdvancedPart.fromData(partData, base_part);
 
     throw new Error(`Unsupported part class_type: ${partData['class_type']}`);
 }
@@ -144,8 +152,9 @@ export class Aggregation {
      * @param {Part[]} _parts
      * @param {Rule[]} _rules
      * @param {number|null} _rnd_seed
+     * @param {0|1} [mode=0] Added after the existing seed argument.
      */
-    constructor(_name, _parts, _rules, _rnd_seed = null) {
+    constructor(_name, _parts, _rules, _rnd_seed = null, mode = 0) {
       this.name = _name;
 
       this.parts = {};
@@ -156,7 +165,7 @@ export class Aggregation {
       this.rules = _rules;
       this.aggregated_parts = [];
       this.graph = new Graph();
-      this.mode = 0;
+      this.mode = supportedMode(mode);
       this.coll_check = true;
       this.removed_parts = [];
       this._extraData = {};
@@ -184,7 +193,7 @@ export class Aggregation {
     if (data.aggregation_name !== undefined && data.name === undefined) {
         throw new Error('Compact data requires loadAggregation with external base parts');
     }
-    if (data.mode != null && Number(data.mode) !== 0) throw new Error('Only aggregation mode 0 is implemented');
+    const mode = supportedMode(data.mode ?? 0);
     if (data.field != null && (!Array.isArray(data.field) || data.field.length > 0)) {
         throw new Error('Field deserialization is not implemented');
     }
@@ -203,7 +212,7 @@ export class Aggregation {
         throw new Error('Part catalog deserialization is not implemented');
     }
 
-    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed);
+    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed, mode);
     aggregation.coll_check = data.coll_check ?? true;
     const known = new Set(['object_type', 'name', 'parts', 'rules', 'rnd_seed', 'global_constraints',
         'catalog', 'mode', 'coll_check', 'field', 'graph', 'include_aggr_geo',
@@ -273,6 +282,7 @@ export class Aggregation {
      * Serialize the aggregation into a JSON-friendly WASP-compatible structure.
      */
     toData(include_aggr_geo = true) {
+        const mode = supportedMode(this.mode);
         const aggregated_parts = Object.fromEntries(this.aggregated_parts.map(part =>
             [String(part.id), part.toData(include_aggr_geo, include_aggr_geo)]));
         const aggregated_parts_sequence = this.aggregated_parts.map(part => part.id);
@@ -286,7 +296,7 @@ export class Aggregation {
             rnd_seed: this.rnd_seed,
             global_constraints: [],
             catalog: null,
-            mode: this.mode,
+            mode,
             coll_check: this.coll_check,
             field: null,
             // Legacy callers can supply placed parts directly; recover their graph
@@ -377,6 +387,7 @@ aggregate_rnd(num) {
 }
 
 addFirstPartToAggregation() {
+    supportedMode(this.mode);
     const partKeys = this.activePartTypes
         ? Object.keys(this.parts).filter(k => this.activePartTypes.has(k))
         : Object.keys(this.parts);
@@ -397,6 +408,7 @@ addFirstPartToAggregation() {
 }
 
 addPartToAggregation() {
+    supportedMode(this.mode);
 
     if (this.aggregated_parts.length === 0) {
         return this.addFirstPartToAggregation();
@@ -528,18 +540,36 @@ removePartFromAggregation(part_id) {
 }
 
 /**
- * Check if a transformed part collides with any existing aggregated part.
+ * Check an already placed candidate's primary collider and mode-1 additional
+ * collider. Successful variant state belongs to this candidate only.
  * @param {Part} partTrans
  * @returns {boolean}
  */
 _checkCollision(partTrans) {
-    if (!this.coll_check) return false;
+    const mode = supportedMode(this.mode);
+    if (partTrans instanceof AdvancedPart) partTrans._assertSupported();
+    for (const existing of this.aggregated_parts) {
+        if (existing instanceof AdvancedPart) existing._assertSupported();
+    }
     // GH-Wasp difference: retain JS's surface-only placement contract, without
-    // GH's additional center-overlap gate. coll_check=false bypasses all checks.
+    // GH's additional center-overlap gate. coll_check=false bypasses primary
+    // surface checks; mode-1 additional colliders are independent, as in GH.
     // Test every existing collider: JS dim is derived from display geometry and
     // is not a safe radius for off-center or larger explicit collider meshes.
-    const parts = this.aggregated_parts.map(part => ({ collider: placementCollider(part) }));
-    return placementCollider(partTrans).checkCollisionsById(parts, parts.map((_, i) => i));
+    if (this.coll_check) {
+        const parts = this.aggregated_parts.map(part => ({ collider: placementCollider(part) }));
+        if (placementCollider(partTrans).checkCollisionsById(parts, parts.map((_, i) => i))) return true;
+    }
+    if (mode === 1 && partTrans instanceof AdvancedPart && partTrans.add_collider) {
+        // GH aggregation.py::additional_collider_check. The candidate is already
+        // placed. Share read-only meshes in a fresh probe, resetting valid state.
+        const add = partTrans.add_collider;
+        const probe = new Collider(add.geometry, add.multiple, add.checkAll, add.connections, []);
+        if (probe.checkCollisionsWithParts(this.aggregated_parts)) return true;
+        // GH-Wasp difference: update this candidate only, not its catalog base.
+        add.validConnections = [...probe.validConnections];
+    }
+    return false;
 }
 
 /**
@@ -548,6 +578,7 @@ _checkCollision(partTrans) {
  * @returns {{ success: boolean, part?: Part, error?: string }}
  */
 placeFirstPart(partName) {
+    supportedMode(this.mode);
     if (this.aggregated_parts.length > 0) {
         return { success: false, error: 'Aggregation is not empty' };
     }
