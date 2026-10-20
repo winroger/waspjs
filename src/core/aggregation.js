@@ -2,7 +2,7 @@
  * WaspJS — aggregation growth, graph state and reconstruction.
  * Upstream module: src/wasp/core/aggregation.py; intentional differences documented below.
  */
-import { PlaneToPlane, transformToData } from './utilities';
+import { PlaneToPlane, transformToData, distanceToMesh } from './utilities';
 import { Collider } from './collider';
 import { Part, AdvancedPart } from './part';
 import { Rule } from './rule';
@@ -386,6 +386,32 @@ aggregate_rnd(num) {
     return true;
 }
 
+/**
+ * GH counterpart: aggregation.py::check_blocked_connections, standard geometry path.
+ * Despite the upstream name, returns FREE connection indices. Compare each placed
+ * connection origin with other Parts' display-mesh surfaces using strict distance
+ * < tolerance. Collider, mode, active_connections and graph do not define this query.
+ * Same-ID Parts are skipped, matching GH. Model units, no up-axis conversion.
+ * Compatibility limitation: connections_only/custom_graph variants are not ported.
+ * @param {Part} part Placed Part with the same ID convention as this aggregation
+ * @param {boolean} [connectionsOnly=false] Reserved GH variant; true is rejected
+ * @param {Graph|null} [customGraph=null] Reserved GH variant; non-null is rejected
+ * @param {number} [tolerance=0.002] Model units; pinned GH global default
+ * @returns {number[]} Free indices into part.connections, not Connection.id values
+ */
+checkBlockedConnections(part, connectionsOnly = false, customGraph = null, tolerance = 0.002) {
+    if (connectionsOnly !== false || customGraph !== null) {
+        throw new Error('Only the standard geometric blocked-connection query is implemented');
+    }
+    if (!Number.isFinite(tolerance) || tolerance < 0) throw new Error('Invalid connection tolerance');
+    const others = this.aggregated_parts.filter(other => other.id !== part.id);
+    return part.connections.flatMap((connection, index) => {
+        const origin = connection.pln.origin;
+        if (!origin.toArray().every(Number.isFinite)) throw new Error('Invalid connection origin');
+        return others.some(other => distanceToMesh(origin, other.geo) < tolerance) ? [] : [index];
+    });
+}
+
 addFirstPartToAggregation() {
     supportedMode(this.mode);
     const partKeys = this.activePartTypes
@@ -406,6 +432,7 @@ addFirstPartToAggregation() {
     }
     return false;
 }
+
 
 addPartToAggregation() {
     supportedMode(this.mode);

@@ -134,7 +134,7 @@ for general affine transforms, reflections, or every aggregation workflow.
 ### Part attributes
 
 `Part.attributes` remains an optional JSON array. Construction also accepts explicit
-`Attribute` instances, converted to data immediately; existing callers keep the
+`Attribute`/`SmartAttribute` instances, converted to data immediately; existing callers keep the
 same array/object shape. Nested values are copied during construction, copying,
 transformation, serialization and import.
 
@@ -181,11 +181,69 @@ on `.NET Byte` values; the test capture adapter normalizes those scalars and rec
 that native failure separately. A lossless arbitrary GH attribute roundtrip is not
 promised.
 
-**SmartAttribute validity and InternalTransform are deferred.** Static payloads can
-remain JSON, but declared transformable unsupported classes are rejected rather
-than silently kept in the wrong location. Full support for all RhinoCommon geometry
-and geometric SmartAttribute masks is outside this first slice. Comparison evidence
-is in [attributes.test.js](src/tests/attributes.test.js).
+InternalTransform and general RhinoCommon geometry remain outside the supported
+contract. Comparison evidence for normal Attributes is in
+[attributes.test.js](src/tests/attributes.test.js).
+
+### Smart attributes
+
+`SmartAttribute` lives next to `Attribute` in the same core module, matching GH.
+It accepts typed JSON values and runtime `Connection` objects or connection data:
+
+```js
+import { SmartAttribute, getValidSmartAttributes } from 'webwaspjs';
+const finish = new SmartAttribute('finish', [
+  { type: 'String', value: 'cap', valid: true },
+], false, [part.connections[0]], [1]);
+// Supply finish as a Part attribute before placing that Part.
+const valuesByPart = getValidSmartAttributes(aggregation, ['finish']);
+```
+
+`Attribute.fromData()` dispatches `class_type: 'SmartAttribute'`. `copy()` and
+`transform()` retain the class, mask, connection references and unknown JSON fields.
+As in GH, transforming a SmartAttribute moves its transformable **values**, while
+its stored Connection frames stay in their original coordinates. Their IDs refer
+to slots on the placed Part; the geometric query uses that Part's placed frames.
+JS deliberately copies values, connections and masks independently instead of
+reproducing GH's shared mutable state. Part attributes retain their JSON-array API.
+
+`Aggregation.checkBlockedConnections(part, false, null, tolerance = 0.002)`
+corresponds to GH's standard geometric query. Despite its name it returns
+**free connection indices**. A slot is blocked when the distance from its origin
+to another Part's display-mesh surface is strictly **less than** the tolerance.
+Equal-ID Parts are skipped. Neither active connections, colliders, aggregation
+mode nor the stored graph determines this result. A point inside a closed mesh
+can remain free if it is far from the surface. Coordinates stay in model units;
+there is no Rhino/Three.js up-axis conversion. The default matches the measured
+GH global tolerance; pass the appropriate value for another document/unit setup.
+
+`getValidSmartAttributes(aggregation, ids, tolerance = 0.002)` is the host-independent
+counterpart of GH's Get Valid Smart Attributes component. `ids` contains attribute
+names. Output is a nested array: one row per placed Part, containing the typed
+value arrays of valid matching attributes in requested-name order. Missing/invalid
+matches add no group. First matching SmartAttribute wins even if invalid;
+duplicate requested names repeat its values. Results are independent snapshots.
+
+A mask entry `1` requires a free slot, `-1` a blocked slot, `0` ignores it. The
+stored attribute Connection ID is compared with the returned **Part array index**,
+matching GH even when IDs are noncontiguous. Empty and shorter masks are allowed;
+unknown mask values and masks longer than the attribute connection list raise
+errors instead of GH's silent ignores or later IndexError. Values and geometry
+follow the same measured rigid-transform support as normal Attributes.
+
+Only the standard surface query is implemented: `connectionsOnly=true` and a
+non-null `customGraph` raise errors. Empty queried meshes also raise errors;
+GH's measured invalid closest point otherwise produces false blocking. Tests
+cover small triangle/planar-quad surfaces and strict tolerance cases; general
+degenerate/nonplanar meshes and arbitrary Float32 boundary parity remain unproven.
+Direct buffer edits must set `needsUpdate`, as for collision queries. Scene-parent
+transforms and rendering visibility do not affect model geometry.
+
+[smartAttributes.test.js](src/tests/smartAttributes.test.js) compares actual GH
+Core/component-domain measurements, Part transforms, full/light state and copy
+ownership. Genuine JS-to-GH Part reads cover placed/chained full/light exports.
+Grasshopper UI/DataTree integration, Fields, further Constraints and InternalTransform
+are excluded; no installed application is updated by this library feature.
 
 ### Rules and manual placement
 

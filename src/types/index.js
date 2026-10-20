@@ -78,6 +78,16 @@
  */
 
 /**
+ * @typedef {Object} SmartAttributeData
+ * @property {'SmartAttribute'} class_type
+ * @property {string} name
+ * @property {AttributeValueData[]} values
+ * @property {boolean} transformable
+ * @property {ConnectionData[]} connections Stored slot references; frames do not follow placement
+ * @property {number[]} conn_mask 1 requires free, -1 blocked, 0 ignores a slot
+ */
+
+/**
  * @typedef {Object} PartData
  * @property {'Part'} class_type
  * @property {string} name

@@ -1,10 +1,12 @@
 /**
- * WaspJS — Attribute class.
+ * WaspJS — Attribute and SmartAttribute classes.
  * Upstream module: src/wasp/core/attributes.py.
  * Values use typed GH JSON records rather than Rhino runtime objects.
- * SmartAttribute validity and InternalTransform are separate deferred features.
+ * SmartAttribute validity is evaluated by the getValidSmartAttributes operation.
+ * InternalTransform remains outside the supported attribute contract.
  */
 import { transformAttributeValue } from './utilities.js';
+import { Connection } from './connection.js';
 
 // ==================== Attribute ====================
 
@@ -25,8 +27,9 @@ export class Attribute {
         this._extraData = {};
     }
 
-    /** @param {import('../types/index.js').AttributeData} data @returns {Attribute} */
+    /** @param {import('../types/index.js').AttributeData|import('../types/index.js').SmartAttributeData} data @returns {Attribute|SmartAttribute} */
     static fromData(data) {
+        if (data.class_type === 'SmartAttribute') return SmartAttribute.fromData(data);
         if (data.class_type !== 'Attribute') throw new Error(`Unsupported attribute class: ${data.class_type}`);
         const attribute = new Attribute(data.name, data.values, data.transformable);
         attribute._extraData = globalThis.structuredClone(Object.fromEntries(Object.entries(data)
@@ -59,6 +62,67 @@ export class Attribute {
      */
     copy() {
         return Attribute.fromData(this.toData());
+    }
+}
+
+// ==================== SmartAttribute ====================
+
+/**
+ * Attribute with a mask referring to Part connection indices through Connection.id.
+ * Connections identify attachment slots; their frames stay unchanged on transform,
+ * matching GH. Validity uses the placed Part's connections, not these stored frames.
+ */
+export class SmartAttribute extends Attribute {
+    /**
+     * @param {string} name
+     * @param {import('../types/index.js').AttributeValueData[]} values
+     * @param {boolean} transformable
+     * @param {Array<Connection|import('../types/index.js').ConnectionData>} [connections=[]]
+     * @param {number[]} [connMask=[]] 1 requires free, -1 blocked, 0 ignores a slot
+     * @throws {Error} A mask or connection ID is outside the supported contract
+     */
+    constructor(name, values, transformable, connections = [], connMask = []) {
+        super(name, values, transformable);
+        if (!Array.isArray(connections) || !Array.isArray(connMask)
+            || connMask.length > connections.length
+            || connMask.some(value => ![-1, 0, 1].includes(value))) {
+            // GH-Wasp difference: reject malformed masks instead of ignoring values
+            // or failing later inside the component's positional loop.
+            throw new Error('Invalid SmartAttribute connection mask');
+        }
+        this._connectionData = globalThis.structuredClone(connections.map(connection =>
+            connection instanceof Connection ? connection.toData() : connection));
+        if (this._connectionData.some(data => {
+            const id = typeof data?.id === 'string' && /^\d+$/.test(data.id) ? Number(data.id) : data?.id;
+            return !Number.isSafeInteger(id) || id < 0;
+        })) {
+            throw new Error('Invalid SmartAttribute connection ID');
+        }
+        this.connections = this._connectionData.map(data => Connection.fromData(data));
+        // GH-Wasp difference: independent connections, mask and values on copy.
+        this.conn_mask = [...connMask];
+    }
+
+    /** @param {import('../types/index.js').SmartAttributeData} data @returns {SmartAttribute} */
+    static fromData(data) {
+        if (data.class_type !== 'SmartAttribute') throw new Error(`Unsupported attribute class: ${data.class_type}`);
+        if (!Array.isArray(data.connections) || !Array.isArray(data.conn_mask)) {
+            throw new Error('SmartAttribute requires connections and conn_mask arrays');
+        }
+        const attribute = new SmartAttribute(data.name, data.values, data.transformable, data.connections, data.conn_mask);
+        attribute._extraData = globalThis.structuredClone(Object.fromEntries(Object.entries(data)
+            .filter(([key]) => !['class_type', 'name', 'values', 'transformable', 'connections', 'conn_mask'].includes(key))));
+        return attribute;
+    }
+
+    /** @returns {import('../types/index.js').SmartAttributeData} Independent transport snapshot */
+    toData() {
+        return { ...super.toData(), class_type: 'SmartAttribute',
+            connections: this.connections.map((connection, i) => {
+                const extra = globalThis.structuredClone(this._connectionData[i] ?? {});
+                const data = connection.toData();
+                return { ...extra, ...data, plane: { ...extra.plane, ...data.plane } };
+            }), conn_mask: [...this.conn_mask] };
     }
 }
 

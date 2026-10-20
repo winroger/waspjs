@@ -102,14 +102,14 @@ describe('GH Attribute counterpart', () => {
         expect(() => a.transform(transforms[0])).toThrow(/coordinates/);
         expect(() => new Attribute('bad', {}, false)).toThrow(/array/);
     });
-    it('inventories SmartAttribute and InternalTransform without claiming their support', () => {
+    it('retains the historical Smart/Internal inventory; InternalTransform remains deferred', () => {
         expect(reference.deferred.smart.class_type).toBe('SmartAttribute');
         expect(reference.deferred.smart_connections_shared).toBe(true);
         expect(reference.deferred.internal.class_type).toBe('Attribute');
         expect(reference.deferred.internal_source_position).toBe(0.25);
         expect(reference.deferred.internal_copy_position).toBe(0.5);
         expect(reference.deferred.internal_transform_position).toBe(0.5);
-        expect(api).not.toHaveProperty('SmartAttribute');
+        expect(api.SmartAttribute).toBeTypeOf('function');
         expect(api).not.toHaveProperty('InternalTransform');
         expect(api).not.toHaveProperty('transformAttributeValue');
         expect(api).not.toHaveProperty('copyAttributes');
@@ -156,10 +156,10 @@ describe('Part attribute integration', () => {
         result.attributes[0].values[0].position[0] = 99;
         expect(p.attributes).toEqual(raw);
     });
-    it('retains static Smart payloads but rejects unimplemented declared Smart transformation', () => {
+    it('transforms the previously inventoried Smart payload and retains static JSON', () => {
         const raw = clone(reference.deferred.smart);
         const p = new Part('A', base().geo, [], base().collider, [raw]);
-        expect(() => p.transform(transforms[0])).toThrow(/SmartAttribute/);
+        numeric(p.transform(transforms[0]).attributes[0].values, reference.deferred.smart_transformed.values);
         raw.transformable = false;
         const staticPart = new Part('A', base().geo, [], base().collider, [raw]);
         expect(staticPart.transform(transforms[0]).attributes).toEqual([raw]);

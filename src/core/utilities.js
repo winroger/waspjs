@@ -60,6 +60,31 @@ function collisionMesh(mesh) {
 }
 
 /**
+ * JS host-API adapter: Rhino Mesh.ClosestPoint in
+ * src/wasp/core/aggregation.py::check_blocked_connections.
+ * Distance to the surface, not containment, collider overlap or render raycasting.
+ * Includes local model placement; scene parents are presentation only. Reuses
+ * private BVH data without mutating source buffers, indices or boundsTree.
+ * Mark edited position/index attributes needsUpdate before querying again.
+ * Compatibility limitation: Float32 mesh coordinates and nondegenerate triangle
+ * surfaces; this is not a general Rhino geometry adapter. Empty meshes are rejected
+ * rather than reproducing GH's invalid closest-point result as a blocked slot.
+ * @internal Not exported from the package entry point.
+ * @param {THREE.Vector3} point Model-coordinate point
+ * @param {THREE.Mesh} mesh
+ * @returns {number} Closest surface distance
+ * @throws {Error} The mesh has no queryable surface
+ */
+export function distanceToMesh(point, mesh) {
+    const placed = collisionMesh(mesh);
+    if (!placed) throw new Error('Cannot query an empty mesh surface');
+    placed.tree ??= new MeshBVH(placed.geometry, { indirect: true });
+    const result = placed.tree.closestPointToPoint(point);
+    if (!result || !Number.isFinite(result.distance)) throw new Error('Cannot query an invalid mesh surface');
+    return result.distance;
+}
+
+/**
  * Test mesh surfaces in model coordinates without changing either source mesh.
  * JS host-API adapter: Rhino Intersection.MeshMeshFast used by
  * src/wasp/core/colliders.py, implemented with the installed three-mesh-bvh.

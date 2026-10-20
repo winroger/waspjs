@@ -1,0 +1,2278 @@
+{
+  "description": "Input for actual pinned GH execution; no field/constraint/DisCo paths",
+  "transforms": [
+    [
+      [
+        0,
+        -1,
+        0,
+        10
+      ],
+      [
+        1,
+        0,
+        0,
+        20
+      ],
+      [
+        0,
+        0,
+        1,
+        30
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        0,
+        0,
+        -4
+      ],
+      [
+        0,
+        0,
+        -1,
+        2
+      ],
+      [
+        0,
+        1,
+        0,
+        5
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ]
+  ],
+  "connections": [
+    {
+      "plane": {
+        "origin": [
+          0,
+          0,
+          0
+        ],
+        "xaxis": [
+          1,
+          0,
+          0
+        ],
+        "yaxis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "type": "x",
+      "part": "A",
+      "id": 0
+    },
+    {
+      "plane": {
+        "origin": [
+          4,
+          0,
+          0
+        ],
+        "xaxis": [
+          1,
+          0,
+          0
+        ],
+        "yaxis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "type": "x",
+      "part": "A",
+      "id": 1
+    },
+    {
+      "plane": {
+        "origin": [
+          0,
+          4,
+          0
+        ],
+        "xaxis": [
+          1,
+          0,
+          0
+        ],
+        "yaxis": [
+          0,
+          1,
+          0
+        ]
+      },
+      "type": "x",
+      "part": "A",
+      "id": 2
+    }
+  ],
+  "attributes": [
+    {
+      "class_type": "SmartAttribute",
+      "name": "free0",
+      "values": [
+        {
+          "type": "String",
+          "value": "free0",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "blocked0",
+      "values": [
+        {
+          "type": "String",
+          "value": "blocked0",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "free1",
+      "values": [
+        {
+          "type": "String",
+          "value": "free1",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "mixed",
+      "values": [
+        {
+          "type": "String",
+          "value": "mixed",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "all_free",
+      "values": [
+        {
+          "type": "String",
+          "value": "all_free",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "all_blocked",
+      "values": [
+        {
+          "type": "String",
+          "value": "all_blocked",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        -1,
+        -1,
+        -1
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "ignore",
+      "values": [
+        {
+          "type": "String",
+          "value": "ignore",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "empty",
+      "values": [
+        {
+          "type": "String",
+          "value": "empty",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": []
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "short",
+      "values": [
+        {
+          "type": "String",
+          "value": "short",
+          "valid": true
+        }
+      ],
+      "transformable": false,
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        1
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_static",
+      "transformable": false,
+      "values": [
+        {
+          "type": "String",
+          "value": "label",
+          "valid": true
+        },
+        {
+          "type": "Boolean",
+          "value": false,
+          "valid": true
+        },
+        {
+          "type": "Number",
+          "value": 7.5,
+          "valid": true
+        },
+        {
+          "type": "Dictionary",
+          "value": {
+            "nested": [
+              1,
+              false,
+              {
+                "label": "keep"
+              }
+            ]
+          },
+          "valid": true
+        },
+        {
+          "type": "Color",
+          "value": [
+            128,
+            10,
+            20,
+            30
+          ],
+          "valid": true
+        },
+        {
+          "type": "Unknown",
+          "value": [
+            1,
+            "opaque",
+            null
+          ],
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_point",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Point",
+          "value": [
+            1,
+            2,
+            3
+          ],
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_line",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Line",
+          "value": {
+            "from": [
+              1,
+              2,
+              3
+            ],
+            "to": [
+              4,
+              5,
+              6
+            ]
+          },
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_plane",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Plane",
+          "value": {
+            "origin": [
+              2,
+              3,
+              4
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_mesh",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Mesh",
+          "value": {
+            "vertices": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ]
+            ],
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ]
+          },
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class_type": "SmartAttribute",
+      "name": "typed_mixed",
+      "transformable": true,
+      "values": [
+        {
+          "type": "Point",
+          "value": [
+            1,
+            2,
+            3
+          ],
+          "valid": true
+        },
+        {
+          "type": "Line",
+          "value": {
+            "from": [
+              1,
+              2,
+              3
+            ],
+            "to": [
+              4,
+              5,
+              6
+            ]
+          },
+          "valid": true
+        },
+        {
+          "type": "Plane",
+          "value": {
+            "origin": [
+              2,
+              3,
+              4
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "valid": true
+        },
+        {
+          "type": "Mesh",
+          "value": {
+            "vertices": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ]
+            ],
+            "faces": [
+              [
+                0,
+                1,
+                2
+              ]
+            ]
+          },
+          "valid": true
+        }
+      ],
+      "connections": [
+        {
+          "plane": {
+            "origin": [
+              0,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 0
+        },
+        {
+          "plane": {
+            "origin": [
+              4,
+              0,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 1
+        },
+        {
+          "plane": {
+            "origin": [
+              0,
+              4,
+              0
+            ],
+            "xaxis": [
+              1,
+              0,
+              0
+            ],
+            "yaxis": [
+              0,
+              1,
+              0
+            ]
+          },
+          "type": "x",
+          "part": "A",
+          "id": 2
+        }
+      ],
+      "conn_mask": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "meshes": {
+    "square": {
+      "vertices": [
+        [
+          -1,
+          -1,
+          0
+        ],
+        [
+          1,
+          -1,
+          0
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          -1,
+          1,
+          0
+        ]
+      ],
+      "faces": [
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ]
+    },
+    "triangle": {
+      "vertices": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "faces": [
+        [
+          0,
+          1,
+          2
+        ]
+      ]
+    },
+    "box": {
+      "vertices": [
+        [
+          -1,
+          -1,
+          -1
+        ],
+        [
+          1,
+          -1,
+          -1
+        ],
+        [
+          1,
+          1,
+          -1
+        ],
+        [
+          -1,
+          1,
+          -1
+        ],
+        [
+          -1,
+          -1,
+          1
+        ],
+        [
+          1,
+          -1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          -1,
+          1,
+          1
+        ]
+      ],
+      "faces": [
+        [
+          0,
+          3,
+          2,
+          1
+        ],
+        [
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          0,
+          1,
+          5,
+          4
+        ],
+        [
+          1,
+          2,
+          6,
+          5
+        ],
+        [
+          2,
+          3,
+          7,
+          6
+        ],
+        [
+          3,
+          0,
+          4,
+          7
+        ]
+      ]
+    },
+    "empty": {
+      "vertices": [],
+      "faces": []
+    }
+  },
+  "cases": [
+    {
+      "id": "alone",
+      "blockers": []
+    },
+    {
+      "id": "blocked0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blocked1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blocked02",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "all_blocked",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "two_obstacles_same_connection",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inside_closed_mesh_is_free",
+      "blockers": [
+        {
+          "mesh": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "triangle_vertex",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "triangle_outside",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0.2,
+            0.2,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "empty_mesh",
+      "blockers": [
+        {
+          "mesh": "empty",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "same_id_skipped",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "same_id": true
+        }
+      ]
+    },
+    {
+      "id": "tolerance_0.0019",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "connection0_z": 0.0019
+    },
+    {
+      "id": "tolerance_0.002",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "connection0_z": 0.002
+    },
+    {
+      "id": "tolerance_0.0021",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "connection0_z": 0.0021
+    },
+    {
+      "id": "alone_pose0",
+      "blockers": [],
+      "pose": 0
+    },
+    {
+      "id": "alone_pose1",
+      "blockers": [],
+      "pose": 1
+    },
+    {
+      "id": "blocked0_pose0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "blocked0_pose1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "blocked1_pose0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "blocked1_pose1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "blocked02_pose0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "blocked02_pose1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "all_blocked_pose0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "all_blocked_pose1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            4,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "two_obstacles_same_connection_pose0",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "two_obstacles_same_connection_pose1",
+      "blockers": [
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "mesh": "square",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "inside_closed_mesh_is_free_pose0",
+      "blockers": [
+        {
+          "mesh": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "inside_closed_mesh_is_free_pose1",
+      "blockers": [
+        {
+          "mesh": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "triangle_vertex_pose0",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "triangle_vertex_pose1",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    },
+    {
+      "id": "triangle_outside_pose0",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0.2,
+            0.2,
+            0
+          ]
+        }
+      ],
+      "pose": 0
+    },
+    {
+      "id": "triangle_outside_pose1",
+      "blockers": [
+        {
+          "mesh": "triangle",
+          "offset": [
+            0.2,
+            0.2,
+            0
+          ]
+        }
+      ],
+      "pose": 1
+    }
+  ],
+  "invalid": [
+    {
+      "id": "unknown_mask",
+      "mask": [
+        2
+      ]
+    },
+    {
+      "id": "string_mask",
+      "mask": [
+        "1"
+      ]
+    },
+    {
+      "id": "long_zero_mask",
+      "mask": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "long_used_mask",
+      "mask": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": "short_connections",
+      "mask": [
+        1,
+        1,
+        1
+      ],
+      "connections": 1
+    }
+  ],
+  "attribute_ids": [
+    "free0",
+    "blocked0",
+    "free1",
+    "mixed",
+    "all_free",
+    "all_blocked",
+    "ignore",
+    "empty",
+    "short",
+    "typed_static",
+    "typed_point",
+    "typed_line",
+    "typed_plane",
+    "typed_mesh",
+    "typed_mixed"
+  ]
+}
