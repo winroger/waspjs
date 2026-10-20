@@ -51,6 +51,7 @@ Main entry points:
 - `Aggregation` for direct access to the core model
 - `Visualizer` for simple browser rendering
 - `Graph` for directed aggregation topology and geometric connection queries
+- `PartCatalog` for remaining counts/weights and `createPartCatalog` for GH-component defaults
 - `loadAggregation(data, baseParts, rules, seed)` for the separate compact Save/Load format
 
 ### Placed geometry
@@ -245,6 +246,81 @@ ownership. Genuine JS-to-GH Part reads cover placed/chained full/light exports.
 Grasshopper UI/DataTree integration, Fields, further Constraints and InternalTransform
 are excluded; no installed application is updated by this library feature.
 
+### Part catalogs
+
+`PartCatalog` is defined beside Part and AdvancedPart in `src/core/part.js`, as in
+GH's module. It stores remaining counts or selection weights, independently of
+`Aggregation.parts` (the reusable Part definitions).
+
+```js
+import { PartCatalog, Aggregation, createPartCatalog } from 'webwaspjs';
+const inventory = new PartCatalog(['A', 'B'], [5, 3]); // limited=true, adaptive=false
+const aggregation = new Aggregation('example', baseParts, rules, 42, 0, inventory);
+aggregation.aggregate_rnd(4);
+console.log(aggregation.catalog.toData()); // CURRENT remaining quantities
+// GH Parts Catalog component defaults: unlimited proportional weights.
+const proportions = createPartCatalog(baseParts, [3]); // broadcast to each type
+```
+
+`new PartCatalog(names, amounts, isLimited = true, isAdaptive = false)` follows the
+GH core defaults. `createPartCatalog(parts, amounts, limited = false,
+adaptive = false)` implements the GH component's different defaults, null flags
+and single-amount broadcast. Names must be unique nonempty strings; limited counts
+are nonnegative safe integers, unlimited weights finite nonnegative numbers.
+An empty core catalog is valid; an empty component input is rejected.
+
+`dict`, `parts_total`, `is_empty`, `parts`, `amounts`, `is_limited` and `is_adaptive`
+use GH's field names. Inspect `dict` for current stock; `amounts` is the constructor
+snapshot. Change stock with `update(name, difference)`. Limited catalogs subtract
+counts; unlimited fixed catalogs leave weights unchanged. Unlimited adaptive
+catalogs use GH's floating-input normalization: apply the difference, then rescale
+each weight by previous-total / new-total. Limited takes precedence over adaptive.
+Negative results, overflow and zero denominators fail before mutation. JS does not
+emulate Python-2 integer-division truncation; adaptive behavior is matched against
+actual GH floating-valued inputs. Unsafe adaptive placements are unavailable.
+
+`returnRandomPart(randomFn = Math.random)` selects a positive entry uniformly;
+`returnWeightedPart(randomFn = Math.random)` selects proportionally. Neither
+consumes stock. Draws must be in `[0,1)`; exhaustion returns `null` without drawing.
+Sampling follows `parts` order. Optional second `allowedParts` arguments restrict
+choices without changing physical stock. JS RNG/order are deliberately distinct
+from Python's global generator/dictionary order. `copy()` owns current stock,
+name arrays and extra JSON independently. Zero stock is empty immediately.
+
+Inventory is an optional **sixth** Aggregation constructor argument, after seed
+and mode. The aggregation copies it. This first integration supports **mode 0**;
+mode 1 plus inventory is explicitly rejected, without expanding Constraint scope.
+**An attached catalog always governs JS growth, manual placements and previews.**
+GH core's separate `aggregate_rnd(..., use_catalog=True)` flag is not needed in JS;
+the GH component also enables catalog use when one is supplied. Previews do not
+debit stock. Only successful placements do; removed Parts/descendants refund
+registered types. Random `activePartTypes` filters are intersected with available
+stock. A Part absent from the inventory is unavailable for new placement even if
+it exists among the base definitions. `getAggregationCatalogParts` still returns
+base Parts, not inventory quantities.
+
+`toData()` uses GH's four-field catalog shape, with **current** amounts.
+`fromData()` preserves fractions and extra metadata. JS full/light aggregation
+roundtrips preserve the remaining stock without debiting imported instances again.
+Imported quantities are authoritative; no initial-vs-remaining heuristic is used.
+Registered imported Parts are treated as refundable inventory; previous types
+outside the catalog are not debited/refunded. Callers must supply consistent state.
+The compact format has no inventory: exporting it with an attached catalog throws;
+use full/light core data. RNG cursor restoration remains outside the existing contract.
+
+**Native exchange limitations:** the measured GH writer exports its unchanged
+initial `amounts` even after stock is spent, so its roundtrip can replenish inventory.
+GH→JS reads retain exactly those supplied quantities. For current GH stock, export
+`catalog.copy().to_data()` (the copy snapshots `dict`). GH's reader also casts every
+amount to int; it truncates fractional adaptive weights from JS. Integer limited
+catalogs and their current quantities were verified through actual JS→GH reads;
+lossless fractional-weight exchange with that GH reader is not claimed.
+
+[partCatalog.test.js](src/tests/partCatalog.test.js) compares native catalog models,
+controlled weight intervals, mode-0 growth, exhaustion and refund behavior, plus
+JS state continuation and explicit differences. No Fields, additional Constraints,
+Graph-Grammar, application dependencies or schema are introduced by this feature.
+
 ### Rules and manual placement
 
 The implementation of `generateRules` lives in
@@ -339,7 +415,8 @@ explicitly. No automatic GH-component collider construction is included.
 Mode is an optional **fifth** Aggregation argument, preserving the existing fourth
 seed argument. Mode `0` ignores additional constraints; mode `1` checks additional
 colliders after the primary check, including when `coll_check=false`. Modes `2/3`,
-Fields, global constraints and inventory catalogs remain unsupported.
+Fields and global constraints remain unsupported. Inventory catalogs are supported
+only in mode `0`, as described under [Part catalogs](#part-catalogs).
 
 The additional collider is transformed with the part, including its Connection
 frames. Its free variants are geometry indices and do not remove or reopen Part

@@ -1,0 +1,233 @@
+{
+  "catalogs": [
+    {
+      "id": "limited",
+      "parts": [
+        "A",
+        "B"
+      ],
+      "amounts": [
+        2,
+        1
+      ],
+      "limited": true,
+      "adaptive": false,
+      "updates": [
+        [
+          "A",
+          -1
+        ],
+        [
+          "B",
+          -1
+        ],
+        [
+          "A",
+          -1
+        ],
+        [
+          "A",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "proportional",
+      "parts": [
+        "A",
+        "B",
+        "C"
+      ],
+      "amounts": [
+        1,
+        3,
+        0
+      ],
+      "limited": false,
+      "adaptive": false,
+      "updates": [
+        [
+          "A",
+          -1
+        ],
+        [
+          "B",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "adaptive_float",
+      "parts": [
+        "A",
+        "B"
+      ],
+      "amounts": [
+        5,
+        5
+      ],
+      "limited": false,
+      "adaptive": true,
+      "float": true,
+      "updates": [
+        [
+          "A",
+          -1
+        ],
+        [
+          "B",
+          -1
+        ],
+        [
+          "A",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "adaptive_integer",
+      "parts": [
+        "A",
+        "B"
+      ],
+      "amounts": [
+        5,
+        5
+      ],
+      "limited": false,
+      "adaptive": true,
+      "updates": [
+        [
+          "A",
+          -1
+        ],
+        [
+          "B",
+          -1
+        ],
+        [
+          "A",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "limited_wins",
+      "parts": [
+        "A",
+        "B"
+      ],
+      "amounts": [
+        2,
+        1
+      ],
+      "limited": true,
+      "adaptive": true,
+      "updates": [
+        [
+          "A",
+          -1
+        ],
+        [
+          "B",
+          -1
+        ]
+      ]
+    },
+    {
+      "id": "zero",
+      "parts": [
+        "A",
+        "B"
+      ],
+      "amounts": [
+        0,
+        0
+      ],
+      "limited": true,
+      "adaptive": false,
+      "updates": [
+        [
+          "A",
+          1
+        ],
+        [
+          "A",
+          -1
+        ]
+      ]
+    },
+    {
+      "id": "empty",
+      "parts": [],
+      "amounts": [],
+      "limited": true,
+      "adaptive": false,
+      "updates": []
+    },
+    {
+      "id": "single",
+      "parts": [
+        "A"
+      ],
+      "amounts": [
+        2
+      ],
+      "limited": true,
+      "adaptive": false,
+      "updates": [
+        [
+          "A",
+          -1
+        ]
+      ]
+    }
+  ],
+  "fractions": [
+    0,
+    0.24999,
+    0.25,
+    0.5,
+    0.99999
+  ],
+  "aggregations": [
+    {
+      "id": "limited_two",
+      "amount": 2,
+      "limited": true,
+      "adaptive": false,
+      "num": 4
+    },
+    {
+      "id": "limited_zero",
+      "amount": 0,
+      "limited": true,
+      "adaptive": false,
+      "num": 1
+    },
+    {
+      "id": "proportional",
+      "amount": 2,
+      "limited": false,
+      "adaptive": false,
+      "num": 3
+    },
+    {
+      "id": "adaptive_float",
+      "amount": 4,
+      "limited": false,
+      "adaptive": true,
+      "float": true,
+      "num": 3
+    },
+    {
+      "id": "rule_failure",
+      "amount": 3,
+      "limited": true,
+      "adaptive": false,
+      "num": 2,
+      "no_rules": true
+    }
+  ],
+  "description": "Catalog state, forced selection, actual mode-0 growth and native reader losses; no DisCo/Fields/Constraints"
+}

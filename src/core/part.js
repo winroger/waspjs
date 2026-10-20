@@ -1,5 +1,5 @@
 /**
- * WaspJS — Part and AdvancedPart classes.
+ * WaspJS — Part, AdvancedPart and PartCatalog classes.
  * Upstream module: src/wasp/core/parts.py
  */
 import { copyMesh, meshAreaCentroid, meshFromData, meshToData, transformFromData, transformToData } from "./utilities";
@@ -450,4 +450,163 @@ function computeCenterAndDim(mesh, collider) {
     const dim = radius ?? boxSize ?? (collider && collider.geometry?.length ? collider.geometry.length : defaultResult.dim);
 
     return { center, dim };
+}
+
+// ==================== PartCatalog ====================
+
+/**
+ * GH counterpart: src/wasp/core/parts.py::PartCatalog.
+ * Named remaining counts (limited) or weights (unlimited). This is independent of
+ * the Aggregation.parts dictionary of reusable Part definitions.
+ */
+export class PartCatalog {
+    /**
+     * Core defaults match GH's class; its component uses limited=false instead.
+     * @param {string[]} parts Unique Part names, in sampling/export order
+     * @param {number[]} amounts Nonnegative counts or weights
+     * @param {boolean} [isLimited=true]
+     * @param {boolean} [isAdaptive=false] Used only when unlimited
+     */
+    constructor(parts, amounts, isLimited = true, isAdaptive = false) {
+        if (!Array.isArray(parts) || !Array.isArray(amounts) || parts.length !== amounts.length
+            || parts.some(name => typeof name !== 'string' || name.length === 0)
+            || new Set(parts).size !== parts.length) throw new Error('Invalid PartCatalog names or amounts');
+        this.parts = [...parts];
+        this.amounts = [...amounts];
+        this.is_limited = isLimited;
+        this.is_adaptive = isAdaptive;
+        this.dict = Object.fromEntries(parts.map((name, i) => [name, amounts[i]]));
+        this._extraData = {};
+        this._refresh();
+    }
+
+    /**
+     * GH-Wasp difference: preserve fractional weights rather than GH reader int().
+     * @param {import('../types/index.js').PartCatalogData} data
+     * @returns {PartCatalog}
+     */
+    static fromData(data) {
+        if (typeof data.is_limited !== 'boolean' || typeof data.is_adaptive !== 'boolean') {
+            throw new Error('PartCatalog requires boolean is_limited/is_adaptive flags');
+        }
+        const catalog = new PartCatalog(data.parts, data.amounts, data.is_limited, data.is_adaptive);
+        catalog._extraData = globalThis.structuredClone(Object.fromEntries(Object.entries(data)
+            .filter(([key]) => !['parts', 'amounts', 'is_limited', 'is_adaptive'].includes(key))));
+        return catalog;
+    }
+
+    /**
+     * GH-Wasp difference: export CURRENT amounts, avoiding GH's stale initial list.
+     * Shape is unchanged; readers that cast weights to int can still lose fractions.
+     * @returns {import('../types/index.js').PartCatalogData}
+     */
+    toData() {
+        this._validate();
+        return { ...globalThis.structuredClone(this._extraData), parts: [...this.parts],
+            amounts: this.parts.map(name => this.dict[name]),
+            is_limited: this.is_limited, is_adaptive: this.is_adaptive };
+    }
+
+    /**
+     * Uniform choice among positive entries; GH uses the Python global RNG.
+     * JS-specific RNG/filter arguments allow aggregation-local randomness and filters.
+     * @param {function():number} [randomFn=Math.random] Draw in [0,1)
+     * @param {string[]} [allowedParts=this.parts]
+     * @returns {string|null}
+     */
+    returnRandomPart(randomFn = Math.random, allowedParts = this.parts) {
+        const choices = this._choices(allowedParts);
+        return choices.length ? choices[Math.floor(catalogDraw(randomFn) * choices.length)] : null;
+    }
+
+    /**
+     * Weighted choice among positive entries in Part-list order. No stock is debited.
+     * JS ordering/RNG sequences are not Python dictionary/MT19937 sequences.
+     * @param {function():number} [randomFn=Math.random]
+     * @param {string[]} [allowedParts=this.parts] JS active-type restriction
+     * @returns {string|null}
+     */
+    returnWeightedPart(randomFn = Math.random, allowedParts = this.parts) {
+        const choices = this._choices(allowedParts);
+        if (!choices.length) return null;
+        let amount = catalogDraw(randomFn) * choices.reduce((sum, name) => sum + this.dict[name], 0);
+        for (const name of choices) {
+            if (amount < this.dict[name]) return name;
+            amount -= this.dict[name];
+        }
+        return choices[choices.length - 1]; // Absorb floating arithmetic at the upper boundary.
+    }
+
+    /**
+     * Update current stock. Limited wins over adaptive, matching GH.
+     * Adaptive uses floating normalization, matching GH floating-valued inputs;
+     * Python-2 integer-division truncation is deliberately not reproduced.
+     * Invalid/negative results and zero adaptive denominators fail before mutation.
+     * @param {string} partName
+     * @param {number} difference Signed count/weight change
+     */
+    update(partName, difference) {
+        this._validate();
+        if (!this.parts.includes(partName) || !Number.isFinite(difference)
+            || (this.is_limited && !Number.isSafeInteger(difference))) throw new Error('Invalid PartCatalog update');
+        if (!this.is_limited && !this.is_adaptive) return;
+        const next = { ...this.dict, [partName]: this.dict[partName] + difference };
+        if (!this.is_limited) {
+            const total = this.parts.reduce((sum, name) => sum + next[name], 0);
+            if (total <= 0) throw new Error('Invalid adaptive catalog denominator');
+            for (const name of this.parts) next[name] = next[name] * this.parts_total / total;
+        }
+        this._validate(next);
+        this.dict = next;
+        this._refresh();
+    }
+
+    /** Current-state copy, as GH; JS also owns the name list and extra JSON. @returns {PartCatalog} */
+    copy() {
+        return PartCatalog.fromData(this.toData());
+    }
+
+    /**
+     * JS-specific inventory gate for one Part placement, without consuming stock.
+     * Adaptive updates that would produce negative weights or division by zero are unavailable.
+     * @param {string} partName
+     * @returns {boolean}
+     */
+    canConsume(partName) {
+        this._validate();
+        const amount = Object.hasOwn(this.dict, partName) ? this.dict[partName] : 0;
+        return amount > 0 && ((!this.is_limited && !this.is_adaptive)
+            || (amount >= 1 && (this.is_limited || this.parts_total > 1)));
+    }
+
+    /** JS-specific validation of mutable public state; not a GH method. @internal */
+    _validate(stock = this.dict) {
+        if (typeof this.is_limited !== 'boolean' || typeof this.is_adaptive !== 'boolean'
+            || !Array.isArray(this.parts) || new Set(this.parts).size !== this.parts.length
+            || this.parts.some(name => typeof name !== 'string' || !name)
+            || this.parts.some(name => !Object.hasOwn(stock, name) || !Number.isFinite(stock[name]) || stock[name] < 0
+                || (this.is_limited && !Number.isSafeInteger(stock[name])))) throw new Error('Invalid PartCatalog stock or flags');
+        const total = this.parts.reduce((sum, name) => sum + stock[name], 0);
+        if (!Number.isFinite(total) || (this.is_limited && !Number.isSafeInteger(total))) throw new Error('Invalid PartCatalog total');
+    }
+
+    /** JS-specific derived-state refresh; zero stock is empty immediately. @internal */
+    _refresh() {
+        this._validate();
+        this.parts_total = this.parts.reduce((sum, name) => sum + this.dict[name], 0);
+        this.is_empty = this.parts_total === 0;
+    }
+
+    /** JS-specific conditional sampling; filtering does not change physical stock. @internal */
+    _choices(allowedParts) {
+        this._refresh();
+        return this.parts.filter(name => allowedParts.includes(name) && this.dict[name] > 0);
+    }
+}
+
+/** JS-specific RNG validation for PartCatalog draws. @internal */
+function catalogDraw(randomFn) {
+    const value = randomFn();
+    if (!Number.isFinite(value) || value < 0 || value >= 1) throw new Error('Catalog RNG must return a number in [0,1)');
+    return value;
 }

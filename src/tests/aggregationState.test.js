@@ -265,7 +265,7 @@ describe('aggregation state and roundtrips', () => {
         unsupported_mode: d => { d.mode = 2; },
         unsupported_field: d => { d.field = [{ name: 'field' }]; },
         unsupported_constraints: d => { d.global_constraints = [{ type: 'plane' }]; },
-        unsupported_catalog: d => { d.catalog = {}; },
+        invalid_catalog: d => { d.catalog = {}; },
         invalid_graph: d => { d.graph = []; },
         invalid_constraint_shape: d => { d.global_constraints = {}; },
     };

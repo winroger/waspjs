@@ -121,6 +121,14 @@
  */
 
 /**
+ * @typedef {Object} PartCatalogData
+ * @property {string[]} parts Part names; distinct from reusable Part definitions
+ * @property {number[]} amounts CURRENT remaining counts or weights in JS exports
+ * @property {boolean} is_limited Limited counts take precedence over adaptive
+ * @property {boolean} is_adaptive Unlimited weights use floating normalization
+ */
+
+/**
  * @typedef {Object} AggregationData
  * @property {'Aggregation'} [object_type]
  * @property {string} name
@@ -135,7 +143,7 @@
  * @property {Record<string, PartData|AdvancedPartData>|Array<PartData|AdvancedPartData>} [aggregated_parts]
  * @property {Array<number|string>} [aggregated_parts_sequence]
  * @property {Array<Object>} [global_constraints]
- * @property {null|Object} [catalog]
+ * @property {PartCatalogData|null} [catalog] Remaining inventory, supported in Mode 0 only
  */
 
 /**

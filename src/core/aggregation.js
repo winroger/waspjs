@@ -4,7 +4,7 @@
  */
 import { PlaneToPlane, transformToData, distanceToMesh } from './utilities';
 import { Collider } from './collider';
-import { Part, AdvancedPart } from './part';
+import { Part, AdvancedPart, PartCatalog } from './part';
 import { Rule } from './rule';
 import { Graph } from './graph.js';
 
@@ -153,8 +153,9 @@ export class Aggregation {
      * @param {Rule[]} _rules
      * @param {number|null} _rnd_seed
      * @param {0|1} [mode=0] Added after the existing seed argument.
+     * @param {PartCatalog|null} [catalog=null] Remaining inventory; Mode 0 only, copied on input
      */
-    constructor(_name, _parts, _rules, _rnd_seed = null, mode = 0) {
+    constructor(_name, _parts, _rules, _rnd_seed = null, mode = 0, catalog = null) {
       this.name = _name;
 
       this.parts = {};
@@ -166,6 +167,9 @@ export class Aggregation {
       this.aggregated_parts = [];
       this.graph = new Graph();
       this.mode = supportedMode(mode);
+      if (catalog !== null && !(catalog instanceof PartCatalog)) throw new Error('Expected a PartCatalog inventory');
+      this.catalog = catalog === null ? null : catalog.copy();
+      this._getCatalog();
       this.coll_check = true;
       this.removed_parts = [];
       this._extraData = {};
@@ -208,11 +212,11 @@ export class Aggregation {
     if (data.global_constraints != null && (!Array.isArray(data.global_constraints) || data.global_constraints.length > 0)) {
         throw new Error('Global constraints deserialization is not implemented');
     }
-    if (data['catalog']) {
-        throw new Error('Part catalog deserialization is not implemented');
+    if (data.catalog != null && mode !== 0) {
+        throw new Error('Inventory catalog is not implemented outside aggregation mode 0');
     }
-
-    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed, mode);
+    const catalog = data.catalog == null ? null : PartCatalog.fromData(data.catalog);
+    const aggregation = new Aggregation(d_name, d_parts, d_rules, d_rnd_seed, mode, catalog);
     aggregation.coll_check = data.coll_check ?? true;
     const known = new Set(['object_type', 'name', 'parts', 'rules', 'rnd_seed', 'global_constraints',
         'catalog', 'mode', 'coll_check', 'field', 'graph', 'include_aggr_geo',
@@ -295,7 +299,7 @@ export class Aggregation {
             rules: this.rules.map(rule => rule.toData()),
             rnd_seed: this.rnd_seed,
             global_constraints: [],
-            catalog: null,
+            catalog: this._getCatalog()?.toData() ?? null,
             mode,
             coll_check: this.coll_check,
             field: null,
@@ -312,6 +316,7 @@ export class Aggregation {
      * Serialize the placed aggregation state in the compact WASP "Save Aggregation to File" shape.
      */
     toFileData() {
+        if (this._getCatalog()) throw new Error('Compact format cannot preserve inventory catalog; use full/light core data');
         const parts = Object.fromEntries(this.aggregated_parts.map(part => [String(part.id), {
             name: part.name,
             active_connections: [...part.active_connections],
@@ -358,8 +363,29 @@ export class Aggregation {
     }
   }
 
+/**
+ * JS-specific invariant: an attached catalog always governs placement, including
+ * manual calls and previews. GH's random method uses a separate use_catalog flag.
+ * Catalog state is remaining inventory; importing placed parts does not debit it again.
+ * @internal
+ * @returns {PartCatalog|null}
+ */
+_getCatalog() {
+    if (this.catalog == null) return null;
+    if (!(this.catalog instanceof PartCatalog)) throw new Error('Expected a PartCatalog inventory');
+    if (this.mode !== 0) throw new Error('Inventory catalog is not implemented outside aggregation mode 0');
+    if (this.catalog.parts.some(name => !Object.hasOwn(this.parts, name))) throw new Error('Unknown inventory Part name');
+    return this.catalog;
+}
+
+/** JS-specific nonmutating inventory gate shared by previews and placements. @internal */
+_catalogAllows(name) {
+    return this._getCatalog()?.canConsume(name) ?? true;
+}
+
     /**
-     * Randomly grow the aggregation by the requested number of parts.
+     * Randomly grow by the requested number of parts; an attached catalog is used.
+     * GH counterpart: aggregate_rnd(num, use_catalog=True) when catalog is present.
      */
 aggregate_rnd(num) {
     let added = 0;
@@ -373,6 +399,8 @@ aggregate_rnd(num) {
             if (this.aggregated_parts.length === 0) {
             if (this.addFirstPartToAggregation()) {
                             added += 1;
+                    } else if (this._getCatalog()) {
+                            return `Could not place ${num - added} parts`;
                     }
             } else {
                     if (this.addPartToAggregation()) {
@@ -414,17 +442,21 @@ checkBlockedConnections(part, connectionsOnly = false, customGraph = null, toler
 
 addFirstPartToAggregation() {
     supportedMode(this.mode);
+    const catalog = this._getCatalog();
     const partKeys = this.activePartTypes
         ? Object.keys(this.parts).filter(k => this.activePartTypes.has(k))
         : Object.keys(this.parts);
-    if (partKeys.length === 0) return false;
-    let first_part = this.parts[randomChoice(this.randomFn, partKeys)];
+    const eligible = catalog ? partKeys.filter(name => catalog.canConsume(name)) : partKeys;
+    if (eligible.length === 0) return false;
+    const name = catalog ? catalog.returnWeightedPart(this.randomFn, eligible) : randomChoice(this.randomFn, eligible);
+    let first_part = this.parts[name];
     if (first_part !== null) {
             let first_part_trans = first_part.copy()
             first_part_trans.connections.forEach(conn => {
                     conn.generateRulesTable(this.rules);
             });
 
+            catalog?.update(first_part_trans.name, -1);
             first_part_trans.id = this._nextId++;
             this.aggregated_parts.push(first_part_trans);
             this.graph.addNode(first_part_trans.id);
@@ -436,6 +468,10 @@ addFirstPartToAggregation() {
 
 addPartToAggregation() {
     supportedMode(this.mode);
+    const catalog = this._getCatalog();
+    const eligible = catalog ? catalog.parts.filter(name => catalog.canConsume(name)
+        && (!this.activePartTypes || this.activePartTypes.has(name))) : null;
+    if (catalog && eligible.length === 0) return false;
 
     if (this.aggregated_parts.length === 0) {
         return this.addFirstPartToAggregation();
@@ -449,6 +485,7 @@ addPartToAggregation() {
         while (new_rule_attempts < 1000) { // ORIGINAL: 10000
             new_rule_attempts += 1;
             next_rule = null;
+            const selectedName = catalog?.returnWeightedPart(this.randomFn, eligible);
 
             const part_01_idx = randomInt(this.randomFn, 0, this.aggregated_parts.length - 1);
             part_01 = this.aggregated_parts[part_01_idx];
@@ -462,6 +499,7 @@ addPartToAggregation() {
             }
 
             if (next_rule !== null) {
+                if (catalog && next_rule.partB !== selectedName) continue;
                 // Skip if part type is not in the active set
                 if (this.activePartTypes && !this.activePartTypes.has(next_rule.partB)) {
                     continue;
@@ -509,6 +547,7 @@ addPartToAggregation() {
                 // REST OF STUFF
                 next_part_trans.resetPart(this.rules);
                 next_part_trans.active_connections = next_part_trans.active_connections.filter(conn => conn !== next_rule.connectionB);
+                catalog?.update(next_part_trans.name, -1);
                 next_part_trans.id = this._nextId++;
 
                 // parent-child tracking
@@ -542,6 +581,7 @@ addPartToAggregation() {
  * @returns {boolean} Whether the requested part existed. removed_parts lists results.
  */
 removePartFromAggregation(part_id) {
+    const catalog = this._getCatalog();
     const partToRemove = this.aggregated_parts.find(part => part.id === part_id);
     if (!partToRemove) return false;
     const removed = new Set([part_id]);
@@ -551,7 +591,14 @@ removePartFromAggregation(part_id) {
         size = removed.size;
         for (const part of this.aggregated_parts) if (removed.has(part.parent)) removed.add(part.id);
     } while (size !== removed.size);
-    this.removed_parts = this.aggregated_parts.filter(part => removed.has(part.id));
+    const removedParts = this.aggregated_parts.filter(part => removed.has(part.id));
+    // Validate all refunds before editing the model. Pre-existing imported Part
+    // types outside the inventory are not counted/refunded; no history is inferred.
+    const refunded = catalog?.copy();
+    for (const part of removedParts) {
+        if (refunded?.parts.includes(part.name)) refunded.update(part.name, 1);
+    }
+    this.removed_parts = removedParts;
     for (const part of this.removed_parts) {
         const parent = this.aggregated_parts.find(p => p.id === part.parent && !removed.has(p.id));
         if (parent) {
@@ -562,6 +609,11 @@ removePartFromAggregation(part_id) {
     }
     for (let i = this.aggregated_parts.length - 1; i >= 0; i--) {
         if (removed.has(this.aggregated_parts[i].id)) this.aggregated_parts.splice(i, 1);
+    }
+    if (catalog) {
+        catalog.dict = refunded.dict;
+        catalog.parts_total = refunded.parts_total;
+        catalog.is_empty = refunded.is_empty;
     }
     return true;
 }
@@ -606,6 +658,7 @@ _checkCollision(partTrans) {
  */
 placeFirstPart(partName) {
     supportedMode(this.mode);
+    const inventory = this._getCatalog();
     if (this.aggregated_parts.length > 0) {
         return { success: false, error: 'Aggregation is not empty' };
     }
@@ -613,8 +666,10 @@ placeFirstPart(partName) {
     if (!catalogPart) {
         return { success: false, error: `Part "${partName}" not found in catalog` };
     }
+    if (!this._catalogAllows(partName)) return { success: false, error: 'Part unavailable in inventory catalog' };
     const partCopy = catalogPart.copy();
     partCopy.connections.forEach(conn => conn.generateRulesTable(this.rules));
+    inventory?.update(partName, -1);
     partCopy.id = this._nextId++;
     this.aggregated_parts.push(partCopy);
     this.graph.addNode(partCopy.id);
@@ -631,6 +686,7 @@ placeFirstPart(partName) {
  * @returns {{ success: boolean, part?: Part, error?: string }}
  */
 placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
+    const inventory = this._getCatalog();
     const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
     if (!parentPart) return { success: false, error: 'Parent part not found' };
     if (!parentPart.active_connections.includes(connectionId)) {
@@ -640,6 +696,7 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
     const conn = parentPart.connections[connectionId];
     const catalogPart = this.parts[partName];
     if (!catalogPart) return { success: false, error: `Part "${partName}" not found in catalog` };
+    if (!this._catalogAllows(partName)) return { success: false, error: 'Part unavailable in inventory catalog' };
 
     const rule = conn.active_rules.map(i => conn.rules_table[i]).find(
         r => r && r.partB === partName && r.connectionB === connectionBId
@@ -660,6 +717,7 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
 
     partTrans.resetPart(this.rules);
     partTrans.active_connections = partTrans.active_connections.filter(c => c !== connectionBId);
+    inventory?.update(partName, -1);
     partTrans.id = this._nextId++;
 
     parentPart.children.push(partTrans.id);
@@ -706,7 +764,7 @@ getOpenConnections() {
  */
 getValidPlacementsForPart(partName) {
     const catalogPart = this.parts[partName];
-    if (!catalogPart) return [];
+    if (!catalogPart || !this._catalogAllows(partName)) return [];
 
     const placements = [];
     for (const parentPart of this.aggregated_parts) {
@@ -752,7 +810,7 @@ getValidPlacementsForPart(partName) {
  */
 getValidPlacementsAtParent(partName, parentPartId) {
     const catalogPart = this.parts[partName];
-    if (!catalogPart) return [];
+    if (!catalogPart || !this._catalogAllows(partName)) return [];
 
     const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
     if (!parentPart) return [];
@@ -799,7 +857,7 @@ getValidPlacementsAtParent(partName, parentPartId) {
  */
 getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
     const catalogPart = this.parts[partName];
-    if (!catalogPart) return [];
+    if (!catalogPart || !this._catalogAllows(partName)) return [];
 
     const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
     if (!parentPart) return [];
