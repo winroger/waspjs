@@ -1,4 +1,4 @@
-# WaspJS API and compatibility guide
+# WaspJS reference
 
 Detailed contracts for the current source. Start with the [README](README.md) for
 installation and a complete example. Source changes described here may be newer
@@ -8,7 +8,7 @@ All runtime exports come from `webwaspjs` (ESM) or `require('webwaspjs')` (Commo
 Package subpath imports are not exposed. Source JSDoc provides editor information;
 no `.d.ts` declarations or runtime schema validator are shipped.
 
-## Package entry points
+## Package exports
 
 | Export | Purpose |
 | --- | --- |
@@ -30,9 +30,9 @@ no `.d.ts` declarations or runtime schema validator are shipped.
 `src/index.js` is the single public package entry point. Core classes own model
 behavior; `src/operations/` groups workflows and convenience functions. The six
 aggregation helpers live together in `src/operations/aggregation.js` and reuse
-core behavior. `src/core/publicApi.js` only re-exports those same functions for
-older direct-source imports; it contains no implementation. Operations grow
-incrementally and do not promise a wrapper for every core method.
+core behavior. Operations grow incrementally and do not promise a wrapper for
+every core method. Applications import from the package root rather than internal
+source paths.
 
 ## Placement and viewer workflow
 

@@ -83,7 +83,7 @@ const light = assembly.toData(false);
 
 Full and Light exports preserve the supported core state. The separate compact
 `toFileData()` format needs external base Parts/rules when loaded and carries less
-state. See [data formats and API details](API.md#reading-and-exporting-data).
+state. See [data formats and usage](REFERENCE.md#reading-and-exporting-data).
 
 ## Render in a browser
 
@@ -122,15 +122,15 @@ are rejected rather than treated as fully supported. Collision checks test mesh
 surfaces, not general solid-volume containment. Equal Python/JS seeds do not imply
 the same random sequence, and loading does not restore an RNG cursor.
 
-When upgrading older consumers, review the [API guide](API.md), especially
-[connection frames](API.md#connection-frames), [Part dimensions](API.md#part-dimension)
-and [inventory exchange](API.md#part-catalogs). Corrected XYZ connection exports
+When upgrading older consumers, review the [reference guide](REFERENCE.md), especially
+[connection frames](REFERENCE.md#connection-frames), [Part dimensions](REFERENCE.md#part-dimension)
+and [inventory exchange](REFERENCE.md#part-catalogs). Corrected XYZ connection exports
 can be read differently by older WaspJS readers. Imported explicit dimensions stay
 unchanged. GH's catalog writer/reader can lose current stock or fractional weights.
 
-## API and development
+## Reference and development
 
-The [API guide](API.md) documents public exports, geometry/ownership conventions,
+The [reference guide](REFERENCE.md) documents public exports, geometry/ownership conventions,
 data formats and compatibility limits. Import public APIs from `webwaspjs`;
 package subpath imports are not exposed.
 

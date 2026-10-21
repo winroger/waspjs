@@ -8,7 +8,7 @@ Header und Kommentare werden hier maßgeblich gepflegt.
 - WaspJS zunächst in JavaScript weiterentwickeln. Priorität ist die Angleichung
   an den tatsächlichen GH-Wasp-Core. Eine TypeScript-Migration, ein neuer Core
   oder eine neue Komponenten-API benötigen einen eigenen Auftrag.
-- Vor Arbeiten [README](README.md), [API-Verträge](API.md) und
+- Vor Arbeiten [README](README.md), [Referenz](REFERENCE.md) und
   [Entwicklung/Release](CONTRIBUTING.md) lesen.
   Dokumentierte Aussagen am Quellcode prüfen; die Dokumentation ist kein
   vollständiger Kompatibilitätsnachweis.
@@ -62,10 +62,11 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   Verschiebung bestehende Paketnamen und Signaturen erhalten; notwendige bisherige
   Modul-Exporte als Re-Export derselben Implementierung erhalten.
   Aggregations-Convenience-Funktionen gemeinsam in `src/operations/aggregation.js`
-  pflegen und über den Paket-Einstieg exportieren. `src/core/publicApi.js` bleibt
-  ausschließlich Kompatibilitäts-Re-Export für alte Source-Importe; dort keine
-  Funktionskörper oder neue Logik hinzufügen. Die öffentliche API umfasst alle
-  Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
+  pflegen und über den Paket-Einstieg exportieren. Keine separate Forwarding-
+  oder Wrapper-Schicht daneben anlegen. Die öffentliche Schnittstelle umfasst
+  alle Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
+  Der Benutzer hat die alte Forwarding-Datei ausdrücklich entfernen lassen;
+  dafür keinen Kompatibilitäts-Re-Export wieder einführen.
 - Abweichungen vom Python-Verhalten ausdrücklich begründen und prüfen. Bekannte
   Upstream-Fehler nicht stillschweigend als gewünschtes Verhalten übernehmen.
 - Bestehende Dateien bei fachlichen Änderungen schrittweise an diesen Stil
@@ -147,7 +148,7 @@ export class Connection {
 ## Öffentliche Dokumentation
 
 - README auf Installation, ausführbare Beispiele und Anwendungsnutzung ausrichten.
-  Detaillierte öffentliche Verträge in `API.md`, Entwicklung/Release in
+  Detaillierte öffentliche Verträge in `REFERENCE.md`, Entwicklung/Release in
   `CONTRIBUTING.md` pflegen. Änderungen derselben Aussage nur dort nachführen.
 - Öffentliche Nutzungsdokumentation muss ohne benachbarte Repositories lesbar sein.
   Keine lokalen absoluten Pfade, Workspace-Links oder Links zu ignorierten Dateien.
@@ -155,7 +156,7 @@ export class Connection {
 - JSDoc mit Signaturen, Standardwerten, ID-Typen, Mutation und Rückgaben abstimmen.
   Vorhandene API-/Host-Grenzen ausdrücklich belassen; keine vollständige GH-Parität
   oder TypeScript-Typdeklarationen aus Kommentaren ableiten.
-- Das veröffentlichte Archiv enthält `dist`, `API.md`, README und Lizenz.
+- Das veröffentlichte Archiv enthält `dist`, `REFERENCE.md`, README und Lizenz.
   `prepack` erzeugt frische Bundles; keine Version, Tags oder Veröffentlichung
   allein aus Dokumentations-/Paketprüfungen ableiten.
 

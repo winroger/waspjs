@@ -7,7 +7,7 @@ import { Part } from '../core/part.js';
 import { Rule } from '../core/rule.js';
 import { Aggregation } from '../core/aggregation.js';
 import { createAggregationFromData } from '../operations/aggregation.js';
-import * as packageApi from '../index.js';
+import * as packageExports from '../index.js';
 import * as utilities from '../core/utilities.js';
 import { generateRules } from '../operations/generateRules.js';
 
@@ -23,9 +23,9 @@ function makePart(name) {
   return new Part(name, mesh, [connection], collider, [], 1, null, null);
 }
 
-describe('public api', () => {
+describe('aggregation operations and package exports', () => {
   it('preserves public utilities and operations while keeping mesh adapters internal', () => {
-    expect(packageApi).toMatchObject({
+    expect(packageExports).toMatchObject({
       checkMeshesIntersection: utilities.checkMeshesIntersection,
       meshToData: utilities.meshToData,
       meshFromData: utilities.meshFromData,
@@ -35,8 +35,8 @@ describe('public api', () => {
       generateRules,
     });
     expect(utilities.generateRules).toBe(generateRules);
-    expect(packageApi).not.toHaveProperty('copyMesh');
-    expect(packageApi).not.toHaveProperty('meshAreaCentroid');
+    expect(packageExports).not.toHaveProperty('copyMesh');
+    expect(packageExports).not.toHaveProperty('meshAreaCentroid');
   });
 
   it('creates an aggregation directly from serialized data', () => {

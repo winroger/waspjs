@@ -2,7 +2,7 @@
 
 This repository builds the `webwaspjs` package. A standalone clone is sufficient;
 no adjacent application, schema or documentation repository is needed.
-See [README](README.md) for use and [API.md](API.md) for the public contracts.
+See [README](README.md) for use and [REFERENCE.md](REFERENCE.md) for the public contracts.
 
 ## Setup and checks
 
@@ -27,7 +27,6 @@ need real DOM/WebGL checks; the core test suite does not verify viewer lifecycle
 - `src/operations/`: host-independent domain workflows and convenience functions,
   including GH-component equivalents. Existing aggregation helpers live together
   in `src/operations/aggregation.js`; reuse core methods rather than duplicate logic.
-- `src/core/publicApi.js`: compatibility re-exports only; add no implementation here.
 - `src/index.js`: public runtime exports; internal adapters stay out of this entry.
 - `src/types/index.js`: JSDoc shapes; these are neither runtime validation nor `.d.ts` output.
 - `src/tests/`: regressions and measured reference fixtures, including unsupported cases.
@@ -35,7 +34,7 @@ need real DOM/WebGL checks; the core test suite does not verify viewer lifecycle
 Follow [AGENTS.md](AGENTS.md) for source structure and comment conventions.
 Retain provenance/license notices. Label GH counterparts, host adapters and
 JS-specific helpers accurately; a shared method name does not prove parity.
-Keep public contracts in API.md and runnable onboarding in README rather than
+Keep public contracts in REFERENCE.md and runnable onboarding in README rather than
 copying internal planning or measurement logs into consumer documentation.
 
 Use a feature branch from local `main`. Describe observable behavior and appropriate
@@ -53,7 +52,7 @@ npm pack
 
 The `prepack` hook builds fresh bundles for packing/publication. `npm pack` creates
 a local archive; it does not publish. The intended package contains `dist/`,
-`API.md`, README, LICENSE.txt and package.json. Tests, agent instructions, local
+`REFERENCE.md`, README, LICENSE.txt and package.json. Tests, agent instructions, local
 notes, dependencies and build tools stay outside the archive. Source maps include
 the library sources for debugging; they are intentional.
 
