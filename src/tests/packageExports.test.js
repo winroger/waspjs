@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as webwaspjs from '../index.js';
-import * as aggregationOperations from '../operations/aggregation.js';
+import * as aggregationCore from '../core/aggregation.js';
 
 describe('package exports', () => {
   it.each([
@@ -10,8 +10,8 @@ describe('package exports', () => {
     'getValidPlacementsAtConnection',
     'getOpenConnectionsForPart',
     'setActivePartTypes',
-  ])('preserves %s as one function across package and operations imports', name => {
-    const operation = Reflect.get(aggregationOperations, name);
+  ])('preserves %s as a core-local compatibility function', name => {
+    const operation = Reflect.get(aggregationCore, name);
     expect(operation).toBeTypeOf('function');
     expect(Reflect.get(webwaspjs, name)).toBe(operation);
   });

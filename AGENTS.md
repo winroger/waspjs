@@ -61,10 +61,15 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   bestimmen die Zuständigkeit, nicht automatisch die öffentliche API. Bei einer
   Verschiebung bestehende Paketnamen und Signaturen erhalten; notwendige bisherige
   Modul-Exporte als Re-Export derselben Implementierung erhalten.
-  Aggregations-Convenience-Funktionen gemeinsam in `src/operations/aggregation.js`
-  pflegen und über den Paket-Einstieg exportieren. Keine separate Forwarding-
-  oder Wrapper-Schicht daneben anlegen. Die öffentliche Schnittstelle umfasst
-  alle Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
+  Aggregationsabfragen und Zustandsverhalten maßgeblich in der Core-Klasse
+  pflegen; globale und eingeschränkte Abfragen nutzen dieselben internen
+  Auswertungen ohne unnötige Suche außerhalb ihres Umfangs. Keine parallele
+  Aggregations-Operations-Schicht anlegen. Die sechs vorhandenen Paket-Helfer
+  bleiben als veraltete Core-lokale Delegates für bestehende Importe erhalten;
+  neue Beispiele verwenden die Klassenmethoden. Unterschiedliche Regelprojektionen
+  nicht in solchen Helfern pflegen. Eine spätere Entfernung öffentlicher Namen
+  benötigt einen eigenen Auftrag. Die öffentliche Schnittstelle umfasst alle
+  Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
   Der Benutzer hat die alte Forwarding-Datei ausdrücklich entfernen lassen;
   dafür keinen Kompatibilitäts-Re-Export wieder einführen.
 - Abweichungen vom Python-Verhalten ausdrücklich begründen und prüfen. Bekannte

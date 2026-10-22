@@ -73,10 +73,10 @@ rules and collisions can prevent reaching the requested number.
 ## Load and save Grasshopper-Wasp data
 
 ```js
-import { createAggregationFromData } from 'webwaspjs';
+import { Aggregation } from 'webwaspjs';
 
 // aggregationData is parsed Full/Light core JSON from a supported Wasp export.
-const assembly = createAggregationFromData(aggregationData);
+const assembly = Aggregation.fromData(aggregationData);
 const full = assembly.toData();
 const light = assembly.toData(false);
 ```

@@ -24,9 +24,11 @@ need real DOM/WebGL checks; the core test suite does not verify viewer lifecycle
 ## Source layout and documentation
 
 - `src/core/`: model classes, technical utilities, host adapters and viewer.
-- `src/operations/`: host-independent domain workflows and convenience functions,
-  including GH-component equivalents. Existing aggregation helpers live together
-  in `src/operations/aggregation.js`; reuse core methods rather than duplicate logic.
+- `src/operations/`: host-independent domain workflows, including GH-component
+  equivalents with additional domain logic. Do not mirror class methods here.
+  Aggregation queries belong to the core class; shared evaluators stay internal.
+  Existing deprecated package helpers delegate beside that class, without a
+  separate compatibility module.
 - `src/index.js`: public runtime exports; internal adapters stay out of this entry.
 - `src/types/index.js`: JSDoc shapes; these are neither runtime validation nor `.d.ts` output.
 - `src/tests/`: regressions and measured reference fixtures, including unsupported cases.

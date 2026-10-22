@@ -355,6 +355,16 @@ export class Aggregation {
     }
 
     /**
+     * Return reusable base definitions in object-value order, distinct from placed Parts
+     * and PartCatalog inventory. The array is new; its Part objects are live references.
+     * JS-specific query: GH components read aggregation.parts.values() directly.
+     * @returns {Part[]}
+     */
+    getBaseParts() {
+        return Object.values(this.parts);
+    }
+
+    /**
      * Adjust toward a target count and update the supplied viewer after each edit.
      * A viewer is required when an edit succeeds. Growth can stop below the target;
      * inspect getParts().length for the actual count. This method resolves without a result.
@@ -771,24 +781,25 @@ placePartAtConnection(parentPartId, connectionId, partName, connectionBId) {
 
 /**
  * Return all open (unused) connections across aggregated parts.
- * Each rules array contains usable entries selected by active_rules.
+ * Each rules array contains usable entries selected by active_rules. Arrays are new;
+ * Plane and Rule objects remain live references. Does not prune connection state.
  * @returns {Array<{partId: number|string, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
  */
 getOpenConnections() {
-    const openConns = [];
-    for (const part of this.aggregated_parts) {
-        for (const connIdx of part.active_connections) {
-            const conn = part.connections[connIdx];
-            openConns.push({
-                partId: part.id,
-                connectionId: connIdx,
-                plane: conn.pln,
-                type: conn.type,
-                rules: conn.active_rules.map(i => conn.rules_table[i]).filter(Boolean),
-            });
-        }
-    }
-    return openConns;
+    return collectOpenConnections(this.aggregated_parts);
+}
+
+/**
+ * Inspect active connection slots on one placed Part using exact ID matching.
+ * JS-specific query: GH reads these fields directly, without this result shape.
+ * Rules are selected by active_rules, as in getOpenConnections(). Result and rules
+ * arrays are new; Plane and Rule objects remain live references. Does not prune slots.
+ * @param {number|string} parentPartId
+ * @returns {Array<{partId: number|string, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
+ */
+getOpenConnectionsForPart(parentPartId) {
+    const part = this.aggregated_parts.find(part => part.id === parentPartId);
+    return collectOpenConnections(part ? [part] : []);
 }
 
 /**
@@ -799,42 +810,7 @@ getOpenConnections() {
  * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsForPart(partName) {
-    const catalogPart = this.parts[partName];
-    if (!catalogPart || !this._catalogAllows(partName)) return [];
-
-    const placements = [];
-    for (const parentPart of this.aggregated_parts) {
-        for (const connIdx of parentPart.active_connections) {
-            const conn = parentPart.connections[connIdx];
-            for (const ruleIdx of conn.active_rules) {
-                const rule = conn.rules_table[ruleIdx];
-                if (!rule || rule.partB !== partName) continue;
-
-                const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
-                if (!startingPlane) continue;
-
-                const orientTransform = PlaneToPlane(startingPlane, conn.pln);
-                if (!orientTransform) continue;
-
-                const partTrans = catalogPart.transform(orientTransform);
-                if (!partTrans) continue;
-
-                if (!this._checkCollision(partTrans)) {
-                    placements.push({
-                        parentPartId: parentPart.id,
-                        connectionId: connIdx,
-                        partName,
-                        connectionBId: rule.connectionB,
-                        ruleIndex: ruleIdx,
-                        transform: orientTransform,
-                        transformedPart: partTrans,
-                    });
-                }
-            }
-        }
-    }
-
-    return placements;
+    return collectValidPlacements(this, partName, this.aggregated_parts);
 }
 
 /**
@@ -845,42 +821,8 @@ getValidPlacementsForPart(partName) {
  * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsAtParent(partName, parentPartId) {
-    const catalogPart = this.parts[partName];
-    if (!catalogPart || !this._catalogAllows(partName)) return [];
-
-    const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
-    if (!parentPart) return [];
-
-    const placements = [];
-    for (const connIdx of parentPart.active_connections) {
-        const conn = parentPart.connections[connIdx];
-        for (const ruleIdx of conn.active_rules) {
-            const rule = conn.rules_table[ruleIdx];
-            if (!rule || rule.partB !== partName) continue;
-
-            const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
-            if (!startingPlane) continue;
-
-            const orientTransform = PlaneToPlane(startingPlane, conn.pln);
-            if (!orientTransform) continue;
-
-            const partTrans = catalogPart.transform(orientTransform);
-            if (!partTrans) continue;
-
-            if (!this._checkCollision(partTrans)) {
-                placements.push({
-                    parentPartId,
-                    connectionId: connIdx,
-                    partName,
-                    connectionBId: rule.connectionB,
-                    ruleIndex: ruleIdx,
-                    transform: orientTransform,
-                    transformedPart: partTrans,
-                });
-            }
-        }
-    }
-    return placements;
+    const parent = this.aggregated_parts.find(part => part.id === parentPartId);
+    return collectValidPlacements(this, partName, parent ? [parent] : []);
 }
 
 /**
@@ -892,43 +834,9 @@ getValidPlacementsAtParent(partName, parentPartId) {
  * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
  */
 getValidPlacementsAtConnection(partName, parentPartId, connectionId) {
-    const catalogPart = this.parts[partName];
-    if (!catalogPart || !this._catalogAllows(partName)) return [];
-
-    const parentPart = this.aggregated_parts.find(p => p.id === parentPartId);
-    if (!parentPart) return [];
-
-    if (!parentPart.active_connections.includes(connectionId)) return [];
-    const conn = parentPart.connections[connectionId];
-    if (!conn) return [];
-
-    const placements = [];
-    for (const ruleIdx of conn.active_rules) {
-        const rule = conn.rules_table[ruleIdx];
-        if (!rule || rule.partB !== partName) continue;
-
-        const startingPlane = catalogPart.connections[rule.connectionB]?.flip_pln;
-        if (!startingPlane) continue;
-
-        const orientTransform = PlaneToPlane(startingPlane, conn.pln);
-        if (!orientTransform) continue;
-
-        const partTrans = catalogPart.transform(orientTransform);
-        if (!partTrans) continue;
-
-        if (!this._checkCollision(partTrans)) {
-            placements.push({
-                parentPartId,
-                connectionId,
-                partName,
-                connectionBId: rule.connectionB,
-                ruleIndex: ruleIdx,
-                transform: orientTransform,
-                transformedPart: partTrans,
-            });
-        }
-    }
-    return placements;
+    const parent = this.aggregated_parts.find(part => part.id === parentPartId);
+    if (!parent || !parent.active_connections.includes(connectionId) || !parent.connections[connectionId]) return [];
+    return collectValidPlacements(this, partName, [parent], [connectionId]);
 }
 
 /**
@@ -943,7 +851,152 @@ setActivePartTypes(partNames) {
 }
 
 
+// ==================== Legacy package helpers ====================
+
+/**
+ * @deprecated Use Aggregation.fromData(data).
+ * JS-specific helper: create an `Aggregation` instance from serialized data.
+ * @param {import('../types/index.js').AggregationData} data
+ * @returns {Aggregation}
+ */
+export function createAggregationFromData(data) {
+  return Aggregation.fromData(data);
+}
+
+/**
+ * @deprecated Use aggregation.getBaseParts().
+ * JS-specific helper: return catalog/base parts from an aggregation.
+ * @param {Aggregation} aggregation
+ * @returns {import('../core/part.js').Part[]}
+ */
+export function getAggregationCatalogParts(aggregation) {
+  return aggregation ? aggregation.getBaseParts() : [];
+}
+
+/**
+ * @deprecated Use aggregation.getValidPlacementsAtParent(partName, parentPartId).
+ * JS-specific helper: compute valid placements scoped to a single parent part.
+ * Limits the search to that parent; no aggregation-wide scan of connection slots.
+ * @param {Aggregation} aggregation
+ * @param {string} partName
+ * @param {number|string} parentPartId
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: import('../core/part.js').Part}>}
+ */
+export function getValidPlacementsAtParent(aggregation, partName, parentPartId) {
+  if (!aggregation) return [];
+  return aggregation.getValidPlacementsAtParent(partName, parentPartId);
+}
+
+/**
+ * @deprecated Use aggregation.getValidPlacementsAtConnection(partName, parentPartId, connectionId).
+ * JS-specific helper: compute valid placements at a single connection slot.
+ * Evaluates rules for one connection.
+ * @param {Aggregation} aggregation
+ * @param {string} partName
+ * @param {number|string} parentPartId
+ * @param {number} connectionId
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: import('../core/part.js').Part}>}
+ */
+export function getValidPlacementsAtConnection(aggregation, partName, parentPartId, connectionId) {
+  if (!aggregation) return [];
+  return aggregation.getValidPlacementsAtConnection(partName, parentPartId, connectionId);
+}
+
+/**
+ * @deprecated Use aggregation.getOpenConnectionsForPart(parentPartId).
+ * JS-specific compatibility helper: inspect active slots and active rules on one Part.
+ * Uses the same core query as Aggregation.getOpenConnections().
+ * @param {Aggregation} aggregation
+ * @param {number|string} parentPartId
+ * @returns {Array<{partId: number|string, connectionId: number, plane: object, type: string, rules: Array}>}
+ */
+export function getOpenConnectionsForPart(aggregation, parentPartId) {
+  return aggregation ? aggregation.getOpenConnectionsForPart(parentPartId) : [];
+}
+
+/**
+ * @deprecated Use aggregation.setActivePartTypes(partNames).
+ * JS-specific helper: set which part types are allowed for random aggregation.
+ * Pass null to allow all parts.
+ * @param {Aggregation} aggregation
+ * @param {string[]|null} partNames
+ * @returns {void}
+ */
+export function setActivePartTypes(aggregation, partNames) {
+  if (!aggregation) return;
+  aggregation.setActivePartTypes(partNames);
+}
+
 // Helper functions
+/**
+ * Project connection state without mutating it. Shared by global and scoped queries.
+ * JS-specific inspection adapter; active_rules, not Rule.active, selects entries.
+ * @internal
+ * @param {Part[]} parts Placed Parts in query order
+ * @returns {Array<{partId: number|string, connectionId: number, plane: import('./plane.js').Plane, type: string, rules: Array}>}
+ */
+function collectOpenConnections(parts) {
+    const connections = [];
+    for (const part of parts) {
+        for (const connectionId of part.active_connections) {
+            const connection = part.connections[connectionId];
+            connections.push({
+                partId: part.id,
+                connectionId,
+                plane: connection.pln,
+                type: connection.type,
+                rules: connection.active_rules.map(index => connection.rules_table[index]).filter(Boolean),
+            });
+        }
+    }
+    return connections;
+}
+
+/**
+ * Enumerate candidates only in the supplied scope, preserving parent/slot/rule order.
+ * Partial GH-Wasp core counterpart: Aggregation.compute_possible_children; JS also
+ * filters a requested base Part and reports placement metadata. Existing supported
+ * collision/inventory checks remain delegated to the Aggregation instance.
+ * @internal
+ * @param {Aggregation} aggregation
+ * @param {string} partName
+ * @param {Part[]} parents Placed Parts to inspect
+ * @param {number[]} [connectionIds] Selected slots; omitted means each parent's active slots
+ * @returns {Array<{parentPartId: number|string, connectionId: number, partName: string, connectionBId: number, ruleIndex: number, transform: import('three').Matrix4, transformedPart: Part}>}
+ */
+function collectValidPlacements(aggregation, partName, parents, connectionIds) {
+    const basePart = aggregation.parts[partName];
+    if (!basePart || !aggregation._catalogAllows(partName)) return [];
+    const placements = [];
+    for (const parent of parents) {
+        for (const connectionId of connectionIds ?? parent.active_connections) {
+            const connection = parent.connections[connectionId];
+            for (const ruleIndex of connection.active_rules) {
+                const rule = connection.rules_table[ruleIndex];
+                if (!rule || rule.partB !== partName) continue;
+                const startingPlane = basePart.connections[rule.connectionB]?.flip_pln;
+                if (!startingPlane) continue;
+                const transform = PlaneToPlane(startingPlane, connection.pln);
+                if (!transform) continue;
+                const transformedPart = basePart.transform(transform);
+                if (!transformedPart) continue;
+                if (!aggregation._checkCollision(transformedPart)) {
+                    placements.push({
+                        parentPartId: parent.id,
+                        connectionId,
+                        partName,
+                        connectionBId: rule.connectionB,
+                        ruleIndex,
+                        transform,
+                        transformedPart,
+                    });
+                }
+            }
+        }
+    }
+    return placements;
+}
+
 function randomChoice(rng, arr) {
     return arr[Math.floor(rng() * arr.length)];
 }

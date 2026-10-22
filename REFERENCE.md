@@ -12,15 +12,14 @@ no `.d.ts` declarations or runtime schema validator are shipped.
 
 | Export | Purpose |
 | --- | --- |
-| `Aggregation`, `createAggregationFromData` | Construct or reconstruct Full/Light core state |
+| `Aggregation` | Construct or reconstruct Full/Light core state and query/edit assemblies |
 | `Part`, `AdvancedPart`, `Connection`, `Plane`, `Collider`, `Rule` | Core model classes; AdvancedPart has a limited supported subset |
 | `Graph` | Sequence topology and geometric full-graph queries |
 | `Attribute`, `SmartAttribute`, `getValidSmartAttributes` | Typed attribute data and geometric validity query |
 | `PartCatalog`, `createPartCatalog` | Counts/weights and GH-component catalog defaults |
 | `generateRules` | Directed compatibility-rule generation |
 | `loadAggregation` | Compact Save/Load reconstruction with external base Parts and rules |
-| `getAggregationCatalogParts`, `getOpenConnectionsForPart` | Inspect reusable base Parts or one placed Part's active slots |
-| `getValidPlacementsAtParent`, `getValidPlacementsAtConnection`, `setActivePartTypes` | Scoped placement helpers and random-growth filtering |
+| Six legacy aggregation helper functions | Deprecated compatibility delegates; use the class methods below |
 | `meshToData`, `meshFromData`, `transformToData`, `transformFromData`, `PlaneToPlane`, `checkMeshesIntersection` | Public geometry/transport utilities |
 | `Visualizer` | Minimal browser-only Z-up viewer |
 | `types` | Legacy empty runtime object; JSDoc typedefs are comments, not values |
@@ -28,11 +27,37 @@ no `.d.ts` declarations or runtime schema validator are shipped.
 ## Source organization
 
 `src/index.js` is the single public package entry point. Core classes own model
-behavior; `src/operations/` groups workflows and convenience functions. The six
-aggregation helpers live together in `src/operations/aggregation.js` and reuse
-core behavior. Operations grow incrementally and do not promise a wrapper for
-every core method. Applications import from the package root rather than internal
-source paths.
+behavior, including aggregation inspection and placement queries. `src/operations/`
+contains host-independent domain workflows such as rule generation and compact
+loading; it does not mirror class methods. Applications import from the package
+root rather than internal source paths.
+
+## Aggregation methods and legacy helpers
+
+Use the class methods as the primary aggregation interface. The existing root-level
+functions remain callable as deprecated delegates defined beside the core class;
+there is no separate aggregation operations or forwarding module.
+
+| Deprecated package function | Preferred call |
+| --- | --- |
+| `createAggregationFromData(data)` | `Aggregation.fromData(data)` |
+| `getAggregationCatalogParts(aggregation)` | `aggregation.getBaseParts()` |
+| `getValidPlacementsAtParent(aggregation, name, parentId)` | `aggregation.getValidPlacementsAtParent(name, parentId)` |
+| `getValidPlacementsAtConnection(aggregation, name, parentId, connectionId)` | `aggregation.getValidPlacementsAtConnection(name, parentId, connectionId)` |
+| `getOpenConnectionsForPart(aggregation, parentId)` | `aggregation.getOpenConnectionsForPart(parentId)` |
+| `setActivePartTypes(aggregation, names)` | `aggregation.setActivePartTypes(names)` |
+
+The legacy functions retain their null/undefined-aggregation guards: query helpers
+return `[]`, the setter does nothing. Construction still delegates to `fromData`
+and can throw for invalid/unsupported data. No helper removal version is scheduled.
+The internal source path `src/operations/aggregation.js` was removed; source consumers
+must use the package root or core module.
+
+**Behavior correction:** the legacy per-Part connection helper now returns only
+rules selected by `active_rules`, matching both core connection queries. It no
+longer exposes the complete live `rules_table` array. To inspect every declared
+entry deliberately, read the Part's Connection `rules_table` itself; modifying a
+query result's rules array no longer edits that table.
 
 ## Placement and viewer workflow
 
@@ -49,11 +74,20 @@ empty aggregation. It returns `true` or a failure message when it stops short.
 Inspect `getParts().length` for the actual result. `addPartToAggregation()` returns
 a boolean. These model operations do not update a viewer automatically.
 
-`getParts()` returns the live placed array. `getAggregationCatalogParts()` returns
-base definitions, distinct from inventory. `getOpenConnections()` exposes usable
-rules selected by `active_rules`; the convenience `getOpenConnectionsForPart()`
-currently exposes each active slot's full live `rules_table` instead. Connection
-indices are numeric; Part IDs can be numbers or strings and use exact matching.
+`getParts()` returns the live placed array. `getBaseParts()` returns a new array
+of reusable definitions in object-value order, with live Part references; it does
+not return placed instances or PartCatalog inventory. `getOpenConnections()` and
+`getOpenConnectionsForPart(id)` share the same active-rule projection. Result and
+rules arrays are new, but their Plane and Rule objects remain live references.
+Slots with no active rules can still be listed; inspecting does not prune state.
+Connection indices are numeric; Part IDs can be numbers or strings and use exact
+matching. An unknown Part ID returns `[]`.
+
+The three placement queries (whole aggregation, parent and connection) share one
+candidate evaluator. Scoped queries enumerate only their requested slots; they do
+not construct all candidates and filter afterwards. Parent/slot/active-rule order,
+original rule indices, supported collision checks and inventory checks are retained.
+The random-growth Part-type filter is separate from explicit placement queries.
 
 `modifyParts(target, viewer)` is asynchronous and updates a supplied viewer during
 edits; it requires that viewer when an edit succeeds. It may stop below the target
@@ -75,7 +109,7 @@ shared Three.js prototype setup.
 
 ## Reading and exporting data
 
-Use `createAggregationFromData(coreData)` for Full/Light core JSON. Full export
+Use `Aggregation.fromData(coreData)` for Full/Light core JSON. Full export
 `aggregation.toData()` includes placed geometry. Light export
 `aggregation.toData(false)` omits per-instance display geometry/primary colliders
 but includes reusable definitions, transforms, graph, attributes and supported

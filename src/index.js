@@ -26,5 +26,5 @@ export {
     getValidPlacementsAtConnection,
     getOpenConnectionsForPart,
     setActivePartTypes,
-} from './operations/aggregation.js';
+} from './core/aggregation.js';
 export * from './types/index.js';

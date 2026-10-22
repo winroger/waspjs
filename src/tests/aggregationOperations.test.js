@@ -6,7 +6,7 @@ import { Collider } from '../core/collider.js';
 import { Part } from '../core/part.js';
 import { Rule } from '../core/rule.js';
 import { Aggregation } from '../core/aggregation.js';
-import { createAggregationFromData } from '../operations/aggregation.js';
+import { createAggregationFromData } from '../index.js';
 import * as packageExports from '../index.js';
 import * as utilities from '../core/utilities.js';
 import { generateRules } from '../operations/generateRules.js';
@@ -23,7 +23,7 @@ function makePart(name) {
   return new Part(name, mesh, [connection], collider, [], 1, null, null);
 }
 
-describe('aggregation operations and package exports', () => {
+describe('aggregation loading and package exports', () => {
   it('preserves public utilities and operations while keeping mesh adapters internal', () => {
     expect(packageExports).toMatchObject({
       checkMeshesIntersection: utilities.checkMeshesIntersection,
