@@ -66,12 +66,13 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   Aggregationsabfragen und Zustandsverhalten maßgeblich in der Core-Klasse
   pflegen; globale und eingeschränkte Abfragen nutzen dieselben internen
   Auswertungen ohne unnötige Suche außerhalb ihres Umfangs. Keine parallele
-  Aggregations-Operations-Schicht anlegen. Die sechs vorhandenen Paket-Helfer
-  bleiben als veraltete Core-lokale Delegates für bestehende Importe erhalten;
-  neue Beispiele verwenden die Klassenmethoden. Unterschiedliche Regelprojektionen
-  nicht in solchen Helfern pflegen. Eine spätere Entfernung öffentlicher Namen
-  benötigt einen eigenen Auftrag. Die öffentliche Schnittstelle umfasst alle
-  Paketexporte und Klassenmethoden, nicht allein diese Hilfsfunktionen.
+  Aggregations-Operations-Schicht anlegen. Die sechs früheren Aggregations-
+  Funktionsaliase wurden auf ausdrücklichen Benutzerauftrag entfernt; sie weder
+  im Paket-Einstieg noch als Core-lokale Delegates oder Kompatibilitätsschicht
+  wieder einführen. `Aggregation` samt Konstruktor, `fromData` und Instanzmethoden
+  ist der Aggregationseinstieg. Unterschiedliche Regelprojektionen nicht in
+  zusätzlichen Helfern pflegen. Die öffentliche Schnittstelle umfasst die
+  übrigen Paketexporte und Klassenmethoden.
   Der Benutzer hat die alte Forwarding-Datei ausdrücklich entfernen lassen;
   dafür keinen Kompatibilitäts-Re-Export wieder einführen.
 - Abweichungen vom Python-Verhalten ausdrücklich begründen und prüfen. Bekannte

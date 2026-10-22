@@ -10,15 +10,14 @@ describe('package exports', () => {
     'getValidPlacementsAtConnection',
     'getOpenConnectionsForPart',
     'setActivePartTypes',
-  ])('preserves %s as a core-local compatibility function', name => {
-    const operation = Reflect.get(aggregationCore, name);
-    expect(operation).toBeTypeOf('function');
-    expect(Reflect.get(webwaspjs, name)).toBe(operation);
+  ])('does not expose the removed %s function', name => {
+    expect(webwaspjs).not.toHaveProperty(name);
+    expect(aggregationCore).not.toHaveProperty(name);
   });
 
   it('loads the public package entry point', () => {
     expect(webwaspjs.Aggregation).toBeTypeOf('function');
     expect(webwaspjs.Visualizer).toBeTypeOf('function');
-    expect(webwaspjs.createAggregationFromData).toBeTypeOf('function');
+    expect(webwaspjs.Aggregation).toBe(aggregationCore.Aggregation);
   });
 });

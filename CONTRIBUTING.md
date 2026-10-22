@@ -27,8 +27,8 @@ need real DOM/WebGL checks; the core test suite does not verify viewer lifecycle
 - `src/operations/`: host-independent domain workflows, including GH-component
   equivalents with additional domain logic. Do not mirror class methods here.
   Aggregation queries belong to the core class; shared evaluators stay internal.
-  Existing deprecated package helpers delegate beside that class, without a
-  separate compatibility module.
+  Aggregation is exposed through its class, without standalone function aliases
+  or a separate compatibility module.
 - `src/index.js`: public runtime exports; internal adapters stay out of this entry.
 - `src/types/index.js`: JSDoc shapes; these are neither runtime validation nor `.d.ts` output.
 - `src/tests/`: regressions and measured reference fixtures, including unsupported cases.

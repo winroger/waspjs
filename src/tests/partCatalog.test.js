@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { writeFileSync } from 'node:fs';
 import process from 'node:process';
-import { PartCatalog, Part, Aggregation, Rule, createPartCatalog, getAggregationCatalogParts } from '../index.js';
+import { PartCatalog, Part, Aggregation, Rule, createPartCatalog } from '../index.js';
 import corpus from './fixtures/gh-catalog-cases.json';
 import reference from './fixtures/gh-catalog-reference.json';
 import geometry from './fixtures/gh-rules-cases.json';
@@ -248,7 +248,7 @@ describe('mode-0 inventory integration', () => {
         expect(a.placeFirstPart('B').success).toBe(false);
         a.placeFirstPart('A');
         expect(cat.dict.A).toBe(2); expect(b.catalog.dict.A).toBe(2);
-        expect(getAggregationCatalogParts(a).map(p => p.name)).toEqual(['A', 'B']);
+        expect(a.getBaseParts().map(p => p.name)).toEqual(['A', 'B']);
         expect(a.getValidPlacementsForPart('B')).toEqual([]);
         expect(a.placeFirstPart('B').success).toBe(false);
     });

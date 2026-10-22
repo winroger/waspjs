@@ -6,7 +6,6 @@ import { Collider } from '../core/collider.js';
 import { Part } from '../core/part.js';
 import { Rule } from '../core/rule.js';
 import { Aggregation } from '../core/aggregation.js';
-import { createAggregationFromData } from '../index.js';
 import * as packageExports from '../index.js';
 import * as utilities from '../core/utilities.js';
 import { generateRules } from '../operations/generateRules.js';
@@ -53,7 +52,7 @@ describe('aggregation loading and package exports', () => {
       catalog: null,
     };
 
-    const aggregation = createAggregationFromData(aggregationData);
+    const aggregation = Aggregation.fromData(aggregationData);
     expect(aggregation).toBeInstanceOf(Aggregation);
     expect(aggregation.name).toBe('direct');
     expect(Object.keys(aggregation.parts)).toContain('A');

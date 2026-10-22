@@ -19,7 +19,6 @@ no `.d.ts` declarations or runtime schema validator are shipped.
 | `PartCatalog`, `createPartCatalog` | Counts/weights and GH-component catalog defaults |
 | `generateRules` | Directed compatibility-rule generation |
 | `loadAggregation` | Compact Save/Load reconstruction with external base Parts and rules |
-| Six legacy aggregation helper functions | Deprecated compatibility delegates; use the class methods below |
 | `meshToData`, `meshFromData`, `transformToData`, `transformFromData`, `PlaneToPlane`, `checkMeshesIntersection` | Public geometry/transport utilities |
 | `Visualizer` | Minimal browser-only Z-up viewer |
 | `types` | Legacy empty runtime object; JSDoc typedefs are comments, not values |
@@ -32,13 +31,17 @@ contains host-independent domain workflows such as rule generation and compact
 loading; it does not mirror class methods. Applications import from the package
 root rather than internal source paths.
 
-## Aggregation methods and legacy helpers
+## Aggregation interface and migration
 
-Use the class methods as the primary aggregation interface. The existing root-level
-functions remain callable as deprecated delegates defined beside the core class;
-there is no separate aggregation operations or forwarding module.
+`Aggregation` is the aggregation entry point. Construct it directly, load serialized
+state with `Aggregation.fromData(data)`, and inspect/edit the instance with its
+methods. There is no aggregation wrapper module or compatibility-function layer.
 
-| Deprecated package function | Preferred call |
+**Breaking change in the current source:** the following six standalone functions
+were removed from both the package root and core module. Replace imports and calls
+with the class interface; the corresponding class methods remain available.
+
+| Removed package function | Replacement |
 | --- | --- |
 | `createAggregationFromData(data)` | `Aggregation.fromData(data)` |
 | `getAggregationCatalogParts(aggregation)` | `aggregation.getBaseParts()` |
@@ -47,17 +50,24 @@ there is no separate aggregation operations or forwarding module.
 | `getOpenConnectionsForPart(aggregation, parentId)` | `aggregation.getOpenConnectionsForPart(parentId)` |
 | `setActivePartTypes(aggregation, names)` | `aggregation.setActivePartTypes(names)` |
 
-The legacy functions retain their null/undefined-aggregation guards: query helpers
-return `[]`, the setter does nothing. Construction still delegates to `fromData`
-and can throw for invalid/unsupported data. No helper removal version is scheduled.
-The internal source path `src/operations/aggregation.js` was removed; source consumers
-must use the package root or core module.
+There are no silent null/undefined-aggregation guards from those removed helpers.
+Only call instance methods once an Aggregation exists. `Aggregation.fromData(data)`
+can throw for invalid/unsupported data. No alias or deprecated delegate is retained.
+The internal source path `src/operations/aggregation.js` was also removed.
 
-**Behavior correction:** the legacy per-Part connection helper now returns only
-rules selected by `active_rules`, matching both core connection queries. It no
-longer exposes the complete live `rules_table` array. To inspect every declared
-entry deliberately, read the Part's Connection `rules_table` itself; modifying a
-query result's rules array no longer edits that table.
+For example:
+
+```js
+import { Aggregation } from 'webwaspjs';
+const aggregation = Aggregation.fromData(coreData);
+const baseParts = aggregation.getBaseParts();
+const openConnections = aggregation.getOpenConnectionsForPart(parentId);
+```
+
+Both core connection queries select rules through `active_rules`. Older standalone
+per-Part helpers exposed the complete live `rules_table` array. To inspect every
+declared entry deliberately, read the Part's Connection `rules_table` itself;
+modifying a query result's rules array does not edit that table.
 
 ## Placement and viewer workflow
 

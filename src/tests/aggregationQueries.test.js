@@ -2,9 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 import * as THREE from 'three';
 import {
   Aggregation, Collider, Connection, Part, PartCatalog, Plane, generateRules,
-  createAggregationFromData, getAggregationCatalogParts,
-  getOpenConnectionsForPart, getValidPlacementsAtParent,
-  getValidPlacementsAtConnection, setActivePartTypes,
 } from '../index.js';
 
 function makeAggregation(withChild = false, catalog = null) {
@@ -33,13 +30,13 @@ function placementSummary(placements) {
 }
 
 describe('canonical aggregation queries', () => {
-  it('filters pruned rules identically in global and legacy per-Part queries', () => {
+  it('filters pruned rules identically in global and per-Part core queries', () => {
     const aggregation = makeAggregation();
     const connection = aggregation.getParts()[0].connections[0];
     connection.active_rules = [5, 4];
     connection.rules_table[5].active = false; // Metadata does not select active rules.
     const global = aggregation.getOpenConnections().filter(item => item.partId === 0);
-    expect(getOpenConnectionsForPart(aggregation, 0)).toEqual(global);
+    expect(aggregation.getOpenConnectionsForPart(0)).toEqual(global);
     expect(global[0].rules).toEqual([connection.rules_table[5], connection.rules_table[4]]);
   });
 
@@ -49,7 +46,6 @@ describe('canonical aggregation queries', () => {
     expect(baseParts.map(part => part.name)).toEqual(['A', 'B', 'C']);
     expect(baseParts[0]).toBe(aggregation.parts.A);
     expect(baseParts[0]).not.toBe(aggregation.getParts()[0]);
-    expect(getAggregationCatalogParts(aggregation)).toEqual(baseParts);
     baseParts.pop();
     expect(aggregation.getBaseParts()).toHaveLength(3);
     expect(aggregation.catalog.parts).toEqual(['A', 'B', 'C']);
@@ -106,15 +102,11 @@ describe('canonical aggregation queries', () => {
       expect(placementSummary(parent)).toEqual(placementSummary(
         all.filter(item => item.parentPartId === part.id),
       ));
-      expect(placementSummary(getValidPlacementsAtParent(aggregation, 'C', part.id)))
-        .toEqual(placementSummary(parent));
       for (const index of part.active_connections) {
         const connection = aggregation.getValidPlacementsAtConnection('C', part.id, index);
         expect(placementSummary(connection)).toEqual(placementSummary(
           parent.filter(item => item.connectionId === index),
         ));
-        expect(placementSummary(getValidPlacementsAtConnection(aggregation, 'C', part.id, index)))
-          .toEqual(placementSummary(connection));
       }
     }
     expect(all.filter(item => item.parentPartId === 0).map(item => item.ruleIndex)).toEqual([5, 4]);
@@ -170,30 +162,14 @@ describe('canonical aggregation queries', () => {
   });
 });
 
-describe('legacy package helpers', () => {
-  it('retains missing-aggregation results and guards', () => {
-    for (const aggregation of [null, undefined]) {
-      expect(getAggregationCatalogParts(aggregation)).toEqual([]);
-      expect(getOpenConnectionsForPart(aggregation, 0)).toEqual([]);
-      expect(getValidPlacementsAtParent(aggregation, 'A', 0)).toEqual([]);
-      expect(getValidPlacementsAtConnection(aggregation, 'A', 0, 0)).toEqual([]);
-      expect(setActivePartTypes(aggregation, ['A'])).toBeUndefined();
-    }
-  });
-
-  it('loads Full/Light state through the same class implementation', () => {
+describe('class-only aggregation loading', () => {
+  it('roundtrips Full/Light state without mutating its serialized input', () => {
     const aggregation = makeAggregation(true);
     for (const includeGeometry of [true, false]) {
       const data = aggregation.toData(includeGeometry);
-      expect(createAggregationFromData(data).toData()).toEqual(Aggregation.fromData(data).toData());
+      const before = globalThis.structuredClone(data);
+      expect(Aggregation.fromData(data).toData(includeGeometry)).toEqual(data);
+      expect(data).toEqual(before);
     }
-  });
-
-  it('sets the same random-growth filter on the core instance', () => {
-    const aggregation = makeAggregation();
-    setActivePartTypes(aggregation, ['B']);
-    expect(aggregation.activePartTypes).toEqual(new Set(['B']));
-    setActivePartTypes(aggregation, null);
-    expect(aggregation.activePartTypes).toBeNull();
   });
 });
