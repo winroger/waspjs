@@ -53,6 +53,8 @@ Header und Kommentare werden hier maßgeblich gepflegt.
   zusätzlicher Fachlogik aus GH-Komponenten. `generateRules.js` ist das erste
   Beispiel. Operations sind unabhängig von Grasshopper und Viewer/UI; vorhandene
   Core-Methoden verwenden und deren Logik nicht nochmals implementieren.
+  `generateRules` aus Operations über den Paket-Einstieg exportieren; keinen
+  veralteten Utilities-Re-Export dafür wieder einführen.
 - Nicht jede GH-Komponente benötigt eine eigene Operation oder Datei. Ein reiner
   Aufruf einer vorhandenen Core-Methode begründet keinen zusätzlichen Wrapper.
   Die Schicht im beauftragten Umfang schrittweise ausbauen; keine ungefragte

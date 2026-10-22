@@ -34,7 +34,7 @@ describe('aggregation loading and package exports', () => {
       PlaneToPlane: utilities.PlaneToPlane,
       generateRules,
     });
-    expect(utilities.generateRules).toBe(generateRules);
+    expect(utilities).not.toHaveProperty('generateRules');
     expect(packageExports).not.toHaveProperty('copyMesh');
     expect(packageExports).not.toHaveProperty('meshAreaCentroid');
   });

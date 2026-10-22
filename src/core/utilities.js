@@ -13,10 +13,6 @@ import * as THREE from 'three';
 import { Plane } from './plane.js';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 
-// Compatibility re-export for existing source imports; implementation lives in operations.
-export { generateRules } from '../operations/generateRules.js';
-
-
 // JS-specific setup for Three.js raycasting; no GH-Wasp utility counterpart.
 if (THREE.Mesh.prototype.raycast !== acceleratedRaycast) {
   THREE.Mesh.prototype.raycast = acceleratedRaycast;

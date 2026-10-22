@@ -413,7 +413,8 @@ Graph-Grammar, application dependencies or schema are introduced by this feature
 The implementation of `generateRules` lives in
 [operations/generateRules.js](https://github.com/winroger/waspjs/blob/main/src/operations/generateRules.js), reflecting its
 GH-component origin. The public import remains `import { generateRules } from
-'webwaspjs'`. The previous utilities-module export forwards to this same function.
+'webwaspjs'`. The former direct-source utilities re-export has been removed;
+source consumers should import from the package root or the operations module.
 
 `generateRules(parts, selfPart = true, selfConnection = true, useTypes = false,
 grammar = [])` follows the measured GH-Wasp Rules Generator component. Explicit
