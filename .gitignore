@@ -15,4 +15,7 @@ docs/
 copilot-instructions.md
 .github/copilot-instructions.md
 
+# Local agent instructions
+/AGENTS.md
+
 ext_Wasp-master/

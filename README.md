@@ -1,7 +1,19 @@
 # WaspJS
 
-[![npm version](https://img.shields.io/npm/v/webwaspjs.svg)](https://www.npmjs.com/package/webwaspjs)
-[![CI](https://img.shields.io/github/actions/workflow/status/winroger/waspjs/ci.yml?branch=main)](https://github.com/winroger/waspjs/actions/workflows/ci.yml)
+<p align="center">
+  <a href="https://www.npmjs.com/package/webwaspjs">
+    <img src="https://img.shields.io/npm/v/webwaspjs.svg" alt="npm version">
+  </a>
+  <a href="https://www.npmjs.com/package/webwaspjs">
+    <img src="https://img.shields.io/npm/dm/webwaspjs.svg" alt="npm downloads">
+  </a>
+  <a href="https://github.com/winroger/waspjs/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/winroger/waspjs/ci.yml?branch=main" alt="CI status">
+  </a>
+  <a href="https://github.com/winroger/waspjs/blob/main/LICENSE.txt">
+    <img src="https://img.shields.io/github/license/winroger/waspjs.svg" alt="license">
+  </a>
+</p>
 
 `webwaspjs` is a JavaScript port of the [Wasp](https://github.com/ar0551/Wasp)
 core for discrete assemblies. Define reusable mesh Parts, attach connection
@@ -11,7 +23,7 @@ JSON, inspect the connection graph, or render the result with Three.js.
 ## Install
 
 ```sh
-npm install webwaspjs three@^0.169.0
+npm install webwaspjs@0.3.9 three@^0.169.0
 ```
 
 Three.js is a required peer dependency. The current package supports the
@@ -19,9 +31,8 @@ Three.js is a required peer dependency. The current package supports the
 Use a bundler such as Vite for browser applications. ESM and CommonJS entry points
 are available; generated TypeScript declarations are not included.
 
-The documentation on `main` describes the current source and can include changes
-not yet published to npm. Use the Git tag matching your installed package version
-when checking an older release.
+This guide documents WaspJS 0.3.9. [Release notes](RELEASE_NOTES.md) contain
+version changes and application migration instructions.
 
 ## Build a small assembly
 
@@ -122,11 +133,9 @@ are rejected rather than treated as fully supported. Collision checks test mesh
 surfaces, not general solid-volume containment. Equal Python/JS seeds do not imply
 the same random sequence, and loading does not restore an RNG cursor.
 
-When upgrading older consumers, review the [reference guide](REFERENCE.md), especially
-[connection frames](REFERENCE.md#connection-frames), [Part dimensions](REFERENCE.md#part-dimension)
-and [inventory exchange](REFERENCE.md#part-catalogs). Corrected XYZ connection exports
-can be read differently by older WaspJS readers. Imported explicit dimensions stay
-unchanged. GH's catalog writer/reader can lose current stock or fractional weights.
+The [reference guide](REFERENCE.md) defines connection frames, geometry ownership,
+inventory and supported transport formats. Compatibility with Grasshopper applies
+to the documented subset.
 
 ## Reference and development
 

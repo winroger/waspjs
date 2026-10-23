@@ -22,6 +22,19 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
+      - name: Verify stable tag matches package version
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          assert.match(pkg.version, /^\d+\.\d+\.\d+$/, 'A stable version is required');
+          assert.equal(lock.version, pkg.version, 'Lockfile version mismatch');
+          assert.equal(lock.packages[''].version, pkg.version, 'Lockfile root mismatch');
+          assert.equal(process.env.GITHUB_REF_NAME, 'v' + pkg.version, 'Tag/version mismatch');
+          NODE
+
       - name: Upgrade npm (Trusted Publishing support)
         run: npm i -g npm@latest
 
