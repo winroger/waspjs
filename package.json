@@ -1,6 +1,6 @@
 {
   "name": "webwaspjs",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "type": "module",
   "description": "JavaScript port of WASP for discrete aggregations (Three.js)",
   "main": "dist/index.cjs",

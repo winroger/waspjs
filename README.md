@@ -23,7 +23,7 @@ JSON, inspect the connection graph, or render the result with Three.js.
 ## Install
 
 ```sh
-npm install webwaspjs@0.3.9 three@^0.169.0
+npm install webwaspjs@0.3.10 three@^0.169.0
 ```
 
 Three.js is a required peer dependency. The current package supports the
@@ -31,7 +31,7 @@ Three.js is a required peer dependency. The current package supports the
 Use a bundler such as Vite for browser applications. ESM and CommonJS entry points
 are available; generated TypeScript declarations are not included.
 
-This guide documents WaspJS 0.3.9. [Release notes](RELEASE_NOTES.md) contain
+This guide documents WaspJS 0.3.10. [Release notes](RELEASE_NOTES.md) contain
 version changes and application migration instructions.
 
 ## Build a small assembly

@@ -63,7 +63,7 @@ Before publication:
    on npm. Complete review, tests and release notes.
 2. Integrate the reviewed release-preparation branch into main.
 3. When publication is explicitly authorized, create and push the matching stable
-   tag, such as `v0.3.9`, after the source commit is on the remote.
+   tag, such as `v0.3.10`, after the source commit is on the remote.
 4. Confirm the release workflow and npm package artifact complete successfully.
 
 The [release workflow](.github/workflows/release.yml) checks that the pushed tag

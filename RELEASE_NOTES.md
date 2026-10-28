@@ -1,6 +1,6 @@
 # WaspJS release notes
 
-## Unreleased
+## 0.3.10
 
 ### Bug fixes
 
