@@ -123,6 +123,47 @@ export function checkMeshLineIntersection(mesh, line) {
 }
 
 /**
+ * JS-specific guard for disjoint triangles misreported by the BVH segment test.
+ * Face normals and edge-cross-edge axes separate noncoplanar triangles even
+ * when plane clipping degenerates to a point. Projections use a shared nearby
+ * origin to avoid subtracting large, nearly equal world-coordinate intervals.
+ * @internal
+ */
+const trianglesSeparated = (() => {
+    const firstEdges = Array.from({ length: 3 }, () => new THREE.Vector3());
+    const secondEdges = Array.from({ length: 3 }, () => new THREE.Vector3());
+    const axis = new THREE.Vector3();
+    const project = (point, origin) => (point.x - origin.x) * axis.x
+        + (point.y - origin.y) * axis.y + (point.z - origin.z) * axis.z;
+    function separated(first, second, epsilon) {
+        if (axis.lengthSq() === 0) return false;
+        axis.normalize();
+        const origin = first.a;
+        const a = [0, project(first.b, origin), project(first.c, origin)];
+        const b = [project(second.a, origin), project(second.b, origin), project(second.c, origin)];
+        return Math.max(...a) < Math.min(...b) - epsilon
+            || Math.max(...b) < Math.min(...a) - epsilon;
+    }
+    return (first, second, epsilon) => {
+        axis.copy(first.plane.normal);
+        if (separated(first, second, epsilon)) return true;
+        axis.copy(second.plane.normal);
+        if (separated(first, second, epsilon)) return true;
+        for (let i = 0; i < 3; i++) {
+            firstEdges[i].subVectors(first.points[(i + 1) % 3], first.points[i]);
+            secondEdges[i].subVectors(second.points[(i + 1) % 3], second.points[i]);
+        }
+        for (const a of firstEdges) {
+            for (const b of secondEdges) {
+                axis.crossVectors(a, b);
+                if (separated(first, second, epsilon)) return true;
+            }
+        }
+        return false;
+    };
+})();
+
+/**
  * Test mesh surfaces in model coordinates without changing either source mesh.
  * JS host-API adapter: Rhino Intersection.MeshMeshFast used by
  * src/wasp/core/colliders.py, implemented with the installed three-mesh-bvh.
@@ -163,7 +204,10 @@ export function checkMeshesIntersection(mesh1, mesh2) {
                 && Math.abs(first.plane.distanceToPoint(second.a)) <= epsilon
                 && Math.abs(first.plane.distanceToPoint(second.b)) <= epsilon
                 && Math.abs(first.plane.distanceToPoint(second.c)) <= epsilon) return false;
-            return first.intersectsTriangle(second, null, true);
+            if (!first.intersectsTriangle(second, null, true)) return false;
+            // The dependency can treat a ~zero-length clipped segment as an
+            // overlapping interval. Confirm its positive result independently.
+            return !trianglesSeparated(first, second, epsilon);
         }
     });
 }

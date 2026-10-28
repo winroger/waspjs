@@ -302,6 +302,12 @@ buffers, indices, matrices and caller BVHs. Pose/replacement/versioned buffer ed
 invalidate caches; direct position/index edits must set `needsUpdate=true`.
 Private caches consume CPU memory. Face counts use BufferGeometry triangles.
 
+Positive BVH triangle results are checked against face-normal and edge-cross-edge
+separating axes using projections relative to one triangle vertex. This rejects
+disjoint triangles when a nearly zero-length plane-clipping segment makes the
+dependency report an intersection. The numerical allowance covers double
+arithmetic roundoff; it is not a model-space clearance or collider shrink.
+
 Collision means surface intersection, not occupied-volume containment. Coplanar
 and degenerate triangle pairs and strict axis-aligned bounding contacts have
 limited behavior; some rotated touching cases intersect. There is no universal

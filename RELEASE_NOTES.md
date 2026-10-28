@@ -1,5 +1,15 @@
 # WaspJS release notes
 
+## Unreleased
+
+### Bug fixes
+
+- Reject false mesh-surface intersections caused by nearly zero-length clipped
+  triangle segments at oblique poses. Positive BVH results now require overlapping
+  triangle intervals along face-normal and edge-derived separating axes. This
+  preserves detection of real thin overlaps without shrinking collider geometry
+  or exempting connected Parts. No API or dependency changes.
+
 ## 0.3.9 — 23 October 2026
 
 This release aligns the supported JavaScript core more closely with GH Wasp
